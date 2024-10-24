@@ -29,6 +29,8 @@
     #clickButton {
       padding: 10px 20px;
       font-size: 1.5em;
+      position: absolute; /* Make it absolute */
+      bottom: 0; /* Align with the bottom */
     }
     .upgrade {
       margin-bottom: 10px;
@@ -70,6 +72,7 @@
     const cursorCostElement = document.getElementById('cursorCost');
     const spsCostElement = document.getElementById('spsCost');
     const cursor = document.getElementById('cursor');
+    const clickButton = document.getElementById('clickButton');
     const gameArea = document.getElementById('game');
     const gameWidth = gameArea.offsetWidth;
 
@@ -102,6 +105,10 @@
       }
     }
 
+    function updateButtonPosition() {
+      clickButton.style.left = (cursorX + 50) + 'px'; // Position it to the right of the cursor
+    }
+
     document.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') {
         cursorX -= 10;
@@ -112,12 +119,16 @@
         if (cursorX > gameWidth - 50) cursorX = gameWidth - 50; // Constrain to game area
       }
       cursor.style.left = cursorX + 'px';
+      updateButtonPosition(); // Update button position when cursor moves
     });
 
     setInterval(() => {
       score += scorePerSecond;
       scoreElement.innerText = score;
     }, 1000);
+
+    // Initialize button position on load
+    updateButtonPosition();
   </script>
 </body>
 </html>
