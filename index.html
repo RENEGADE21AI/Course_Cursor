@@ -69,7 +69,7 @@
     let cursorCost = 10;
     let spsCost = 20;
     let cursorX = 50;
-    let cursorY = 0;
+    let cursorY = 0; // Start at 0
     let velocityY = 0;
     const gravity = 0.5; // Gravity effect
     const jumpStrength = -10; // Jump force
@@ -126,8 +126,8 @@
       }
 
       // Check for ground collision (the bottom of the game area)
-      if (cursorY >= gameHeight) {
-        cursorY = gameHeight; // Set to the bottom of the game area
+      if (cursorY >= gameHeight - 50) { // Adjust for cursor height
+        cursorY = gameHeight - 50; // Set to the bottom of the game area minus cursor height
         onGround = true;
         velocityY = 0;
       }
