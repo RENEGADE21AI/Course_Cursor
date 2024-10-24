@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Platform Clicker Game</title>
+    <title>Platicker - A Platform Clicker Game</title>
     <style>
         html, body {
             margin: 0;
@@ -44,7 +44,7 @@
 
         #player {
             position: absolute;
-            bottom: 20px;  // Start on the platform
+            bottom: 20px;  /* Start on the platform */
             left: 20px;
             width: 40px;
             height: 40px;
@@ -90,12 +90,13 @@
             player.style.bottom = playerPos.y + 'px';  // Update bottom position based on player's Y
         }
 
-        // Check if player is directly above the platform
-        function isOnPlatform() {
+        // Check if player is touching the top of the platform with the bottom half
+        function isTouchingPlatform() {
             const platformRect = platform.getBoundingClientRect();
             const playerRect = player.getBoundingClientRect();
 
             const playerBottom = playerRect.bottom;
+            const playerTop = playerRect.top;
             const playerLeft = playerRect.left;
             const playerRight = playerRect.right;
 
@@ -103,10 +104,10 @@
             const platformLeft = platformRect.left;
             const platformRight = platformRect.right;
 
-            // Return true if the player is directly above the platform (between its left and right edges)
+            // Check if the player's bottom half is touching the platform
             return (
-                playerBottom >= platformTop && playerBottom <= platformTop + 20 &&
-                playerLeft >= platformLeft && playerRight <= platformRight
+                playerBottom >= platformTop && playerTop < platformTop &&
+                playerRight > platformLeft && playerLeft < platformRight
             );
         }
 
@@ -115,8 +116,8 @@
             velocityY -= gravity;  // Gravity pulls down
             playerPos.y += velocityY;  // Apply velocity to player's Y position
 
-            // If the player is on the platform, clamp their position to the platform's height
-            if (isOnPlatform() && velocityY <= 0) {
+            // If the player is touching the platform, stop falling and stay on top
+            if (isTouchingPlatform() && velocityY <= 0) {
                 playerPos.y = 20;  // Set player on the platform (20px height)
                 velocityY = 0;  // Stop falling
                 isJumping = false;  // Allow jumping again
