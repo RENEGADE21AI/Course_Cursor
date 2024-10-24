@@ -46,13 +46,14 @@
             position: absolute;
             bottom: 30px; /* Start above the platform */
             left: 20px;
-            width: 50px; /* Reduced size to make the player smaller */
-            height: 50px; /* Adjusted height to match width */
-            background-color: transparent;
-            background-image: url('https://github.com/RENEGADE21CODING/Platicker/blob/main/cursor.png?raw=true');
-            background-size: 100% 100%; /* Scale the image to fit */
-            background-repeat: no-repeat;
-            pointer-events: none;
+            width: auto; /* Allow image width */
+            height: auto; /* Allow image height */
+            background-color: transparent; /* Ensure the background is transparent */
+            background-image: url('https://github.com/RENEGADE21CODING/Platicker/blob/main/cursor.png?raw=true'); /* Use your transparent PNG */
+            background-size: contain; /* Scale the image to fit */
+            background-repeat: no-repeat; /* Don't repeat the image */
+            pointer-events: none; /* Prevent interaction with the player element */
+            transform: scale(0.5); /* Scale down the player by 50% */
         }
 
         #score {
@@ -99,17 +100,36 @@
             const playerRect = player.getBoundingClientRect();
 
             const playerBottom = playerRect.bottom;
+            const playerTop = playerRect.top;
             const playerLeft = playerRect.left;
             const playerRight = playerRect.right;
 
             const platformTop = platformRect.top;
+            const platformBottom = platformRect.bottom;
             const platformLeft = platformRect.left;
             const platformRight = platformRect.right;
 
-            // Check for intersection
-            return (
-                playerBottom >= platformTop && playerRight > platformLeft && playerLeft < platformRight
-            );
+            // Detect if player is falling towards the platform from above (normal platform collision)
+            const isAbovePlatform = playerBottom >= platformTop && playerBottom <= platformBottom;
+            const isWithinPlatformWidth = playerRight > platformLeft && playerLeft < platformRight;
+
+            // Additional edge case: Check if player is slightly below platform and near the edges
+            const isPlayerBelowPlatform = playerBottom > platformBottom;
+            const isNearLeftEdge = playerRight <= platformLeft + 10;  // Allow slight margin (10px) for sliding off
+            const isNearRightEdge = playerLeft >= platformRight - 10; // Same margin for the right edge
+
+            // Regular platform collision
+            if (isAbovePlatform && isWithinPlatformWidth && velocityY <= 0) {
+                return true;
+            }
+
+            // Edge collision: Treat platform edges as walls if the player is slightly below the platform
+            if (isPlayerBelowPlatform && (isNearLeftEdge || isNearRightEdge)) {
+                velocityY = Math.min(velocityY, 5); // Keep falling down, prevent upward phase through
+                return false; // No platform collision, player will slide off
+            }
+
+            return false;
         }
 
         // Handle gravity and jumping logic
@@ -119,7 +139,7 @@
 
             // If the player is touching the platform, stop falling and stay on top
             if (isTouchingPlatform() && velocityY <= 0) {
-                playerPos.y = 30;  // Set player on the platform (30px above bottom)
+                playerPos.y = platform.getBoundingClientRect().bottom - platform.offsetHeight - player.offsetHeight; // Place exactly on top of the platform
                 velocityY = 0;  // Stop falling
                 isJumping = false;  // Allow jumping again
             }
