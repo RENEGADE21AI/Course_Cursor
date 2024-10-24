@@ -90,22 +90,23 @@
             player.style.bottom = playerPos.y + 'px';  // Update bottom position based on player's Y
         }
 
-        // Check if player is on the platform
+        // Check if player is on the platform and within bounds
         function isOnPlatform() {
             const platformRect = platform.getBoundingClientRect();
             const playerRect = player.getBoundingClientRect();
+
             const playerBottom = playerRect.bottom;
             const playerLeft = playerRect.left;
             const playerRight = playerRect.right;
-            
+
             const platformTop = platformRect.top;
             const platformLeft = platformRect.left;
             const platformRight = platformRect.right;
 
-            // Check if the player is standing on top of the platform (not falling)
+            // Return true if player is on top of the platform and within its horizontal bounds
             return (
                 playerBottom >= platformTop && playerBottom <= platformTop + 20 &&
-                playerLeft < platformRight && playerRight > platformLeft
+                playerLeft >= platformLeft && playerRight <= platformRight
             );
         }
 
@@ -114,7 +115,7 @@
             velocityY -= gravity;  // Gravity pulls down
             playerPos.y += velocityY;  // Apply velocity to player's Y position
 
-            // Check if player is standing on the platform
+            // If the player is on the platform, clamp their position to the platform's height
             if (isOnPlatform() && velocityY <= 0) {
                 playerPos.y = 20;  // Set player on the platform (20px height)
                 velocityY = 0;  // Stop falling
