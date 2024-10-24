@@ -44,7 +44,7 @@
 
         #player {
             position: absolute;
-            bottom: 20px;
+            bottom: 30px; /* Adjust this to position the player above the platform */
             left: 20px;
             width: auto; /* Allow image width */
             height: auto; /* Allow image height */
@@ -77,7 +77,7 @@
         const player = document.getElementById("player");
         const platform = document.getElementById("platform");
 
-        let playerPos = { x: 20, y: 20 }; // Start on the platform (y = 20 to match platform height)
+        let playerPos = { x: 20, y: 30 }; // Start above the platform
         let velocityY = 0;
         const gravity = 1.0;  // Gravity pulls down
         const jumpPower = 15;  // Jump power for height
@@ -86,20 +86,6 @@
         // Movement flags
         let moveLeft = false;
         let moveRight = false;
-
-        // Create an off-screen canvas to analyze the player image
-        const img = new Image();
-        img.src = 'https://i.ibb.co/zFhKrzm/1000-F-112075923-Ga-Jfm93-GMVquvx1-XDBVYLDf-Dxk-Y3m-QFt-removebg-preview.png';
-
-        img.onload = function() {
-            // Create canvas to draw the image
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = img.width;
-            canvas.height = img.height;
-            ctx.drawImage(img, 0, 0);
-            player.imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-        };
 
         // Update player's position on screen
         function updatePlayerPosition() {
@@ -121,28 +107,9 @@
             const platformRight = platformRect.right;
 
             // Check for intersection
-            if (playerBottom >= platformTop && playerRight > platformLeft && playerLeft < platformRight) {
-                // Check non-transparent pixels
-                return checkNonTransparentPixels(playerRect);
-            }
-            return false;
-        }
-
-        // Check for non-transparent pixels in the player's image data
-        function checkNonTransparentPixels(playerRect) {
-            const { x, y, width, height } = playerRect;
-            const playerData = player.imageData;
-
-            // Check the pixels that intersect with the platform
-            for (let i = 0; i < width; i++) {
-                for (let j = 0; j < height; j++) {
-                    const pixelIndex = ((y + j) * img.width + (x + i)) * 4; // RGBA
-                    if (playerData[pixelIndex + 3] !== 0) { // Check alpha channel
-                        return true;
-                    }
-                }
-            }
-            return false;
+            return (
+                playerBottom >= platformTop && playerRight > platformLeft && playerLeft < platformRight
+            );
         }
 
         // Handle gravity and jumping logic
@@ -152,7 +119,7 @@
 
             // If the player is touching the platform, stop falling and stay on top
             if (isTouchingPlatform() && velocityY <= 0) {
-                playerPos.y = 10;  // Set player on the platform (10px height above the bottom of the platform)
+                playerPos.y = 30;  // Set player on the platform (30px above bottom)
                 velocityY = 0;  // Stop falling
                 isJumping = false;  // Allow jumping again
             }
@@ -166,7 +133,7 @@
         // Respawn the player after a delay
         function respawn() {
             setTimeout(() => {
-                playerPos.y = 10;  // Reset Y position to match raised platform height
+                playerPos.y = 30;  // Reset Y position to match raised platform height
                 playerPos.x = 20;  // Reset X position to starting position
                 velocityY = 0;  // Reset velocity
                 isJumping = false;  // Reset jumping state
