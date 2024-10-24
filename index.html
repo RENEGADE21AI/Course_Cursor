@@ -44,12 +44,15 @@
 
         #player {
             position: absolute;
-            bottom: 20px;  /* Start on the platform */
+            bottom: 20px;
             left: 20px;
             width: 40px;
-            height: 40px;
-            background-color: red;
-            border-radius: 50%;
+            height: 60px;
+            background-color: transparent;
+            /* Placeholder for the player image */
+            background-image: url('https://ibb.co/f9Ym2sX'); /* Replace with actual player image */
+            background-size: contain;
+            background-repeat: no-repeat;
         }
 
         #score {
@@ -90,13 +93,12 @@
             player.style.bottom = playerPos.y + 'px';  // Update bottom position based on player's Y
         }
 
-        // Check if player is touching the top of the platform with the bottom half
+        // Check if player's bottom is touching the platform
         function isTouchingPlatform() {
             const platformRect = platform.getBoundingClientRect();
             const playerRect = player.getBoundingClientRect();
 
             const playerBottom = playerRect.bottom;
-            const playerTop = playerRect.top;
             const playerLeft = playerRect.left;
             const playerRight = playerRect.right;
 
@@ -104,10 +106,9 @@
             const platformLeft = platformRect.left;
             const platformRight = platformRect.right;
 
-            // Check if the player's bottom half is touching the platform
+            // Check if any part of player's bottom is touching the platform
             return (
-                playerBottom >= platformTop && playerTop < platformTop &&
-                playerRight > platformLeft && playerLeft < platformRight
+                playerBottom >= platformTop && playerRight > platformLeft && playerLeft < platformRight
             );
         }
 
