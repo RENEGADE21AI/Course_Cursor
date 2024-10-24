@@ -58,7 +58,7 @@
 
         #player {
             position: absolute;
-            bottom: 30px; /* Start above the platform */
+            bottom: 60px; /* Start above the platform */
             left: 20px;
             width: 50px; /* Reduced size to make the player smaller */
             height: 25px; /* Adjusted height to match half the width */
@@ -85,7 +85,7 @@
         const player = document.getElementById("player");
         const platform = document.getElementById("platform");
 
-        let playerPos = { x: 20, y: 30 }; // Start above the platform
+        let playerPos = { x: 20, y: 60 }; // Start position above the platform
         let velocityY = 0;
         const gravity = 1.0;  // Gravity pulls down
         const jumpPower = 15;  // Jump power for height
@@ -141,7 +141,7 @@
         // Respawn the player after a delay
         function respawn() {
             setTimeout(() => {
-                playerPos.y = 30;  // Reset Y position to match raised platform height
+                playerPos.y = 60;  // Reset Y position to match raised platform height
                 playerPos.x = 20;  // Reset X position to starting position
                 velocityY = 0;  // Reset velocity
                 isJumping = false;  // Reset jumping state
