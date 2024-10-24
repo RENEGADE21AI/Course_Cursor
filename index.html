@@ -1,163 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Platformer Clicker Game</title>
-  <style>
-    body {
-      display: flex;
-      flex-direction: column;
-      font-family: Arial, sans-serif;
-    }
-    #upgrades {
-      display: flex;
-      justify-content: space-around;
-      padding: 20px;
-      background-color: #f0f0f0;
-    }
-    #game {
-      flex-grow: 1;
-      position: relative;
-      height: 400px;
-      background-color: #e0e0e0;
-      overflow: hidden; /* Prevent overflow */
-    }
-    #score {
-      font-size: 2em;
-      margin: 20px;
-    }
-    #clickButton {
-      padding: 10px 20px;
-      font-size: 1.5em;
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
-    }
-    .upgrade {
-      margin-bottom: 10px;
-    }
-    #cursor {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      width: 50px;
-      transition: transform 0.1s linear;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platform Clicker Game</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+
+        #game-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        #click-button {
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            padding: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+        }
+
+        #score {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+        }
+    </style>
 </head>
 <body>
-  <div id="upgrades">
-    <div class="upgrade">
-      <button onclick="buyScoreAdditionPerClick()">Buy Cursor Multiplier (Cost: <span id="cursorCost">10</span>)</button>
+
+    <div id="game-container">
+        <div id="score">Score: 0</div>
+        <button id="click-button">Click Me!</button>
     </div>
-    <div class="upgrade">
-      <button onclick="buyScorePerSecond()">Buy Score per Second (Cost: <span id="spsCost">20</span>)</button>
-    </div>
-  </div>
-  <div id="game">
-    <img id="cursor" src="cursor.png" alt="Cursor">
-    <h1>Clicker Game</h1>
-    <div id="score">0</div>
-    <button id="clickButton" onclick="incrementScore()">Click me!</button>
-  </div>
 
-  <script>
-    let score = 0;
-    let scoreAdditionPerClick = 1;
-    let scorePerSecond = 0;
-    let cursorCost = 10;
-    let spsCost = 20;
-    let cursorX = 50;
-    let cursorY = 0; // Start at 0
-    let velocityY = 0;
-    const gravity = 0.5; // Gravity effect
-    const jumpStrength = -10; // Jump force
-    let onGround = true;
+    <script>
+        let score = 0;
 
-    const scoreElement = document.getElementById('score');
-    const cursorCostElement = document.getElementById('cursorCost');
-    const spsCostElement = document.getElementById('spsCost');
-    const cursor = document.getElementById('cursor');
-    const gameArea = document.getElementById('game');
-    const gameHeight = gameArea.offsetHeight;
+        document.getElementById("click-button").addEventListener("click", function() {
+            score++;
+            document.getElementById("score").innerText = "Score: " + score;
+        });
+    </script>
 
-    function incrementScore() {
-      score += scoreAdditionPerClick;
-      scoreElement.innerText = score;
-    }
-
-    function buyScoreAdditionPerClick() {
-      if (score >= cursorCost) {
-        score -= cursorCost;
-        scoreAdditionPerClick *= 2.5; // Increase by 150%
-        cursorCost *= 2; // Keep the cost scaling
-        scoreElement.innerText = score;
-        cursorCostElement.innerText = cursorCost;
-      } else {
-        alert("Not enough score to buy Cursor Multiplier!");
-      }
-    }
-
-    function buyScorePerSecond() {
-      if (score >= spsCost) {
-        score -= spsCost;
-        scorePerSecond++;
-        spsCost *= 2; // Keep the cost scaling
-        scoreElement.innerText = score;
-        spsCostElement.innerText = spsCost;
-      } else {
-        alert("Not enough score to buy Score per Second!");
-      }
-    }
-
-    function jump() {
-      if (onGround) {
-        velocityY = jumpStrength;
-        onGround = false;
-      }
-    }
-
-    function update() {
-      // Apply gravity
-      if (!onGround) {
-        cursorY += velocityY;
-        velocityY += gravity; // Increase downward velocity
-      }
-
-      // Check for ground collision (the bottom of the game area)
-      if (cursorY >= gameHeight - 50) { // Adjust for cursor height
-        cursorY = gameHeight - 50; // Set to the bottom of the game area minus cursor height
-        onGround = true;
-        velocityY = 0;
-      }
-
-      cursor.style.bottom = cursorY + 'px'; // Update cursor position
-      requestAnimationFrame(update); // Continue updating
-    }
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') {
-        cursorX -= 10;
-        if (cursorX < 0) cursorX = 0;
-      }
-      if (e.key === 'ArrowRight') {
-        cursorX += 10;
-        if (cursorX > gameArea.offsetWidth - 50) cursorX = gameArea.offsetWidth - 50; // Constrain to game area
-      }
-      if (e.key === 'ArrowUp') { // Up arrow key to jump
-        jump();
-      }
-      cursor.style.left = cursorX + 'px';
-    });
-
-    setInterval(() => {
-      score += scorePerSecond;
-      scoreElement.innerText = score;
-    }, 1000);
-
-    // Start the update loop
-    update();
-  </script>
 </body>
 </html>
