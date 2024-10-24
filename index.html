@@ -1,48 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clicker Game</title>
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #f0f0f0;
-            font-family: Arial, sans-serif;
-        }
-        #clickButton {
-            padding: 20px;
-            font-size: 24px;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
-        #score {
-            margin-top: 20px;
-            font-size: 32px;
-        }
-    </style>
+  <title>Clicker Game</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      font-family: Arial, sans-serif;
+    }
+    #upgrades {
+      display: flex;
+      justify-content: space-around;
+      padding: 20px;
+      background-color: #f0f0f0;
+    }
+    #game {
+      flex-grow: 1;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding-right: 50px;
+    }
+    #score {
+      font-size: 2em;
+      margin: 20px;
+    }
+    #clickButton {
+      padding: 10px 20px;
+      font-size: 1.5em;
+    }
+    .upgrade {
+      margin-bottom: 10px;
+    }
+  </style>
 </head>
 <body>
+  <div id="upgrades">
+    <div class="upgrade">
+      <button onclick="buyScoreAdditionPerClick()">Buy Cursor Multiplier (Cost: <span id="cursorCost">10</span>)</button>
+    </div>
+    <div class="upgrade">
+      <button onclick="buyScorePerSecond()">Buy Score per Second (Cost: <span id="spsCost">20</span>)</button>
+    </div>
+  </div>
+  <div id="game">
+    <div>
+      <h1>Clicker Game</h1>
+      <div id="score">0</div>
+      <button id="clickButton" onclick="incrementScore()">Click me!</button>
+    </div>
+  </div>
 
-    <h1>Clicker Game</h1>
-    <button id="clickButton">Click me!</button>
-    <div id="score">Score: 0</div>
+  <script>
+    let score = 0;
+    let scoreAdditionPerClick = 1;
+    let scorePerSecond = 0;
+    let cursorCost = 10;
+    let spsCost = 20;
 
-    <script>
-        let score = 0;
+    function incrementScore() {
+      score += scoreAdditionPerClick;
+      document.getElementById('score').innerText = score;
+    }
 
-        document.getElementById('clickButton').onclick = function() {
-            score++;
-            document.getElementById('score').textContent = 'Score: ' + score;
-        }
-    </script>
+    function buyScoreAdditionPerClick() {
+      if (score >= cursorCost) {
+        score -= cursorCost;
+        scoreAdditionPerClick++;
+        cursorCost *= 2;
+        document.getElementById('score').innerText = score;
+        document.getElementById('cursorCost').innerText = cursorCost;
+      }
+    }
 
+    function buyScorePerSecond() {
+      if (score >= spsCost) {
+        score -= spsCost;
+        scorePerSecond++;
+        spsCost *= 2;
+        document.getElementById('score').innerText = score;
+        document.getElementById('spsCost').innerText = spsCost;
+      }
+    }
+
+    setInterval(() => {
+      score += scorePerSecond;
+      document.getElementById('score').innerText = score;
+    }, 1000);
+  </script>
 </body>
 </html>
