@@ -75,65 +75,66 @@
         const platform = document.getElementById("platform");
 
         let playerPos = { x: 20, y: window.innerHeight - 60 };
-        let speed = 5;
         let velocityY = 0;
-        const gravity = 0.8;
+        const gravity = 0.8;  // Gravity now pulls the player downward
         const jumpPower = 15;
         let isJumping = false;
-        const groundY = window.innerHeight - 60;  // Platform height + player height
+        const groundY = window.innerHeight - 60;  // The platform's Y coordinate
 
-        // Update player's position
+        // Update player's position on screen
         function updatePlayerPosition() {
             player.style.left = playerPos.x + 'px';
-            player.style.bottom = (window.innerHeight - playerPos.y) + 'px';
+            player.style.bottom = playerPos.y + 'px';  // Update bottom position based on player's Y
         }
 
-        // Handle jumping and gravity
+        // Handle gravity and jumping logic
         function applyGravity() {
-            if (playerPos.y > groundY) {
-                isJumping = false;
-                playerPos.y = groundY;  // Ensure player doesn't sink below ground
-                velocityY = 0;
+            // If the player is above the ground, apply gravity
+            if (playerPos.y > 20) {  // 20px is the height of the platform
+                velocityY -= gravity;  // Gravity pulls down (decreases velocity)
             } else {
-                velocityY -= gravity;  // Apply gravity if in the air
-                playerPos.y += velocityY;  // Move player based on velocity
+                playerPos.y = 20;  // Player is on the ground
+                velocityY = 0;  // Stop falling
+                isJumping = false;  // Allow jumping again
             }
+
+            playerPos.y += velocityY;  // Apply velocity to the player's position
         }
 
-        // Handle movement
+        // Handle player movement
         document.addEventListener("keydown", function(event) {
             if (event.key === "ArrowLeft" || event.key === "a") {
                 if (playerPos.x > 0) {
-                    playerPos.x -= speed;  // Move left
+                    playerPos.x -= 5;  // Move left
                 }
             }
             if (event.key === "ArrowRight" || event.key === "d") {
                 if (playerPos.x < platform.offsetWidth - player.offsetWidth) {
-                    playerPos.x += speed;  // Move right
+                    playerPos.x += 5;  // Move right
                 }
             }
 
             // Jump
             if ((event.key === "ArrowUp" || event.key === "w") && !isJumping) {
-                velocityY = jumpPower;  // Jump up
-                isJumping = true;  // Set jumping flag to prevent double jumps
+                velocityY = jumpPower;  // Give the player an upward boost to jump
+                isJumping = true;  // Player is now jumping
             }
         });
 
         // Main game loop
         function gameLoop() {
-            applyGravity();
-            updatePlayerPosition();
-            requestAnimationFrame(gameLoop);
+            applyGravity();  // Apply gravity each frame
+            updatePlayerPosition();  // Update player position
+            requestAnimationFrame(gameLoop);  // Continue the loop
         }
 
-        // Initialize score and player position
+        // Initialize score and start the game loop
         document.getElementById("click-button").addEventListener("click", function() {
             score++;
             document.getElementById("score").innerText = "Score: " + score;
         });
 
-        updatePlayerPosition();
+        updatePlayerPosition();  // Set initial player position
         gameLoop();  // Start the game loop
 
     </script>
