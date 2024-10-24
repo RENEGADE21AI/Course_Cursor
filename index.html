@@ -21,6 +21,7 @@
       position: relative;
       height: 400px;
       background-color: #e0e0e0;
+      overflow: hidden; /* Prevent overflow */
     }
     #score {
       font-size: 2em;
@@ -68,13 +69,18 @@
     let cursorCost = 10;
     let spsCost = 20;
     let cursorX = 50;
+    let cursorY = 0;
+    let velocityY = 0;
+    const gravity = 0.5; // Gravity effect
+    const jumpStrength = -10; // Jump force
+    let onGround = true;
 
     const scoreElement = document.getElementById('score');
     const cursorCostElement = document.getElementById('cursorCost');
     const spsCostElement = document.getElementById('spsCost');
     const cursor = document.getElementById('cursor');
     const gameArea = document.getElementById('game');
-    const gameWidth = gameArea.offsetWidth;
+    const gameHeight = gameArea.offsetHeight;
 
     function incrementScore() {
       score += scoreAdditionPerClick;
@@ -105,6 +111,31 @@
       }
     }
 
+    function jump() {
+      if (onGround) {
+        velocityY = jumpStrength;
+        onGround = false;
+      }
+    }
+
+    function update() {
+      // Apply gravity
+      if (!onGround) {
+        cursorY += velocityY;
+        velocityY += gravity; // Increase downward velocity
+      }
+
+      // Check for ground collision
+      if (cursorY >= gameHeight - 50) { // Adjust for cursor height
+        cursorY = gameHeight - 50;
+        onGround = true;
+        velocityY = 0;
+      }
+
+      cursor.style.bottom = cursorY + 'px'; // Update cursor position
+      requestAnimationFrame(update); // Continue updating
+    }
+
     document.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') {
         cursorX -= 10;
@@ -112,7 +143,10 @@
       }
       if (e.key === 'ArrowRight') {
         cursorX += 10;
-        if (cursorX > gameWidth - 50) cursorX = gameWidth - 50; // Constrain to game area
+        if (cursorX > gameArea.offsetWidth - 50) cursorX = gameArea.offsetWidth - 50; // Constrain to game area
+      }
+      if (e.key === ' ') { // Space key to jump
+        jump();
       }
       cursor.style.left = cursorX + 'px';
     });
@@ -121,6 +155,9 @@
       score += scorePerSecond;
       scoreElement.innerText = score;
     }, 1000);
+
+    // Start the update loop
+    update();
   </script>
 </body>
 </html>
