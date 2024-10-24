@@ -58,7 +58,7 @@
 
         #player {
             position: absolute;
-            bottom: 10%; /* Set player above the platform's height */
+            bottom: 30px; /* Start above the platform */
             left: 20px;
             width: 50px; /* Reduced size to make the player smaller */
             height: 50px; /* Adjusted height to match width */
@@ -127,7 +127,8 @@
 
             // If the player is touching the platform, stop falling and stay on top
             if (isTouchingPlatform() && velocityY <= 0) {
-                playerPos.y = 30;  // Set player on the platform (10% height above bottom)
+                const platformRect = platform.getBoundingClientRect();
+                playerPos.y = platformRect.top + 50; // Align player bottom with platform top (50px height of player)
                 velocityY = 0;  // Stop falling
                 isJumping = false;  // Allow jumping again
             }
