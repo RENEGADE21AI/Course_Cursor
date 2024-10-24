@@ -58,10 +58,10 @@
 
         #player {
             position: absolute;
-            bottom: 60px; /* Start above the platform */
+            bottom: 10%; /* Set player above the platform's height */
             left: 20px;
             width: 50px; /* Reduced size to make the player smaller */
-            height: 25px; /* Adjusted height to match half the width */
+            height: 50px; /* Adjusted height to match width */
             background-color: transparent;
             background-image: url('https://github.com/RENEGADE21CODING/Platicker/blob/main/cursor.png?raw=true');
             background-size: 100% 100%; /* Scale the image to fit */
@@ -85,7 +85,7 @@
         const player = document.getElementById("player");
         const platform = document.getElementById("platform");
 
-        let playerPos = { x: 20, y: 60 }; // Start position above the platform
+        let playerPos = { x: 20, y: 30 }; // Start above the platform
         let velocityY = 0;
         const gravity = 1.0;  // Gravity pulls down
         const jumpPower = 15;  // Jump power for height
@@ -127,7 +127,7 @@
 
             // If the player is touching the platform, stop falling and stay on top
             if (isTouchingPlatform() && velocityY <= 0) {
-                playerPos.y = platform.offsetTop + platform.offsetHeight;  // Set player on top of the platform
+                playerPos.y = 30;  // Set player on the platform (10% height above bottom)
                 velocityY = 0;  // Stop falling
                 isJumping = false;  // Allow jumping again
             }
@@ -141,7 +141,7 @@
         // Respawn the player after a delay
         function respawn() {
             setTimeout(() => {
-                playerPos.y = 60;  // Reset Y position to match raised platform height
+                playerPos.y = 30;  // Reset Y position to match raised platform height
                 playerPos.x = 20;  // Reset X position to starting position
                 velocityY = 0;  // Reset velocity
                 isJumping = false;  // Reset jumping state
