@@ -90,7 +90,7 @@
             player.style.bottom = playerPos.y + 'px';  // Update bottom position based on player's Y
         }
 
-        // Check if player is on the platform and within bounds
+        // Check if player is directly above the platform
         function isOnPlatform() {
             const platformRect = platform.getBoundingClientRect();
             const playerRect = player.getBoundingClientRect();
@@ -103,7 +103,7 @@
             const platformLeft = platformRect.left;
             const platformRight = platformRect.right;
 
-            // Return true if player is on top of the platform and within its horizontal bounds
+            // Return true if the player is directly above the platform (between its left and right edges)
             return (
                 playerBottom >= platformTop && playerBottom <= platformTop + 20 &&
                 playerLeft >= platformLeft && playerRight <= platformRight
@@ -168,10 +168,10 @@
             applyGravity();  // Apply gravity each frame
 
             // Handle horizontal movement
-            if (moveLeft && playerPos.x > 0) {
+            if (moveLeft) {
                 playerPos.x -= 5;  // Move left
             }
-            if (moveRight && playerPos.x < platform.offsetWidth - player.offsetWidth) {
+            if (moveRight) {
                 playerPos.x += 5;  // Move right
             }
 
