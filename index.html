@@ -20,6 +20,7 @@
       justify-content: flex-end;
       align-items: center;
       padding-right: 50px;
+      position: relative;
     }
     #score {
       font-size: 2em;
@@ -31,6 +32,13 @@
     }
     .upgrade {
       margin-bottom: 10px;
+    }
+    #cursorImage {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 50px; /* Adjust size accordingly */
     }
   </style>
 </head>
@@ -44,6 +52,7 @@
     </div>
   </div>
   <div id="game">
+    <img id="cursorImage" src="cursor.png" alt="Cursor">
     <div>
       <h1>Clicker Game</h1>
       <div id="score">0</div>
