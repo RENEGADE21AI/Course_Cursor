@@ -46,14 +46,13 @@
             position: absolute;
             bottom: 30px; /* Start above the platform */
             left: 20px;
-            width: auto; /* Allow image width */
-            height: auto; /* Allow image height */
-            background-color: transparent; /* Ensure the background is transparent */
-            background-image: url('https://github.com/RENEGADE21CODING/Platicker/blob/main/cursor.png?raw=true'); /* Use your transparent PNG */
-            background-size: contain; /* Scale the image to fit */
-            background-repeat: no-repeat; /* Don't repeat the image */
-            pointer-events: none; /* Prevent interaction with the player element */
-            transform: scale(0.5); /* Make the player 50% smaller */
+            width: 50px; /* Reduced size to make the player smaller */
+            height: 50px; /* Adjusted height to match width */
+            background-color: transparent;
+            background-image: url('https://github.com/RENEGADE21CODING/Platicker/blob/main/cursor.png?raw=true');
+            background-size: 100% 100%; /* Scale the image to fit */
+            background-repeat: no-repeat;
+            pointer-events: none;
         }
 
         #score {
