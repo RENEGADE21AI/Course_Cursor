@@ -43,4 +43,71 @@
 <body>
   <div id="upgrades">
     <div class="upgrade">
-      <button onclick="buyScoreAdditionPerClick()">Buy Cursor Mult
+      <button onclick="buyScoreAdditionPerClick()">Buy Cursor Multiplier (Cost: <span id="cursorCost">10</span>)</button>
+    </div>
+    <div class="upgrade">
+      <button onclick="buyScorePerSecond()">Buy Score per Second (Cost: <span id="spsCost">20</span>)</button>
+    </div>
+  </div>
+  <div id="game">
+    <img id="cursor" src="cursor.png" alt="Cursor">
+    <div>
+      <h1>Clicker Game</h1>
+      <div id="score">0</div>
+      <button id="clickButton" onclick="incrementScore()">Click me!</button>
+    </div>
+  </div>
+
+  <script>
+    let score = 0;
+    let scoreAdditionPerClick = 1;
+    let scorePerSecond = 0;
+    let cursorCost = 10;
+    let spsCost = 20;
+    let cursor = document.getElementById('cursor');
+    let cursorX = 50;
+
+    function incrementScore() {
+      score += scoreAdditionPerClick;
+      document.getElementById('score').innerText = score;
+    }
+
+    function buyScoreAdditionPerClick() {
+      if (score >= cursorCost) {
+        score -= cursorCost;
+        scoreAdditionPerClick++;
+        cursorCost *= 2;
+        document.getElementById('score').innerText = score;
+        document.getElementById('cursorCost').innerText = cursorCost;
+      }
+    }
+
+    function buyScorePerSecond() {
+      if (score >= spsCost) {
+        score -= spsCost;
+        scorePerSecond++;
+        spsCost *= 2;
+        document.getElementById('score').innerText = score;
+        document.getElementById('spsCost').innerText = spsCost;
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        cursorX -= 10;
+        if (cursorX < 0) cursorX = 0;
+      }
+      if (e.key === 'ArrowRight') {
+        cursorX += 10;
+        if (cursorX > window.innerWidth - 50) cursorX = window.innerWidth - 50;
+      }
+      cursor.style.left = cursorX + 'px';
+    });
+
+    setInterval(() => {
+      score += scorePerSecond;
+      document.getElementById('score').innerText = score;
+    }, 1000);
+  </script>
+</body>
+</html>
