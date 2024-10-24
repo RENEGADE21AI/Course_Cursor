@@ -127,8 +127,7 @@
 
             // If the player is touching the platform, stop falling and stay on top
             if (isTouchingPlatform() && velocityY <= 0) {
-                const platformRect = platform.getBoundingClientRect();
-                playerPos.y = platformRect.top + 50; // Align player bottom with platform top (50px height of player)
+                playerPos.y = 30; // Set player on the platform (30px above bottom)
                 velocityY = 0;  // Stop falling
                 isJumping = false;  // Allow jumping again
             }
