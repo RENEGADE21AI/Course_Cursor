@@ -81,6 +81,10 @@
         let isJumping = false;
         const groundY = 20;  // The Y position of the platform (ground level)
 
+        // Movement flags
+        let moveLeft = false;
+        let moveRight = false;
+
         // Update player's position on screen
         function updatePlayerPosition() {
             player.style.left = playerPos.x + 'px';
@@ -104,14 +108,10 @@
         // Handle player movement
         document.addEventListener("keydown", function(event) {
             if (event.key === "ArrowLeft" || event.key === "a") {
-                if (playerPos.x > 0) {
-                    playerPos.x -= 5;  // Move left
-                }
+                moveLeft = true;  // Set left movement flag
             }
             if (event.key === "ArrowRight" || event.key === "d") {
-                if (playerPos.x < platform.offsetWidth - player.offsetWidth) {
-                    playerPos.x += 5;  // Move right
-                }
+                moveRight = true;  // Set right movement flag
             }
 
             // Jump
@@ -121,9 +121,27 @@
             }
         });
 
+        document.addEventListener("keyup", function(event) {
+            if (event.key === "ArrowLeft" || event.key === "a") {
+                moveLeft = false;  // Reset left movement flag
+            }
+            if (event.key === "ArrowRight" || event.key === "d") {
+                moveRight = false;  // Reset right movement flag
+            }
+        });
+
         // Main game loop
         function gameLoop() {
             applyGravity();  // Apply gravity each frame
+
+            // Handle horizontal movement
+            if (moveLeft && playerPos.x > 0) {
+                playerPos.x -= 5;  // Move left
+            }
+            if (moveRight && playerPos.x < platform.offsetWidth - player.offsetWidth) {
+                playerPos.x += 5;  // Move right
+            }
+
             updatePlayerPosition();  // Update player position
             requestAnimationFrame(gameLoop);  // Continue the loop
         }
