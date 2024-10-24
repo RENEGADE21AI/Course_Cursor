@@ -95,6 +95,13 @@
             if (isJumping || playerPos.y > -40) {  // Allow falling off the platform
                 velocityY -= gravity;  // Gravity pulls down
                 playerPos.y += velocityY;  // Apply velocity to player's Y position (going up or down)
+
+                // Check if player is on the platform
+                if (playerPos.y <= 20) {
+                    playerPos.y = 20;  // Reset position to the platform height
+                    velocityY = 0;  // Reset vertical velocity
+                    isJumping = false;  // Allow jumping again
+                }
             }
 
             // Check if player falls below the bottom of the screen
