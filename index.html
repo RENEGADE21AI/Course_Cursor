@@ -125,9 +125,9 @@
         velocityY += gravity; // Increase downward velocity
       }
 
-      // Check for ground collision
-      if (cursorY >= gameHeight - 50) { // Adjust for cursor height
-        cursorY = gameHeight - 50;
+      // Check for ground collision (the bottom of the game area)
+      if (cursorY >= gameHeight) {
+        cursorY = gameHeight; // Set to the bottom of the game area
         onGround = true;
         velocityY = 0;
       }
@@ -145,7 +145,7 @@
         cursorX += 10;
         if (cursorX > gameArea.offsetWidth - 50) cursorX = gameArea.offsetWidth - 50; // Constrain to game area
       }
-      if (e.key === ' ') { // Space key to jump
+      if (e.key === 'ArrowUp') { // Up arrow key to jump
         jump();
       }
       cursor.style.left = cursorX + 'px';
