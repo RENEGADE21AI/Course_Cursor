@@ -10,9 +10,7 @@
             padding: 0;
             height: 100%;
             width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            overflow: hidden;
             background-color: #f0f0f0;
         }
 
@@ -22,10 +20,19 @@
             position: relative;
         }
 
+        #platform {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80%; /* Platform ends before the button */
+            height: 20px;
+            background-color: black;
+        }
+
         #click-button {
             position: absolute;
             right: 20px;
-            bottom: 25%; /* Move up by 25% of the screen */
+            bottom: 25%;
             padding: 20px;
             font-size: 24px;
             cursor: pointer;
@@ -33,6 +40,16 @@
             color: white;
             border: none;
             border-radius: 10px;
+        }
+
+        #player {
+            position: absolute;
+            bottom: 20px; /* Player starts on the platform */
+            left: 20px;   /* Start on the left */
+            width: 40px;
+            height: 40px;
+            background-color: red;
+            border-radius: 50%; /* Make the player a circle */
         }
 
         #score {
@@ -47,16 +64,78 @@
 
     <div id="game-container">
         <div id="score">Score: 0</div>
+        <div id="player"></div>
+        <div id="platform"></div>
         <button id="click-button">Click Me!</button>
     </div>
 
     <script>
         let score = 0;
+        const player = document.getElementById("player");
+        const platform = document.getElementById("platform");
 
+        let playerPos = { x: 20, y: window.innerHeight - 60 };
+        let speed = 5;
+        let velocityY = 0;
+        const gravity = 0.8;
+        const jumpPower = 15;
+        let isJumping = false;
+        const groundY = window.innerHeight - 60;  // Platform height + player height
+
+        // Update player's position
+        function updatePlayerPosition() {
+            player.style.left = playerPos.x + 'px';
+            player.style.bottom = (window.innerHeight - playerPos.y) + 'px';
+        }
+
+        // Handle jumping and gravity
+        function applyGravity() {
+            if (playerPos.y > groundY) {
+                isJumping = false;
+                playerPos.y = groundY;  // Ensure player doesn't sink below ground
+                velocityY = 0;
+            } else {
+                velocityY -= gravity;  // Apply gravity if in the air
+                playerPos.y += velocityY;  // Move player based on velocity
+            }
+        }
+
+        // Handle movement
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "ArrowLeft" || event.key === "a") {
+                if (playerPos.x > 0) {
+                    playerPos.x -= speed;  // Move left
+                }
+            }
+            if (event.key === "ArrowRight" || event.key === "d") {
+                if (playerPos.x < platform.offsetWidth - player.offsetWidth) {
+                    playerPos.x += speed;  // Move right
+                }
+            }
+
+            // Jump
+            if ((event.key === "ArrowUp" || event.key === "w") && !isJumping) {
+                velocityY = jumpPower;  // Jump up
+                isJumping = true;  // Set jumping flag to prevent double jumps
+            }
+        });
+
+        // Main game loop
+        function gameLoop() {
+            applyGravity();
+            updatePlayerPosition();
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Initialize score and player position
         document.getElementById("click-button").addEventListener("click", function() {
             score++;
             document.getElementById("score").innerText = "Score: " + score;
         });
+
+        updatePlayerPosition();
+        gameLoop();  // Start the game loop
+
     </script>
 
 </body>
