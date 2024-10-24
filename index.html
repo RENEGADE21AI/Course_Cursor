@@ -61,7 +61,7 @@
             bottom: 30px; /* Start above the platform */
             left: 20px;
             width: 50px; /* Reduced size to make the player smaller */
-            height: 50px; /* Adjusted height to match width */
+            height: 25px; /* Adjusted height to match half the width */
             background-color: transparent;
             background-image: url('https://github.com/RENEGADE21CODING/Platicker/blob/main/cursor.png?raw=true');
             background-size: 100% 100%; /* Scale the image to fit */
@@ -127,7 +127,7 @@
 
             // If the player is touching the platform, stop falling and stay on top
             if (isTouchingPlatform() && velocityY <= 0) {
-                playerPos.y = 30;  // Set player on the platform (30px above bottom)
+                playerPos.y = platform.offsetTop + platform.offsetHeight;  // Set player on top of the platform
                 velocityY = 0;  // Stop falling
                 isJumping = false;  // Allow jumping again
             }
