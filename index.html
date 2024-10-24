@@ -22,7 +22,7 @@
 
         #platform {
             position: absolute;
-            bottom: 0;
+            bottom: 10%; /* Raise the platform by 10% of the height */
             left: 0;
             width: 80%;
             height: 20px;
@@ -152,7 +152,7 @@
 
             // If the player is touching the platform, stop falling and stay on top
             if (isTouchingPlatform() && velocityY <= 0) {
-                playerPos.y = 20;  // Set player on the platform (20px height)
+                playerPos.y = 10;  // Set player on the platform (10px height above the bottom of the platform)
                 velocityY = 0;  // Stop falling
                 isJumping = false;  // Allow jumping again
             }
@@ -166,7 +166,7 @@
         // Respawn the player after a delay
         function respawn() {
             setTimeout(() => {
-                playerPos.y = 20;  // Reset Y position to match platform height
+                playerPos.y = 10;  // Reset Y position to match raised platform height
                 playerPos.x = 20;  // Reset X position to starting position
                 velocityY = 0;  // Reset velocity
                 isJumping = false;  // Reset jumping state
