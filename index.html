@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Platformer Clicker Game</title>
   <style>
     body {
@@ -51,11 +53,9 @@
   </div>
   <div id="game">
     <img id="cursor" src="cursor.png" alt="Cursor">
-    <div>
-      <h1>Clicker Game</h1>
-      <div id="score">0</div>
-      <button id="clickButton" onclick="incrementScore()">Click me!</button>
-    </div>
+    <h1>Clicker Game</h1>
+    <div id="score">0</div>
+    <button id="clickButton" onclick="incrementScore()">Click me!</button>
   </div>
 
   <script>
@@ -64,12 +64,18 @@
     let scorePerSecond = 0;
     let cursorCost = 10;
     let spsCost = 20;
-    let cursor = document.getElementById('cursor');
     let cursorX = 50;
+
+    const scoreElement = document.getElementById('score');
+    const cursorCostElement = document.getElementById('cursorCost');
+    const spsCostElement = document.getElementById('spsCost');
+    const cursor = document.getElementById('cursor');
+    const gameArea = document.getElementById('game');
+    const gameWidth = gameArea.offsetWidth;
 
     function incrementScore() {
       score += scoreAdditionPerClick;
-      document.getElementById('score').innerText = score;
+      scoreElement.innerText = score;
     }
 
     function buyScoreAdditionPerClick() {
@@ -77,8 +83,10 @@
         score -= cursorCost;
         scoreAdditionPerClick++;
         cursorCost *= 2;
-        document.getElementById('score').innerText = score;
-        document.getElementById('cursorCost').innerText = cursorCost;
+        scoreElement.innerText = score;
+        cursorCostElement.innerText = cursorCost;
+      } else {
+        alert("Not enough score to buy Cursor Multiplier!");
       }
     }
 
@@ -87,8 +95,10 @@
         score -= spsCost;
         scorePerSecond++;
         spsCost *= 2;
-        document.getElementById('score').innerText = score;
-        document.getElementById('spsCost').innerText = spsCost;
+        scoreElement.innerText = score;
+        spsCostElement.innerText = spsCost;
+      } else {
+        alert("Not enough score to buy Score per Second!");
       }
     }
 
@@ -99,14 +109,14 @@
       }
       if (e.key === 'ArrowRight') {
         cursorX += 10;
-        if (cursorX > window.innerWidth - 50) cursorX = window.innerWidth - 50;
+        if (cursorX > gameWidth - 50) cursorX = gameWidth - 50; // Constrain to game area
       }
       cursor.style.left = cursorX + 'px';
     });
 
     setInterval(() => {
       score += scorePerSecond;
-      document.getElementById('score').innerText = score;
+      scoreElement.innerText = score;
     }, 1000);
   </script>
 </body>
