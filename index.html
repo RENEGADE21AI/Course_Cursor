@@ -39,7 +39,7 @@
             bottom: 10%; /* Raise the platform by 10% of the height */
             left: 0; /* Position the platform at the far left */
             width: 20%; /* Set platform width to 20% of screen width */
-            height: 20px;
+            height: 20px; /* Platform height */
             background-color: black;
         }
 
@@ -58,10 +58,10 @@
 
         #player {
             position: absolute;
-            bottom: 30px; /* Start above the platform */
+            bottom: 30px; /* Initial position above the platform */
             left: 20px;
-            width: 50px; /* Reduced size to make the player smaller */
-            height: 50px; /* Adjusted height to match width */
+            width: 50px; /* Player width */
+            height: 50px; /* Player height */
             background-color: transparent;
             background-image: url('https://github.com/RENEGADE21CODING/Platicker/blob/main/cursor.png?raw=true');
             background-size: 100% 100%; /* Scale the image to fit */
@@ -106,13 +106,13 @@
             const platformRect = platform.getBoundingClientRect();
             const playerRect = player.getBoundingClientRect();
 
-            const playerBottom = playerRect.bottom;
-            const playerLeft = playerRect.left;
-            const playerRight = playerRect.right;
+            const playerBottom = playerRect.bottom; // Player's bottom edge
+            const playerLeft = playerRect.left; // Player's left edge
+            const playerRight = playerRect.right; // Player's right edge
 
-            const platformTop = platformRect.top;
-            const platformLeft = platformRect.left;
-            const platformRight = platformRect.right;
+            const platformTop = platformRect.top; // Platform's top edge
+            const platformLeft = platformRect.left; // Platform's left edge
+            const platformRight = platformRect.right; // Platform's right edge
 
             // Check for intersection
             return (
