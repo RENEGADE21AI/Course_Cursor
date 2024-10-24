@@ -83,6 +83,12 @@
         const jumpPower = 15;  // Jump power for height
         let isJumping = false;
 
+        // Manually define the player's visible bounding box (based on non-transparent parts)
+        const playerBoundingBox = {
+            offsetBottom: 20, // How many pixels above the bottom of the image the visible part starts
+            visibleHeight: 70 // Height of the non-transparent part of the player image
+        };
+
         // Movement flags
         let moveLeft = false;
         let moveRight = false;
@@ -93,12 +99,12 @@
             player.style.bottom = playerPos.y + 'px';  // Update bottom position
         }
 
-        // Check if the player's non-transparent pixels are touching the platform
+        // Check if the visible part of the player is touching the platform
         function isTouchingPlatform() {
             const platformRect = platform.getBoundingClientRect();
             const playerRect = player.getBoundingClientRect();
 
-            const playerBottom = playerRect.bottom;
+            const playerBottom = playerRect.bottom - playerBoundingBox.offsetBottom; // Use the bottom of the visible part
             const playerLeft = playerRect.left;
             const playerRight = playerRect.right;
 
@@ -106,7 +112,7 @@
             const platformLeft = platformRect.left;
             const platformRight = platformRect.right;
 
-            // Check for intersection
+            // Check for intersection of the visible part with the platform
             return (
                 playerBottom >= platformTop && playerRight > platformLeft && playerLeft < platformRight
             );
