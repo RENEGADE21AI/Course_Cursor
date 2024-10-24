@@ -74,12 +74,12 @@
         const player = document.getElementById("player");
         const platform = document.getElementById("platform");
 
-        let playerPos = { x: 20, y: window.innerHeight - 60 };
+        let playerPos = { x: 20, y: 20 }; // Start on the platform
         let velocityY = 0;
-        const gravity = 0.8;  // Gravity now pulls the player downward
-        const jumpPower = 15;
+        const gravity = 1.2;  // Stronger gravity
+        const jumpPower = 20;  // Increased jump power
         let isJumping = false;
-        const groundY = window.innerHeight - 60;  // The platform's Y coordinate
+        const groundY = 20;  // Height of the platform
 
         // Update player's position on screen
         function updatePlayerPosition() {
@@ -89,16 +89,15 @@
 
         // Handle gravity and jumping logic
         function applyGravity() {
-            // If the player is above the ground, apply gravity
-            if (playerPos.y > 20) {  // 20px is the height of the platform
+            if (playerPos.y > groundY) {
                 velocityY -= gravity;  // Gravity pulls down (decreases velocity)
             } else {
-                playerPos.y = 20;  // Player is on the ground
+                playerPos.y = groundY;  // Player lands on the ground
                 velocityY = 0;  // Stop falling
                 isJumping = false;  // Allow jumping again
             }
 
-            playerPos.y += velocityY;  // Apply velocity to the player's position
+            playerPos.y += velocityY;  // Apply velocity to player's Y position
         }
 
         // Handle player movement
@@ -116,7 +115,7 @@
 
             // Jump
             if ((event.key === "ArrowUp" || event.key === "w") && !isJumping) {
-                velocityY = jumpPower;  // Give the player an upward boost to jump
+                velocityY = jumpPower;  // Stronger jump
                 isJumping = true;  // Player is now jumping
             }
         });
