@@ -20,6 +20,20 @@
             position: relative;
         }
 
+        #score-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10%; /* Top bar height */
+            background-color: #4CAF50; /* Background color for score bar */
+            display: flex;
+            align-items: center; /* Center text vertically */
+            justify-content: center; /* Center text horizontally */
+            font-size: 24px;
+            color: white;
+        }
+
         #platform {
             position: absolute;
             bottom: 10%; /* Raise the platform by 10% of the height */
@@ -55,18 +69,12 @@
             pointer-events: none;
         }
 
-        #score {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 24px;
-        }
     </style>
 </head>
 <body>
 
     <div id="game-container">
-        <div id="score">Score: 0</div>
+        <div id="score-bar">Score: <span id="score">0</span></div>
         <div id="player"></div>
         <div id="platform"></div>
         <button id="click-button">Click Me!</button>
@@ -184,7 +192,7 @@
         // Initialize score and start the game loop
         document.getElementById("click-button").addEventListener("click", function() {
             score++;
-            document.getElementById("score").innerText = "Score: " + score;
+            document.getElementById("score").innerText = score; // Update score in the top bar
         });
 
         updatePlayerPosition();  // Set initial player position
