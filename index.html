@@ -74,10 +74,10 @@
         const player = document.getElementById("player");
         const platform = document.getElementById("platform");
 
-        let playerPos = { x: 20, y: 20 }; // Start on the platform (y = 20 to match the platform height)
+        let playerPos = { x: 20, y: 20 }; // Start on the platform (y = 20 to match platform height)
         let velocityY = 0;
-        const gravity = 0.8;  // Gravity pulls down
-        const jumpPower = -15;  // Negative value to make the jump go upward
+        const gravity = 1.0;  // Gravity pulls down
+        const jumpPower = 20;  // Positive value to move player upward
         let isJumping = false;
         const groundY = 20;  // The Y position of the platform (ground level)
 
@@ -89,15 +89,16 @@
 
         // Handle gravity and jumping logic
         function applyGravity() {
-            if (playerPos.y > groundY) {
-                velocityY += gravity;  // Apply gravity, pulling the player downward
-            } else {
-                playerPos.y = groundY;  // Stop player at ground level
-                velocityY = 0;
-                isJumping = false;  // Allow jumping again
+            if (playerPos.y > groundY || isJumping) {
+                velocityY -= gravity;  // Gravity pulls down (decreasing velocity, falling down)
+                playerPos.y += velocityY;  // Apply velocity to player's Y position (going up or down)
             }
 
-            playerPos.y -= velocityY;  // Apply velocity to move the player up/down
+            if (playerPos.y <= groundY) {
+                playerPos.y = groundY;  // Stop at the platform
+                velocityY = 0;  // Stop velocity
+                isJumping = false;  // Allow jump again
+            }
         }
 
         // Handle player movement
@@ -115,8 +116,8 @@
 
             // Jump
             if ((event.key === "ArrowUp" || event.key === "w") && !isJumping) {
-                velocityY = jumpPower;  // Apply upward force (jump)
-                isJumping = true;  // Mark the player as jumping
+                velocityY = jumpPower;  // Positive value to jump upward
+                isJumping = true;  // Mark player as jumping
             }
         });
 
