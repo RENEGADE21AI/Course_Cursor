@@ -44,13 +44,13 @@
 
         #player {
             position: absolute;
-            bottom: 50px; /* Adjust to remove visual gap */
+            bottom: 30px; /* Start above the platform */
             left: 20px;
-            width: 50px; /* Fixed width */
-            height: 100px; /* Fixed height */
+            width: 50px; /* Reduced size to make the player smaller */
+            height: 50px; /* Adjusted height to match width */
             background-color: transparent;
-            background-image: url('https://github.com/RENEGADE21CODING/Platicker/blob/main/cursor.png?raw=true'); /* Use your transparent PNG */
-            background-size: contain;
+            background-image: url('https://github.com/RENEGADE21CODING/Platicker/blob/main/cursor.png?raw=true');
+            background-size: 100% 100%; /* Scale the image to fit */
             background-repeat: no-repeat;
             pointer-events: none;
         }
@@ -77,17 +77,11 @@
         const player = document.getElementById("player");
         const platform = document.getElementById("platform");
 
-        let playerPos = { x: 20, y: 50 }; // Start closer to the platform
+        let playerPos = { x: 20, y: 30 }; // Start above the platform
         let velocityY = 0;
         const gravity = 1.0;  // Gravity pulls down
         const jumpPower = 15;  // Jump power for height
         let isJumping = false;
-
-        // Manually define the player's visible bounding box (based on non-transparent parts)
-        const playerBoundingBox = {
-            offsetBottom: 20, // How many pixels above the bottom of the image the visible part starts
-            visibleHeight: 70 // Height of the non-transparent part of the player image
-        };
 
         // Movement flags
         let moveLeft = false;
@@ -96,15 +90,15 @@
         // Update player's position on screen
         function updatePlayerPosition() {
             player.style.left = playerPos.x + 'px';
-            player.style.bottom = playerPos.y + 'px';  // Update bottom position
+            player.style.bottom = playerPos.y + 'px';  // Update bottom position based on player's Y
         }
 
-        // Check if the visible part of the player is touching the platform
+        // Check if the player's non-transparent pixels are touching the platform
         function isTouchingPlatform() {
             const platformRect = platform.getBoundingClientRect();
             const playerRect = player.getBoundingClientRect();
 
-            const playerBottom = playerRect.bottom - playerBoundingBox.offsetBottom; // Use the bottom of the visible part
+            const playerBottom = playerRect.bottom;
             const playerLeft = playerRect.left;
             const playerRight = playerRect.right;
 
@@ -112,7 +106,7 @@
             const platformLeft = platformRect.left;
             const platformRight = platformRect.right;
 
-            // Check for intersection of the visible part with the platform
+            // Check for intersection
             return (
                 playerBottom >= platformTop && playerRight > platformLeft && playerLeft < platformRight
             );
@@ -125,7 +119,7 @@
 
             // If the player is touching the platform, stop falling and stay on top
             if (isTouchingPlatform() && velocityY <= 0) {
-                playerPos.y = 50;  // Adjust Y to sit exactly on the platform
+                playerPos.y = 30;  // Set player on the platform (30px above bottom)
                 velocityY = 0;  // Stop falling
                 isJumping = false;  // Allow jumping again
             }
@@ -139,7 +133,7 @@
         // Respawn the player after a delay
         function respawn() {
             setTimeout(() => {
-                playerPos.y = 50;  // Reset Y position to align with the platform
+                playerPos.y = 30;  // Reset Y position to match raised platform height
                 playerPos.x = 20;  // Reset X position to starting position
                 velocityY = 0;  // Reset velocity
                 isJumping = false;  // Reset jumping state
