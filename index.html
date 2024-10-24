@@ -46,8 +46,8 @@
             position: absolute;
             bottom: 20px;
             left: 20px;
-            width: 40px; /* Set a specific width based on image size */
-            height: 60px; /* Set a specific height based on image size */
+            width: auto; /* Allow image width */
+            height: auto; /* Allow image height */
             background-color: transparent; /* Ensure the background is transparent */
             background-image: url('https://i.ibb.co/zFhKrzm/1000-F-112075923-Ga-Jfm93-GMVquvx1-XDBVYLDf-Dxk-Y3m-QFt-removebg-preview.png'); /* Use your transparent PNG */
             background-size: contain; /* Scale the image to fit */
@@ -87,13 +87,27 @@
         let moveLeft = false;
         let moveRight = false;
 
+        // Create an off-screen canvas to analyze the player image
+        const img = new Image();
+        img.src = 'https://i.ibb.co/zFhKrzm/1000-F-112075923-Ga-Jfm93-GMVquvx1-XDBVYLDf-Dxk-Y3m-QFt-removebg-preview.png';
+
+        img.onload = function() {
+            // Create canvas to draw the image
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+            player.imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+        };
+
         // Update player's position on screen
         function updatePlayerPosition() {
             player.style.left = playerPos.x + 'px';
             player.style.bottom = playerPos.y + 'px';  // Update bottom position based on player's Y
         }
 
-        // Check if player's bottom is touching the platform
+        // Check if the player's non-transparent pixels are touching the platform
         function isTouchingPlatform() {
             const platformRect = platform.getBoundingClientRect();
             const playerRect = player.getBoundingClientRect();
@@ -106,10 +120,29 @@
             const platformLeft = platformRect.left;
             const platformRight = platformRect.right;
 
-            // Check if any part of player's bottom is touching the platform
-            return (
-                playerBottom >= platformTop && playerRight > platformLeft && playerLeft < platformRight
-            );
+            // Check for intersection
+            if (playerBottom >= platformTop && playerRight > platformLeft && playerLeft < platformRight) {
+                // Check non-transparent pixels
+                return checkNonTransparentPixels(playerRect);
+            }
+            return false;
+        }
+
+        // Check for non-transparent pixels in the player's image data
+        function checkNonTransparentPixels(playerRect) {
+            const { x, y, width, height } = playerRect;
+            const playerData = player.imageData;
+
+            // Check the pixels that intersect with the platform
+            for (let i = 0; i < width; i++) {
+                for (let j = 0; j < height; j++) {
+                    const pixelIndex = ((y + j) * img.width + (x + i)) * 4; // RGBA
+                    if (playerData[pixelIndex + 3] !== 0) { // Check alpha channel
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         // Handle gravity and jumping logic
