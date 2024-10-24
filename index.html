@@ -29,9 +29,9 @@
     #clickButton {
       padding: 10px 20px;
       font-size: 1.5em;
-      position: absolute; /* Position it absolutely */
-      bottom: 20px; /* Align with the bottom */
-      right: 20px; /* Align with the right */
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
     }
     .upgrade {
       margin-bottom: 10px;
@@ -84,8 +84,8 @@
     function buyScoreAdditionPerClick() {
       if (score >= cursorCost) {
         score -= cursorCost;
-        scoreAdditionPerClick++;
-        cursorCost *= 2;
+        scoreAdditionPerClick *= 2.5; // Increase by 150%
+        cursorCost *= 2; // Keep the cost scaling
         scoreElement.innerText = score;
         cursorCostElement.innerText = cursorCost;
       } else {
@@ -97,7 +97,7 @@
       if (score >= spsCost) {
         score -= spsCost;
         scorePerSecond++;
-        spsCost *= 2;
+        spsCost *= 2; // Keep the cost scaling
         scoreElement.innerText = score;
         spsCostElement.innerText = spsCost;
       } else {
