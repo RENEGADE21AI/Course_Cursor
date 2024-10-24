@@ -44,7 +44,7 @@
 
         #player {
             position: absolute;
-            bottom: 20px;
+            bottom: 20px;  // Start on the platform
             left: 20px;
             width: 40px;
             height: 40px;
@@ -77,9 +77,8 @@
         let playerPos = { x: 20, y: 20 }; // Start on the platform (y = 20 to match platform height)
         let velocityY = 0;
         const gravity = 1.0;  // Gravity pulls down
-        const jumpPower = 15;  // Increased jump power for 50% higher jump
+        const jumpPower = 15;  // Jump power for height
         let isJumping = false;
-        const groundY = 20;  // The Y position of the platform (ground level)
 
         // Movement flags
         let moveLeft = false;
@@ -93,16 +92,25 @@
 
         // Handle gravity and jumping logic
         function applyGravity() {
-            if (playerPos.y > groundY || isJumping) {
-                velocityY -= gravity;  // Gravity pulls down (decreasing velocity, falling down)
+            if (isJumping || playerPos.y > -40) {  // Allow falling off the platform
+                velocityY -= gravity;  // Gravity pulls down
                 playerPos.y += velocityY;  // Apply velocity to player's Y position (going up or down)
             }
 
-            if (playerPos.y <= groundY) {
-                playerPos.y = groundY;  // Stop at the platform
-                velocityY = 0;  // Stop velocity
-                isJumping = false;  // Allow jump again
+            // Check if player falls below the bottom of the screen
+            if (playerPos.y < -40) {
+                respawn();  // Respawn player after falling
             }
+        }
+
+        // Respawn the player after a delay
+        function respawn() {
+            setTimeout(() => {
+                playerPos.y = 20;  // Reset Y position to match platform height
+                playerPos.x = 20;  // Reset X position to starting position
+                velocityY = 0;  // Reset velocity
+                isJumping = false;  // Reset jumping state
+            }, 500);  // 0.5 seconds delay
         }
 
         // Handle player movement
