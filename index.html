@@ -1,173 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Platicker - A Platform Clicker Game</title>
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-            background-color: #f0f0f0;
-        }
-
-        #game-container {
-            width: 100%;
-            height: 100%;
-            position: relative;
-        }
-
-        #score-bar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 11%; /* 10% screen height + small adjustment */
-            background-color: #4CAF50;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start; /* Align score to the left */
-            font-size: 24px;
-            color: white;
-            padding-left: 10px; /* Padding for left alignment */
-        }
-
-        #platform {
-            position: absolute;
-            bottom: 10%; /* Raise the platform by 10% of the screen height */
-            left: 0;
-            width: 20%;
-            height: 20px;
-            background-color: black;
-        }
-
-        #click-button {
-            position: absolute;
-            right: 20px;
-            bottom: 25%;
-            padding: 20px;
-            font-size: 24px;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            transition: transform 0.1s ease; /* Smooth transition on click */
-        }
-
-        #click-button:hover {
-            transform: scale(1.2); /* Enlarge button on hover */
-        }
-
-        #player {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            background-color: transparent;
-            background-image: url('https://github.com/RENEGADE21CODING/Platicker/blob/main/cursor.png?raw=true');
-            background-size: 100% 100%;
-            background-repeat: no-repeat;
-            bottom: calc(10% + 20px); /* Position player directly on top of the platform */
-            left: 20px;
-            pointer-events: none;
-        }
-
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Click Me Game</title>
+  <style>
+    /* Style for the top bar */
+    #top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 10vh; /* 10% of screen height */
+      background-color: #333;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      box-sizing: border-box;
+    }
+    /* Style for the score display */
+    #score {
+      font-size: 1.5em;
+    }
+    /* Style for the button */
+    #click-btn {
+      padding: 10px 20px;
+      font-size: 1em;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #click-btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
-    <div id="game-container">
-        <div id="score-bar">Score: <span id="score">0</span></div>
-        <div id="player"></div>
-        <div id="platform"></div>
-        <button id="click-button">Click Me!</button>
-    </div>
 
-    <script>
-        let score = 0;
-        const player = document.getElementById("player");
-        const platform = document.getElementById("platform");
-        const scoreDisplay = document.getElementById("score");
-        const clickButton = document.getElementById("click-button");
+  <!-- Top bar with score and button -->
+  <div id="top-bar">
+    <div id="score">Score: 0</div>
+    <button id="click-btn">Click Me</button>
+  </div>
 
-        // Update score on click
-        clickButton.addEventListener("click", () => {
-            score++;
-            scoreDisplay.innerText = score;
-            clickButton.style.transform = "scale(1)"; // Reset size to normal
-            setTimeout(() => {
-                if (clickButton.matches(":hover")) {
-                    clickButton.style.transform = "scale(1.2)"; // Restore hover size if still hovered
-                }
-            }, 100);
-        });
+  <script>
+    let score = 0;
 
-        // Handle player movement
-        let playerPos = { x: 20, y: parseInt(player.style.bottom) };
-        let velocityY = 0;
-        const gravity = 1.0;
-        const jumpPower = 15;
-        let isJumping = false;
+    // Get references to score display and button
+    const scoreDisplay = document.getElementById('score');
+    const clickButton = document.getElementById('click-btn');
 
-        // Set player's starting position and movement flags
-        let moveLeft = false;
-        let moveRight = false;
+    // Update the score when the button is clicked
+    clickButton.addEventListener('click', () => {
+      score++;
+      scoreDisplay.textContent = `Score: ${score}`;
+    });
+  </script>
 
-        // Update player position on screen
-        function updatePlayerPosition() {
-            player.style.left = playerPos.x + 'px';
-            player.style.bottom = playerPos.y + 'px';
-        }
-
-        // Platform collision detection
-        function isOnPlatform() {
-            const platformRect = platform.getBoundingClientRect();
-            const playerRect = player.getBoundingClientRect();
-            return (
-                playerRect.bottom >= platformRect.top &&
-                playerRect.left < platformRect.right &&
-                playerRect.right > platformRect.left
-            );
-        }
-
-        function applyGravity() {
-            if (!isOnPlatform() || velocityY > 0) {
-                velocityY -= gravity; // Apply gravity only if not on platform or moving upwards
-            } else {
-                velocityY = 0; // Stop falling when on platform
-                isJumping = false;
-            }
-            playerPos.y += velocityY; // Update vertical position
-            updatePlayerPosition();
-        }
-
-        document.addEventListener("keydown", (event) => {
-            if (event.key === "a" || event.key === "ArrowLeft") moveLeft = true;
-            if (event.key === "d" || event.key === "ArrowRight") moveRight = true;
-            if ((event.key === "w" || event.key === "ArrowUp") && !isJumping) {
-                velocityY = jumpPower;
-                isJumping = true;
-            }
-        });
-
-        document.addEventListener("keyup", (event) => {
-            if (event.key === "a" || event.key === "ArrowLeft") moveLeft = false;
-            if (event.key === "d" || event.key === "ArrowRight") moveRight = false;
-        });
-
-        function gameLoop() {
-            if (moveLeft) playerPos.x -= 5;
-            if (moveRight) playerPos.x += 5;
-            applyGravity();
-            updatePlayerPosition();
-            requestAnimationFrame(gameLoop);
-        }
-
-        updatePlayerPosition();
-        gameLoop();
-
-    </script>
 </body>
 </html>
