@@ -39,7 +39,7 @@
             bottom: 10%; /* Raise the platform by 10% of the height */
             left: 0; /* Position the platform at the far left */
             width: 20%; /* Set platform width to 20% of screen width */
-            height: 20px; /* Platform height */
+            height: 20px;
             background-color: black;
         }
 
@@ -58,17 +58,16 @@
 
         #player {
             position: absolute;
-            bottom: 30px; /* Initial position above the platform */
+            bottom: 30px; /* Start above the platform */
             left: 20px;
-            width: 50px; /* Player width */
-            height: 50px; /* Player height */
+            width: 50px; /* Reduced size to make the player smaller */
+            height: 50px; /* Adjusted height to match width */
             background-color: transparent;
             background-image: url('https://github.com/RENEGADE21CODING/Platicker/blob/main/cursor.png?raw=true');
             background-size: 100% 100%; /* Scale the image to fit */
             background-repeat: no-repeat;
             pointer-events: none;
         }
-
     </style>
 </head>
 <body>
@@ -85,7 +84,15 @@
         const player = document.getElementById("player");
         const platform = document.getElementById("platform");
 
-        let playerPos = { x: 20, y: 30 }; // Start position above the platform
+        let playerPos = { x: 20, y: 30 }; // Start above the platform
+        let velocityY = 0;
+        const gravity = 1.0;  // Gravity pulls down
+        const jumpPower = 15;  // Jump power for height
+        let isJumping = false;
+
+        // Movement flags
+        let moveLeft = false;
+        let moveRight = false;
 
         // Update player's position on screen
         function updatePlayerPosition() {
@@ -93,37 +100,86 @@
             player.style.bottom = playerPos.y + 'px';  // Update bottom position based on player's Y
         }
 
-        // Check if the player's bottom is above the platform
+        // Check if the player's bottom is touching the platform
         function isTouchingPlatform() {
             const platformRect = platform.getBoundingClientRect();
             const playerRect = player.getBoundingClientRect();
 
-            const playerBottom = playerRect.bottom; // Player's bottom edge
-            const platformTop = platformRect.top; // Platform's top edge
+            const playerBottom = playerRect.bottom;
+            const platformTop = platformRect.top;
 
-            // Return true if the player's bottom is touching or below the platform's top
-            return playerBottom >= platformTop;
+            // Check if the player's bottom is on top of the platform
+            return playerBottom <= platformTop && playerBottom >= platformTop - 5 && playerPos.y < platformRect.bottom;
         }
 
-        // Ensure player's bottom does not go below the platform when touching
-        function maintainPlayerOnPlatform() {
-            if (isTouchingPlatform()) {
-                playerPos.y = parseFloat(platform.style.bottom) + parseFloat(platform.style.height); // Set player on the platform
+        // Handle gravity and jumping logic
+        function applyGravity() {
+            velocityY -= gravity;  // Gravity pulls down
+            playerPos.y += velocityY;  // Apply velocity to player's Y position
+
+            // If the player is touching the platform, stop falling and stay on top
+            if (isTouchingPlatform() && velocityY <= 0) {
+                playerPos.y = platform.getBoundingClientRect().top + 50;  // Set player on top of the platform
+                velocityY = 0;  // Stop falling
+                isJumping = false;  // Allow jumping again
             }
+
+            // Check if player falls below the bottom of the screen
+            if (playerPos.y < -40) {
+                respawn();  // Respawn player after falling
+            }
+        }
+
+        // Respawn the player after a delay
+        function respawn() {
+            setTimeout(() => {
+                playerPos.y = 30;  // Reset Y position to match raised platform height
+                playerPos.x = 20;  // Reset X position to starting position
+                velocityY = 0;  // Reset velocity
+                isJumping = false;  // Reset jumping state
+            }, 500);  // 0.5 seconds delay
         }
 
         // Handle player movement
         document.addEventListener("keydown", function(event) {
             if (event.key === "ArrowLeft" || event.key === "a") {
-                playerPos.x -= 5;  // Move left
+                moveLeft = true;  // Set left movement flag
             }
             if (event.key === "ArrowRight" || event.key === "d") {
+                moveRight = true;  // Set right movement flag
+            }
+
+            // Jump
+            if ((event.key === "ArrowUp" || event.key === "w") && !isJumping) {
+                velocityY = jumpPower;  // Positive value to jump upward
+                isJumping = true;  // Mark player as jumping
+            }
+        });
+
+        document.addEventListener("keyup", function(event) {
+            if (event.key === "ArrowLeft" || event.key === "a") {
+                moveLeft = false;  // Reset left movement flag
+            }
+            if (event.key === "ArrowRight" || event.key === "d") {
+                moveRight = false;  // Reset right movement flag
+            }
+        });
+
+        // Main game loop
+        function gameLoop() {
+            applyGravity();  // Apply gravity each frame
+
+            // Handle horizontal movement
+            if (moveLeft) {
+                playerPos.x -= 5;  // Move left
+            }
+            if (moveRight) {
                 playerPos.x += 5;  // Move right
             }
-            // Update player position after movement
-            maintainPlayerOnPlatform(); // Check and maintain position on the platform
-            updatePlayerPosition(); // Update player position
-        });
+
+            updatePlayerPosition();  // Update player position
+            requestAnimationFrame(gameLoop);  // Continue the loop
+        }
 
         // Initialize score and start the game loop
         document.getElementById("click-button").addEventListener("click", function() {
@@ -132,6 +188,7 @@
         });
 
         updatePlayerPosition();  // Set initial player position
+        gameLoop();  // Start the game loop
 
     </script>
 
