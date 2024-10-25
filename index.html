@@ -28,24 +28,29 @@
     #click-btn {
       padding: 10px 20px;
       font-size: 1em;
-      background-color: #007bff;
+      background: linear-gradient(90deg, #007bff, #00ff7f); /* Blue to green gradient */
       color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 25%; /* Positioning the button 25% from the bottom */
     }
     #click-btn:hover {
-      background-color: #0056b3;
+      background: linear-gradient(90deg, #0056b3, #00cc66); /* Darker gradient on hover */
     }
   </style>
 </head>
 <body>
 
-  <!-- Top bar with score and button -->
+  <!-- Top bar with score -->
   <div id="top-bar">
     <div id="score">Score: 0</div>
-    <button id="click-btn">Click Me</button>
   </div>
+
+  <button id="click-btn">Click Me</button>
 
   <script>
     let score = 0;
