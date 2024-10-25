@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Platicker - A Platform Clicker Game</title>
   <style>
-    /* Body and top bar styles */
+    /* Styling for the game */
     body {
       background-color: #f0f0f0;
       margin: 0;
@@ -17,17 +17,15 @@
       left: 0;
       width: 100%;
       height: 20vh;
-      background-color: #555; /* Lighter dark gray */
+      background-color: #666; /* Lighter gray */
       color: white;
       display: flex;
       align-items: center;
       padding: 10px 20px;
       box-sizing: border-box;
     }
-
-    /* Cash and upgrades styles */
     #cash {
-      font-size: 1.5em;
+      font-size: 1.8em; /* Increased font size by 20% */
     }
     #upgrades {
       display: flex;
@@ -37,7 +35,7 @@
     }
     .upgrade-btn {
       padding: 15px;
-      background-color: #add8e6;
+      background-color: #e6f7ff; /* Very light blue */
       color: black;
       border: none;
       border-radius: 5px;
@@ -45,8 +43,6 @@
       font-size: 1.2em;
       transition: background 0.2s;
     }
-
-    /* Style for the click image */
     #click-image {
       width: auto;
       height: auto;
@@ -57,13 +53,7 @@
       right: 20px;
       bottom: 25%;
       transition: transform 0.2s, filter 0.2s;
-      filter: brightness(0.9); /* Slightly darkened by default */
-    }
-
-    /* Hover effect for pulsing */
-    #click-image:hover {
-      filter: brightness(1); /* Brighten on hover */
-      transform: scale(1.2); /* Scale to 120% on hover */
+      filter: brightness(0.9);
     }
   </style>
 </head>
@@ -88,14 +78,14 @@
   <img id="click-image" src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/ClickCash.png?raw=true" alt="Click Me">
 
   <script>
-    // Cash and upgrade values
+    // Initialize values
     let cash = 0,
         clickValue = 1,
         cashPerSecond = 0,
         upgradeClickCost = 10.00,
         upgradeAutomaticCost = 10.00;
 
-    // Cached DOM elements
+    // Cache DOM elements
     const cashDisplay = document.getElementById('cash'),
           clickImage = document.getElementById('click-image'),
           upgradeClickButton = document.getElementById('upgrade-click'),
@@ -103,19 +93,23 @@
           currentClickDisplay = document.getElementById('current-click'),
           currentSecondDisplay = document.getElementById('current-second');
 
-    // Update displayed cash and current values
-    function updateDisplay() {
+    // Function to update displayed cash and upgrade values
+    const updateDisplay = () => {
       cashDisplay.textContent = `Cash: $${cash.toFixed(2)}`;
       currentClickDisplay.textContent = `Current Cash Per Click: $${clickValue.toFixed(2)}`;
       currentSecondDisplay.textContent = `Current Cash Per Second: $${cashPerSecond.toFixed(2)}`;
-    }
+    };
 
-    // Click image event with pulsing effect
+    // Click image pulsing effect
+    clickImage.addEventListener('mouseenter', () => {
+      clickImage.style.transform = 'scale(1.2)';
+      clickImage.style.filter = 'brightness(1)';
+    });
     clickImage.addEventListener('click', () => {
       cash += clickValue;
       updateDisplay();
 
-      // Brief pulse effect on click
+      // Pulse effect on click
       clickImage.style.transform = 'scale(1)';
       setTimeout(() => {
         if (clickImage.matches(':hover')) {
@@ -123,13 +117,12 @@
         }
       }, 50);
     });
-
-    // Reset scale when not hovered
     clickImage.addEventListener('mouseleave', () => {
       clickImage.style.transform = 'scale(1)';
+      clickImage.style.filter = 'brightness(0.9)';
     });
 
-    // Upgrade cash per click
+    // Upgrade click value
     upgradeClickButton.addEventListener('click', () => {
       if (cash >= upgradeClickCost) {
         cash -= upgradeClickCost;
@@ -151,7 +144,7 @@
       }
     });
 
-    // Automatic cash increment
+    // Increase cash automatically based on cashPerSecond
     setInterval(() => {
       if (cashPerSecond > 0) {
         cash += cashPerSecond;
