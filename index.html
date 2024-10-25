@@ -82,7 +82,11 @@
         const player = document.getElementById("player");
         const platform = document.getElementById("platform");
 
-        let playerPos = { x: 20, y: 30 }; // Start on top of the platform
+        // Set player directly above the platform
+        const platformY = 10; // Platform is 10% from the bottom
+        const playerHeight = 50; // Height of the player
+        let playerPos = { x: 20, y: platformY + playerHeight };
+
         let velocityY = 0;
         const gravity = 1.0;  
         const jumpPower = 15;  
@@ -103,7 +107,7 @@
             playerPos.y += velocityY; 
 
             if (isTouchingPlatform() && velocityY <= 0) {
-                playerPos.y = 30;  
+                playerPos.y = platformY + playerHeight;  
                 velocityY = 0;
                 isJumping = false;  
             }
@@ -132,7 +136,7 @@
 
         function respawn() {
             setTimeout(() => {
-                playerPos.y = 30;  
+                playerPos.y = platformY + playerHeight;  
                 playerPos.x = 20;  
                 velocityY = 0;  
                 isJumping = false;  
