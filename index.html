@@ -25,18 +25,18 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 10%;
+            height: 10%; /* Top bar height */
             background-color: #4CAF50;
             display: flex;
             align-items: center;
-            justify-content: center;
             font-size: 24px;
             color: white;
+            padding-left: 20px; /* Padding to position score on the left */
         }
 
         #platform {
             position: absolute;
-            bottom: 10%;
+            bottom: 10%; /* Adjusted for game area */
             left: 0;
             width: 20%;
             height: 20px;
@@ -60,11 +60,11 @@
             position: absolute;
             width: 50px;
             height: 50px;
-            background-color: transparent;
             background-image: url('https://github.com/RENEGADE21CODING/Platicker/blob/main/cursor.png?raw=true');
             background-size: 100% 100%;
             background-repeat: no-repeat;
-            pointer-events: none;
+            bottom: 30%; /* Position to align feet with platform */
+            left: 20px;
         }
     </style>
 </head>
@@ -79,113 +79,28 @@
 
     <script>
         let score = 0;
-        const player = document.getElementById("player");
-        const platform = document.getElementById("platform");
 
-        // Set player directly above the platform
-        const platformY = 10; // Platform is 10% from the bottom
-        const playerHeight = 50; // Height of the player
-        let playerPos = { x: 20, y: platformY + playerHeight };
-
-        let velocityY = 0;
-        const gravity = 1.0;  
-        const jumpPower = 15;  
-        let isJumping = false;
-
-        let moveLeft = false;
-        let moveRight = false;
-
-        function updatePlayerPosition() {
-            player.style.left = playerPos.x + 'px';
-            player.style.bottom = playerPos.y + 'px';
-        }
-
-        function applyGravity() {
-            if (!isTouchingPlatform() || velocityY > 0) {
-                velocityY -= gravity;  
-            }
-            playerPos.y += velocityY; 
-
-            if (isTouchingPlatform() && velocityY <= 0) {
-                playerPos.y = platformY + playerHeight;  
-                velocityY = 0;
-                isJumping = false;  
-            }
-
-            if (playerPos.y < -40) {
-                respawn();
-            }
-        }
-
-        function isTouchingPlatform() {
-            const platformRect = platform.getBoundingClientRect();
-            const playerRect = player.getBoundingClientRect();
-
-            const playerBottom = playerRect.bottom;
-            const playerLeft = playerRect.left;
-            const playerRight = playerRect.right;
-
-            const platformTop = platformRect.top;
-            const platformLeft = platformRect.left;
-            const platformRight = platformRect.right;
-
-            return (
-                playerBottom >= platformTop && playerRight > platformLeft && playerLeft < platformRight
-            );
-        }
-
-        function respawn() {
-            setTimeout(() => {
-                playerPos.y = platformY + playerHeight;  
-                playerPos.x = 20;  
-                velocityY = 0;  
-                isJumping = false;  
-            }, 500);
-        }
-
+        // Player controls for left, right, and jump
         document.addEventListener("keydown", function(event) {
+            const player = document.getElementById("player");
+            const step = 5; // Movement step
+
             if (event.key === "ArrowLeft" || event.key === "a") {
-                moveLeft = true; 
+                player.style.left = parseInt(player.style.left) - step + 'px';
             }
             if (event.key === "ArrowRight" || event.key === "d") {
-                moveRight = true; 
+                player.style.left = parseInt(player.style.left) + step + 'px';
             }
-            if ((event.key === "ArrowUp" || event.key === "w") && !isJumping) {
-                velocityY = jumpPower;  
-                isJumping = true;
+            if (event.key === "ArrowUp" || event.key === "w") {
+                // Add jump logic if needed
             }
         });
 
-        document.addEventListener("keyup", function(event) {
-            if (event.key === "ArrowLeft" || event.key === "a") {
-                moveLeft = false;  
-            }
-            if (event.key === "ArrowRight" || event.key === "d") {
-                moveRight = false;  
-            }
-        });
-
-        function gameLoop() {
-            applyGravity();
-
-            if (moveLeft) {
-                playerPos.x -= 5;  
-            }
-            if (moveRight) {
-                playerPos.x += 5;  
-            }
-
-            updatePlayerPosition();
-            requestAnimationFrame(gameLoop); 
-        }
-
+        // Click button logic
         document.getElementById("click-button").addEventListener("click", function() {
             score++;
             document.getElementById("score").innerText = score;
         });
-
-        updatePlayerPosition();  
-        gameLoop();  
     </script>
 
 </body>
