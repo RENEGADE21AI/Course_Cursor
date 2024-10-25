@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Platicker - A Platform Clicker Game</title>
   <style>
+    /* Style for the body */
+    body {
+      background-color: #f0f0f0; /* Light shade of gray */
+      margin: 0;
+      font-family: Arial, sans-serif; /* Adding a default font */
+    }
+
     /* Style for the top bar */
     #top-bar {
       position: fixed;
@@ -20,10 +27,12 @@
       padding: 0 20px;
       box-sizing: border-box;
     }
+
     /* Style for the score display */
     #score {
       font-size: 1.5em;
     }
+
     /* Style for the button */
     #click-btn {
       padding: 15px 30px; /* Reduced size */
@@ -38,6 +47,7 @@
       bottom: 25%; /* Positioning the button 25% from the bottom */
       transition: transform 0.2s; /* Smooth transition for scaling */
     }
+
     #click-btn:hover {
       background: linear-gradient(to bottom, #00cc66, #0056b3); /* Flipped darker gradient on hover */
       transform: scale(1.2); /* Scale to 120% on hover */
