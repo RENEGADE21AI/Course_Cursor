@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Platicker - A Platform Clicker Game</title>
     <style>
-        /* Main page settings */
         html, body {
             margin: 0;
             padding: 0;
@@ -15,20 +14,18 @@
             background-color: #f0f0f0;
         }
 
-        /* Game container settings */
         #game-container {
             width: 100%;
             height: 100%;
             position: relative;
         }
 
-        /* Score bar settings */
         #score-bar {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 10%; /* 10% screen height for score bar */
+            height: 10%;
             background-color: #4CAF50;
             display: flex;
             align-items: center;
@@ -37,17 +34,15 @@
             color: white;
         }
 
-        /* Platform settings */
         #platform {
             position: absolute;
-            bottom: 10%; /* Raise platform above bottom */
+            bottom: 10%;
             left: 0;
             width: 20%;
             height: 20px;
             background-color: black;
         }
 
-        /* Click Me button settings */
         #click-button {
             position: absolute;
             right: 20px;
@@ -59,22 +54,17 @@
             color: white;
             border: none;
             border-radius: 10px;
-            transition: transform 0.1s;
         }
 
-        #click-button:hover {
-            transform: scale(1.2); /* Button grows to 120% on hover */
-        }
-
-        /* Player settings */
         #player {
             position: absolute;
-            bottom: calc(10% + 20px); /* Align player above the platform */
-            left: 20px;
             width: 50px;
             height: 50px;
-            background: url('https://github.com/RENEGADE21CODING/Platicker/blob/main/cursor.png?raw=true') no-repeat;
+            background-color: transparent;
+            background-image: url('https://github.com/RENEGADE21CODING/Platicker/blob/main/cursor.png?raw=true');
             background-size: 100% 100%;
+            background-repeat: no-repeat;
+            pointer-events: none;
         }
     </style>
 </head>
@@ -82,28 +72,116 @@
 
     <div id="game-container">
         <div id="score-bar">Score: <span id="score">0</span></div>
-        <div id="platform"></div>
         <div id="player"></div>
+        <div id="platform"></div>
         <button id="click-button">Click Me!</button>
     </div>
 
     <script>
         let score = 0;
+        const player = document.getElementById("player");
+        const platform = document.getElementById("platform");
 
-        // Click Me button effect
-        const clickButton = document.getElementById("click-button");
-        clickButton.addEventListener("click", function() {
+        let playerPos = { x: 20, y: 30 }; // Start on top of the platform
+        let velocityY = 0;
+        const gravity = 1.0;  
+        const jumpPower = 15;  
+        let isJumping = false;
+
+        let moveLeft = false;
+        let moveRight = false;
+
+        function updatePlayerPosition() {
+            player.style.left = playerPos.x + 'px';
+            player.style.bottom = playerPos.y + 'px';
+        }
+
+        function applyGravity() {
+            if (!isTouchingPlatform() || velocityY > 0) {
+                velocityY -= gravity;  
+            }
+            playerPos.y += velocityY; 
+
+            if (isTouchingPlatform() && velocityY <= 0) {
+                playerPos.y = 30;  
+                velocityY = 0;
+                isJumping = false;  
+            }
+
+            if (playerPos.y < -40) {
+                respawn();
+            }
+        }
+
+        function isTouchingPlatform() {
+            const platformRect = platform.getBoundingClientRect();
+            const playerRect = player.getBoundingClientRect();
+
+            const playerBottom = playerRect.bottom;
+            const playerLeft = playerRect.left;
+            const playerRight = playerRect.right;
+
+            const platformTop = platformRect.top;
+            const platformLeft = platformRect.left;
+            const platformRight = platformRect.right;
+
+            return (
+                playerBottom >= platformTop && playerRight > platformLeft && playerLeft < platformRight
+            );
+        }
+
+        function respawn() {
+            setTimeout(() => {
+                playerPos.y = 30;  
+                playerPos.x = 20;  
+                velocityY = 0;  
+                isJumping = false;  
+            }, 500);
+        }
+
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "ArrowLeft" || event.key === "a") {
+                moveLeft = true; 
+            }
+            if (event.key === "ArrowRight" || event.key === "d") {
+                moveRight = true; 
+            }
+            if ((event.key === "ArrowUp" || event.key === "w") && !isJumping) {
+                velocityY = jumpPower;  
+                isJumping = true;
+            }
+        });
+
+        document.addEventListener("keyup", function(event) {
+            if (event.key === "ArrowLeft" || event.key === "a") {
+                moveLeft = false;  
+            }
+            if (event.key === "ArrowRight" || event.key === "d") {
+                moveRight = false;  
+            }
+        });
+
+        function gameLoop() {
+            applyGravity();
+
+            if (moveLeft) {
+                playerPos.x -= 5;  
+            }
+            if (moveRight) {
+                playerPos.x += 5;  
+            }
+
+            updatePlayerPosition();
+            requestAnimationFrame(gameLoop); 
+        }
+
+        document.getElementById("click-button").addEventListener("click", function() {
             score++;
             document.getElementById("score").innerText = score;
-
-            // Temporarily shrink button to original size and restore if still hovering
-            clickButton.style.transform = "scale(1)";
-            setTimeout(() => {
-                if (clickButton.matches(":hover")) {
-                    clickButton.style.transform = "scale(1.2)";
-                }
-            }, 100);
         });
+
+        updatePlayerPosition();  
+        gameLoop();  
     </script>
 
 </body>
