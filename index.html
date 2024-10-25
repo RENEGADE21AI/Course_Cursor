@@ -18,9 +18,9 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: 20vh; /* Increased height to 20% of the screen */
-      background-color: #333; /* Dark shade of gray */
-      color: white; /* Changed text color back to white */
+      height: 20vh;
+      background-color: #333;
+      color: white;
       display: flex;
       align-items: center;
       padding: 10px 20px;
@@ -35,8 +35,8 @@
     /* Style for the upgrades section */
     #upgrades {
       display: flex;
-      gap: 10px; /* Space between buttons */
-      margin-left: auto; /* Push upgrades to the right */
+      gap: 10px;
+      margin-left: auto;
     }
 
     /* Style for upgrade buttons */
@@ -51,22 +51,22 @@
 
     /* Style for the button */
     #click-btn {
-      padding: 15px 30px; /* Reduced size */
-      font-size: 1.5em; /* Reduced font size */
-      background: linear-gradient(to bottom, #00ff7f, #007bff); /* Flipped gradient from top to bottom */
+      padding: 15px 30px;
+      font-size: 1.5em;
+      background: linear-gradient(to bottom, #00ff7f, #007bff);
       color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
       position: fixed;
-      right: 20px; /* Positioned on the far right */
-      bottom: 25%; /* Positioning the button 25% from the bottom */
-      transition: transform 0.2s; /* Smooth transition for scaling */
+      right: 20px;
+      bottom: 25%;
+      transition: transform 0.2s;
     }
 
     #click-btn:hover {
-      background: linear-gradient(to bottom, #00cc66, #0056b3); /* Flipped darker gradient on hover */
-      transform: scale(1.2); /* Scale to 120% on hover */
+      background: linear-gradient(to bottom, #00cc66, #0056b3);
+      transform: scale(1.2);
     }
   </style>
 </head>
@@ -84,51 +84,59 @@
   <button id="click-btn">Click Me!</button>
 
   <script>
+    // Initialize score and upgrade values
     let score = 0;
-    let clickValue = 1; // Score per click
-    let scorePerSecond = 0; // Score addition per second
-    let upgradeClickCost = 10; // Initial cost for score per click upgrade
-    let upgradeAutomaticCost = 10; // Initial cost for score addition per second upgrade
+    let clickValue = 1;
+    let scorePerSecond = 0;
+    let upgradeClickCost = 10;
+    let upgradeAutomaticCost = 10;
 
-    // Get references to score display and buttons
+    // Cache DOM elements
     const scoreDisplay = document.getElementById('score');
     const clickButton = document.getElementById('click-btn');
     const upgradeClickButton = document.getElementById('upgrade-click');
     const upgradeAutomaticButton = document.getElementById('upgrade-automatic');
 
-    // Update the score when the button is clicked
+    // Update score display function to avoid redundant code
+    function updateScoreDisplay() {
+      scoreDisplay.textContent = `Score: ${score}`;
+    }
+
+    // Event listener for score click increment
     clickButton.addEventListener('click', () => {
       score += clickValue;
-      scoreDisplay.textContent = `Score: ${score}`;
+      updateScoreDisplay();
     });
 
-    // Upgrade score per click
+    // Event listener for score-per-click upgrade
     upgradeClickButton.addEventListener('click', () => {
       if (score >= upgradeClickCost) {
-        score -= upgradeClickCost; // Deduct score
-        clickValue++; // Increase score per click
-        upgradeClickCost = Math.ceil(upgradeClickCost * 1.15); // Increase cost by 15%
+        score -= upgradeClickCost;
+        clickValue++;
+        upgradeClickCost = Math.ceil(upgradeClickCost * 1.15);
         upgradeClickButton.textContent = `Increase Score per Click (Cost: ${upgradeClickCost})`;
-        scoreDisplay.textContent = `Score: ${score}`;
+        updateScoreDisplay();
       }
     });
 
-    // Upgrade score addition per second
+    // Event listener for score-per-second upgrade
     upgradeAutomaticButton.addEventListener('click', () => {
       if (score >= upgradeAutomaticCost) {
-        score -= upgradeAutomaticCost; // Deduct score
-        scorePerSecond++; // Increase score addition per second
-        upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.15); // Increase cost by 15%
+        score -= upgradeAutomaticCost;
+        scorePerSecond++;
+        upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.15);
         upgradeAutomaticButton.textContent = `Increase Score Addition per Second (Cost: ${upgradeAutomaticCost})`;
-        scoreDisplay.textContent = `Score: ${score}`;
+        updateScoreDisplay();
       }
     });
 
-    // Update score automatically every second
+    // Increase score per second if applicable
     setInterval(() => {
-      score += scorePerSecond; // Add score per second
-      scoreDisplay.textContent = `Score: ${score}`;
-    }, 1000); // 1 second interval
+      if (scorePerSecond > 0) {
+        score += scorePerSecond;
+        updateScoreDisplay();
+      }
+    }, 1000);
 
   </script>
 
