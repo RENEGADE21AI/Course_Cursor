@@ -54,25 +54,26 @@
             color: white;
             border: none;
             border-radius: 10px;
-            transition: transform 0.2s; /* Animation for hover effect */
+            transition: transform 0.2s; /* Smooth transition for scaling */
         }
 
         #click-button:hover {
-            transform: scale(1.2); /* Enlarge the button on hover */
+            transform: scale(1.2); /* Scale up on hover */
         }
 
         #player {
             position: absolute;
-            bottom: 30px; /* Initial position (will be adjusted in JS) */
+            bottom: 30px; /* Spawn on the platform */
             left: 20px;
-            width: 50px; /* Player width */
-            height: 50px; /* Player height */
+            width: 50px; /* Reduced size to make the player smaller */
+            height: 50px; /* Adjusted height to match width */
             background-color: transparent;
             background-image: url('https://github.com/RENEGADE21CODING/Platicker/blob/main/cursor.png?raw=true');
             background-size: 100% 100%; /* Scale the image to fit */
             background-repeat: no-repeat;
             pointer-events: none;
         }
+
     </style>
 </head>
 <body>
@@ -87,129 +88,24 @@
     <script>
         let score = 0;
         const player = document.getElementById("player");
-        const platform = document.getElementById("platform");
-        const clickButton = document.getElementById("click-button");
+        const scoreDisplay = document.getElementById("score");
 
-        const platformHeight = 20;  // Height of the platform in pixels
-        let playerPos = { x: 20, y: platformHeight }; // Start directly on top of the platform
-        let velocityY = 0;
-        const gravity = 1.0;  // Gravity pulls down
-        const jumpPower = 15;  // Jump power for height
-        let isJumping = false;
+        // Set the initial player position directly on top of the platform
+        player.style.bottom = '30px'; // Adjusted to align with platform height
 
-        // Movement flags
-        let moveLeft = false;
-        let moveRight = false;
-
-        // Update player's position on screen
-        function updatePlayerPosition() {
-            player.style.left = playerPos.x + 'px';
-            player.style.bottom = playerPos.y + 'px';  // Update bottom position based on player's Y
-        }
-
-        // Check if the player is touching the platform
-        function isTouchingPlatform() {
-            const platformRect = platform.getBoundingClientRect();
-            const playerRect = player.getBoundingClientRect();
-
-            const playerBottom = playerRect.bottom;
-            const platformTop = platformRect.top;
-
-            // Check if player bottom is touching or overlapping the platform top
-            return playerBottom >= platformTop && playerRect.left < platformRect.right && playerRect.right > platformRect.left;
-        }
-
-        // Handle gravity and jumping logic
-        function applyGravity() {
-            velocityY -= gravity;  // Gravity pulls down
-            playerPos.y += velocityY;  // Apply velocity to player's Y position
-
-            // If the player is touching the platform, stop falling and stay on top
-            if (isTouchingPlatform() && velocityY <= 0) {
-                playerPos.y = platform.getBoundingClientRect().top + player.offsetHeight;  // Set player on the platform top
-                velocityY = 0;  // Stop falling
-                isJumping = false;  // Allow jumping again
-            }
-
-            // Check if player falls below the bottom of the screen
-            if (playerPos.y < -40) {
-                respawn();  // Respawn player after falling
-            }
-        }
-
-        // Respawn the player after a delay
-        function respawn() {
-            setTimeout(() => {
-                playerPos.y = platform.getBoundingClientRect().top + player.offsetHeight;  // Reset Y position to match platform height
-                playerPos.x = 20;  // Reset X position to starting position
-                velocityY = 0;  // Reset velocity
-                isJumping = false;  // Reset jumping state
-            }, 500);  // 0.5 seconds delay
-        }
-
-        // Handle player movement
-        document.addEventListener("keydown", function(event) {
-            if (event.key === "ArrowLeft" || event.key === "a") {
-                moveLeft = true;  // Set left movement flag
-            }
-            if (event.key === "ArrowRight" || event.key === "d") {
-                moveRight = true;  // Set right movement flag
-            }
-
-            // Jump
-            if ((event.key === "ArrowUp" || event.key === "w") && !isJumping) {
-                velocityY = jumpPower;  // Positive value to jump upward
-                isJumping = true;  // Mark player as jumping
-            }
-        });
-
-        document.addEventListener("keyup", function(event) {
-            if (event.key === "ArrowLeft" || event.key === "a") {
-                moveLeft = false;  // Reset left movement flag
-            }
-            if (event.key === "ArrowRight" || event.key === "d") {
-                moveRight = false;  // Reset right movement flag
-            }
-        });
-
-        // Main game loop
-        function gameLoop() {
-            applyGravity();  // Apply gravity each frame
-
-            // Handle horizontal movement
-            if (moveLeft) {
-                playerPos.x -= 5;  // Move left
-            }
-            if (moveRight) {
-                playerPos.x += 5;  // Move right
-            }
-
-            updatePlayerPosition();  // Update player position
-            requestAnimationFrame(gameLoop);  // Continue the loop
-        }
-
-        // Initialize score and start the game loop
-        clickButton.addEventListener("click", function() {
+        // Handle the click event for the button
+        document.getElementById("click-button").addEventListener("click", function() {
             score++;
-            document.getElementById("score").innerText = score; // Update score in the top bar
-            clickButton.style.transform = "scale(1)"; // Reset button size immediately after click
-
-            // Set a timeout to immediately scale back to 120% if hovered
+            scoreDisplay.innerText = score; // Update score in the top bar
+            
+            // Reset the button size immediately after clicking
+            this.style.transform = 'scale(1)'; // Reset size to normal
             setTimeout(() => {
-                if (document.body.contains(clickButton)) { // Check if still in the DOM
-                    clickButton.style.transform = "scale(1.2)"; // Scale back to 120%
+                if (this.matches(':hover')) {
+                    this.style.transform = 'scale(1.2)'; // Scale back up if still hovered
                 }
-            }, 1); // 1 millisecond delay
+            }, 1); // Delay to allow the size reset to be noticeable
         });
-
-        // Add a temporary scale effect on click
-        clickButton.addEventListener("mousedown", function() {
-            clickButton.style.transform = "scale(1.2)"; // Scale the button up when pressed
-        });
-
-        updatePlayerPosition();  // Set initial player position
-        gameLoop();  // Start the game loop
-
     </script>
 
 </body>
