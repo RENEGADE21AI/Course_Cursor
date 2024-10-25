@@ -25,18 +25,19 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 10%; /* Top bar height */
+            height: 11%; /* 10% screen height + small adjustment */
             background-color: #4CAF50;
             display: flex;
             align-items: center;
+            justify-content: flex-start; /* Align score to the left */
             font-size: 24px;
             color: white;
-            padding-left: 20px; /* Padding to position score on the left */
+            padding-left: 10px; /* Padding for left alignment */
         }
 
         #platform {
             position: absolute;
-            bottom: 10%; /* Adjusted for game area */
+            bottom: 10%; /* Raise the platform by 10% of the screen height */
             left: 0;
             width: 20%;
             height: 20px;
@@ -54,22 +55,29 @@
             color: white;
             border: none;
             border-radius: 10px;
+            transition: transform 0.1s ease; /* Smooth transition on click */
+        }
+
+        #click-button:hover {
+            transform: scale(1.2); /* Enlarge button on hover */
         }
 
         #player {
             position: absolute;
             width: 50px;
             height: 50px;
+            background-color: transparent;
             background-image: url('https://github.com/RENEGADE21CODING/Platicker/blob/main/cursor.png?raw=true');
             background-size: 100% 100%;
             background-repeat: no-repeat;
-            bottom: 30%; /* Position to align feet with platform */
+            bottom: calc(10% + 20px); /* Position player directly on top of the platform */
             left: 20px;
+            pointer-events: none;
         }
+
     </style>
 </head>
 <body>
-
     <div id="game-container">
         <div id="score-bar">Score: <span id="score">0</span></div>
         <div id="player"></div>
@@ -79,29 +87,87 @@
 
     <script>
         let score = 0;
+        const player = document.getElementById("player");
+        const platform = document.getElementById("platform");
+        const scoreDisplay = document.getElementById("score");
+        const clickButton = document.getElementById("click-button");
 
-        // Player controls for left, right, and jump
-        document.addEventListener("keydown", function(event) {
-            const player = document.getElementById("player");
-            const step = 5; // Movement step
-
-            if (event.key === "ArrowLeft" || event.key === "a") {
-                player.style.left = parseInt(player.style.left) - step + 'px';
-            }
-            if (event.key === "ArrowRight" || event.key === "d") {
-                player.style.left = parseInt(player.style.left) + step + 'px';
-            }
-            if (event.key === "ArrowUp" || event.key === "w") {
-                // Add jump logic if needed
-            }
-        });
-
-        // Click button logic
-        document.getElementById("click-button").addEventListener("click", function() {
+        // Update score on click
+        clickButton.addEventListener("click", () => {
             score++;
-            document.getElementById("score").innerText = score;
+            scoreDisplay.innerText = score;
+            clickButton.style.transform = "scale(1)"; // Reset size to normal
+            setTimeout(() => {
+                if (clickButton.matches(":hover")) {
+                    clickButton.style.transform = "scale(1.2)"; // Restore hover size if still hovered
+                }
+            }, 100);
         });
-    </script>
 
+        // Handle player movement
+        let playerPos = { x: 20, y: parseInt(player.style.bottom) };
+        let velocityY = 0;
+        const gravity = 1.0;
+        const jumpPower = 15;
+        let isJumping = false;
+
+        // Set player's starting position and movement flags
+        let moveLeft = false;
+        let moveRight = false;
+
+        // Update player position on screen
+        function updatePlayerPosition() {
+            player.style.left = playerPos.x + 'px';
+            player.style.bottom = playerPos.y + 'px';
+        }
+
+        // Platform collision detection
+        function isOnPlatform() {
+            const platformRect = platform.getBoundingClientRect();
+            const playerRect = player.getBoundingClientRect();
+            return (
+                playerRect.bottom >= platformRect.top &&
+                playerRect.left < platformRect.right &&
+                playerRect.right > platformRect.left
+            );
+        }
+
+        function applyGravity() {
+            if (!isOnPlatform() || velocityY > 0) {
+                velocityY -= gravity; // Apply gravity only if not on platform or moving upwards
+            } else {
+                velocityY = 0; // Stop falling when on platform
+                isJumping = false;
+            }
+            playerPos.y += velocityY; // Update vertical position
+            updatePlayerPosition();
+        }
+
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "a" || event.key === "ArrowLeft") moveLeft = true;
+            if (event.key === "d" || event.key === "ArrowRight") moveRight = true;
+            if ((event.key === "w" || event.key === "ArrowUp") && !isJumping) {
+                velocityY = jumpPower;
+                isJumping = true;
+            }
+        });
+
+        document.addEventListener("keyup", (event) => {
+            if (event.key === "a" || event.key === "ArrowLeft") moveLeft = false;
+            if (event.key === "d" || event.key === "ArrowRight") moveRight = false;
+        });
+
+        function gameLoop() {
+            if (moveLeft) playerPos.x -= 5;
+            if (moveRight) playerPos.x += 5;
+            applyGravity();
+            updatePlayerPosition();
+            requestAnimationFrame(gameLoop);
+        }
+
+        updatePlayerPosition();
+        gameLoop();
+
+    </script>
 </body>
 </html>
