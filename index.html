@@ -63,8 +63,7 @@
 
         #player {
             position: absolute;
-            bottom: 30px; /* Spawn above the platform */
-            left: 20px;
+            left: 20px; /* Fixed X position */
             width: 50px; /* Reduced size to make the player smaller */
             height: 50px; /* Adjusted height to match width */
             background-color: transparent;
@@ -87,12 +86,16 @@
 
     <script>
         let score = 0;
-        const player = document.getElementById("player");
         const scoreDisplay = document.getElementById("score");
         const clickButton = document.getElementById("click-button");
+        const player = document.getElementById("player");
+        const platform = document.getElementById("platform");
 
         // Set the initial player position directly on top of the platform
-        player.style.bottom = '30px'; // Adjusted to align with platform height
+        function positionPlayerOnPlatform() {
+            const platformRect = platform.getBoundingClientRect();
+            player.style.bottom = `${platformRect.height + 10}px`; // Position player on top of the platform with a small offset
+        }
 
         // Handle the click event for the button
         clickButton.addEventListener("click", function() {
@@ -119,14 +122,8 @@
             this.style.transform = 'scale(1)'; // Reset size when not hovered
         });
 
-        // Function to align player on top of the platform
-        function alignPlayerOnPlatform() {
-            const platformRect = document.getElementById("platform").getBoundingClientRect();
-            player.style.bottom = `${platformRect.height + 10}px`; // Position player on top of platform
-        }
-
-        // Call the function initially to position player
-        alignPlayerOnPlatform();
+        // Position player initially
+        positionPlayerOnPlatform();
 
     </script>
 
