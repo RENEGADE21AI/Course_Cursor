@@ -39,7 +39,7 @@
             bottom: 10%; /* Raise the platform by 10% of the height */
             left: 0; /* Position the platform at the far left */
             width: 20%; /* Set platform width to 20% of screen width */
-            height: 20px; /* Fixed height for the platform */
+            height: 20px;
             background-color: black;
         }
 
@@ -54,25 +54,21 @@
             color: white;
             border: none;
             border-radius: 10px;
-            transition: transform 0.2s; /* Smooth transition for scaling */
-        }
-
-        #click-button:hover {
-            transform: scale(1.2); /* Scale up on hover */
+            transition: transform 0.1s; /* Smooth transition for size change */
         }
 
         #player {
             position: absolute;
-            left: 20px; /* Fixed X position */
-            width: 50px; /* Reduced size to make the player smaller */
-            height: 50px; /* Adjusted height to match width */
+            bottom: 30px; /* Set the player directly above the platform */
+            left: 20px;
+            width: 50px; /* Player width */
+            height: 50px; /* Player height */
             background-color: transparent;
             background-image: url('https://github.com/RENEGADE21CODING/Platicker/blob/main/cursor.png?raw=true');
             background-size: 100% 100%; /* Scale the image to fit */
             background-repeat: no-repeat;
             pointer-events: none;
         }
-
     </style>
 </head>
 <body>
@@ -86,45 +82,36 @@
 
     <script>
         let score = 0;
-        const scoreDisplay = document.getElementById("score");
-        const clickButton = document.getElementById("click-button");
         const player = document.getElementById("player");
         const platform = document.getElementById("platform");
 
-        // Set the initial player position directly on top of the platform
-        function positionPlayerOnPlatform() {
-            const platformRect = platform.getBoundingClientRect();
-            player.style.bottom = `${platformRect.height + 10}px`; // Position player on top of the platform with a small offset
+        // Set player's spawn point directly on top of the platform
+        const playerSpawnX = 20; // X position on the platform
+        const playerSpawnY = 30; // Set to be just above the platform
+
+        // Initialize player position
+        let playerPos = { x: playerSpawnX, y: playerSpawnY };
+
+        // Update player's position on screen
+        function updatePlayerPosition() {
+            player.style.left = playerPos.x + 'px';
+            player.style.bottom = playerPos.y + 'px';  // Update bottom position based on player's Y
         }
 
-        // Handle the click event for the button
-        clickButton.addEventListener("click", function() {
+        // Initialize score and start the game loop
+        document.getElementById("click-button").addEventListener("click", function() {
             score++;
-            scoreDisplay.innerText = score; // Update score in the top bar
+            document.getElementById("score").innerText = score; // Update score in the top bar
             
-            // Reset the button size immediately after clicking
-            this.style.transform = 'scale(1)'; // Reset size to normal
-            
-            // Set a timeout to revert to hover size if still hovered
+            // Reset button size for 0.1 seconds then apply hover effect
+            this.style.transform = "scale(1.2)";
             setTimeout(() => {
-                if (this.matches(':hover')) {
-                    this.style.transform = 'scale(1.2)'; // Scale back up if still hovered
-                }
-            }, 100); // Delay for 100 milliseconds
+                this.style.transform = "scale(1)";
+            }, 100);
         });
 
-        // Mouse enter and leave events to manage button size
-        clickButton.addEventListener("mouseenter", function() {
-            this.style.transform = 'scale(1.2)'; // Scale up when hovered
-        });
-
-        clickButton.addEventListener("mouseleave", function() {
-            this.style.transform = 'scale(1)'; // Reset size when not hovered
-        });
-
-        // Position player initially
-        positionPlayerOnPlatform();
-
+        // Update player position initially
+        updatePlayerPosition(); // Set initial player position
     </script>
 
 </body>
