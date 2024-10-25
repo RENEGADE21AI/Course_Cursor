@@ -86,18 +86,19 @@
   <button id="click-btn">Click Me!</button>
 
   <script>
-    let score = 0;
-    let clickValue = 1;
-    let scorePerSecond = 0;
-    let upgradeClickCost = 10;
-    let upgradeAutomaticCost = 10;
+    let score = 0,
+        clickValue = 1,
+        scorePerSecond = 0,
+        upgradeClickCost = 10,
+        upgradeAutomaticCost = 10;
 
     // Cache DOM elements
-    const scoreDisplay = document.getElementById('score');
-    const clickButton = document.getElementById('click-btn');
-    const upgradeClickButton = document.getElementById('upgrade-click');
-    const upgradeAutomaticButton = document.getElementById('upgrade-automatic');
+    const scoreDisplay = document.getElementById('score'),
+          clickButton = document.getElementById('click-btn'),
+          upgradeClickButton = document.getElementById('upgrade-click'),
+          upgradeAutomaticButton = document.getElementById('upgrade-automatic');
 
+    // Update score display with minimal DOM manipulation
     function updateScoreDisplay() {
       scoreDisplay.textContent = `Score: ${score}`;
     }
@@ -106,19 +107,17 @@
     clickButton.addEventListener('click', () => {
       score += clickValue;
       updateScoreDisplay();
-      
-      // Pulse effect: briefly scale down
+
+      // Brief pulse effect on click
       clickButton.style.transform = 'scale(1)';
-      
       setTimeout(() => {
-        // Return to hover scale if still hovered
         if (clickButton.matches(':hover')) {
           clickButton.style.transform = 'scale(1.2)';
         }
       }, 50); // Reduced time to 0.05 seconds
     });
 
-    // Upgrade score per click
+    // Upgrade handlers with minimal DOM updates and no redundant checks
     upgradeClickButton.addEventListener('click', () => {
       if (score >= upgradeClickCost) {
         score -= upgradeClickCost;
@@ -129,7 +128,6 @@
       }
     });
 
-    // Upgrade score addition per second
     upgradeAutomaticButton.addEventListener('click', () => {
       if (score >= upgradeAutomaticCost) {
         score -= upgradeAutomaticCost;
@@ -140,14 +138,13 @@
       }
     });
 
-    // Increase score per second
+    // Periodic score addition per second, only updates if scorePerSecond > 0
     setInterval(() => {
       if (scorePerSecond > 0) {
         score += scorePerSecond;
         updateScoreDisplay();
       }
     }, 1000);
-
   </script>
 
 </body>
