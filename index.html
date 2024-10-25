@@ -49,11 +49,11 @@
       cursor: pointer;
     }
 
-    /* Style for the click button with subtle darkening */
+    /* Style for the click button */
     #click-btn {
       padding: 15px 30px;
       font-size: 1.5em;
-      background: linear-gradient(to bottom, #00e07f, #008bcc); /* Lighter gradient */
+      background: linear-gradient(to bottom, #00e07f, #008bcc); /* Softer gradient */
       color: white;
       border: none;
       border-radius: 5px;
@@ -124,8 +124,8 @@
     upgradeClickButton.addEventListener('click', () => {
       if (score >= upgradeClickCost) {
         score -= upgradeClickCost;
-        clickValue++;
-        upgradeClickCost = Math.ceil(upgradeClickCost * 1.15);
+        clickValue = Math.ceil(clickValue * 1.15); // Increase by 15% rounded up
+        upgradeClickCost = Math.ceil(upgradeClickCost * 1.15); // Cost increases by 15%
         upgradeClickButton.textContent = `Increase Score per Click (Cost: ${upgradeClickCost})`;
         updateScoreDisplay();
       }
@@ -136,7 +136,7 @@
       if (score >= upgradeAutomaticCost) {
         score -= upgradeAutomaticCost;
         scorePerSecond++;
-        upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.15);
+        upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.15); // Cost increases by 15%
         upgradeAutomaticButton.textContent = `Increase Score Addition per Second (Cost: ${upgradeAutomaticCost})`;
         updateScoreDisplay();
       }
