@@ -9,7 +9,7 @@
     body {
       background-color: #f0f0f0; /* Light shade of gray */
       margin: 0;
-      font-family: Arial, sans-serif; /* Adding a default font */
+      font-family: Arial, sans-serif;
     }
 
     /* Style for the top bar */
@@ -61,13 +61,15 @@
       position: fixed;
       right: 20px;
       bottom: 25%;
-      transition: transform 0.2s;
+      transition: transform 0.2s; /* Smooth transition for scaling */
+      transform: scale(1); /* Default scale */
     }
 
+    /* Hover effect for button scaling */
     #click-btn:hover {
-      background: linear-gradient(to bottom, #00cc66, #0056b3);
-      transform: scale(1.2);
+      transform: scale(1.2); /* Scale to 120% on hover */
     }
+
   </style>
 </head>
 <body>
@@ -84,7 +86,6 @@
   <button id="click-btn">Click Me!</button>
 
   <script>
-    // Initialize score and upgrade values
     let score = 0;
     let clickValue = 1;
     let scorePerSecond = 0;
@@ -97,18 +98,27 @@
     const upgradeClickButton = document.getElementById('upgrade-click');
     const upgradeAutomaticButton = document.getElementById('upgrade-automatic');
 
-    // Update score display function to avoid redundant code
     function updateScoreDisplay() {
       scoreDisplay.textContent = `Score: ${score}`;
     }
 
-    // Event listener for score click increment
+    // Handle button click with pulsing effect
     clickButton.addEventListener('click', () => {
       score += clickValue;
       updateScoreDisplay();
+      
+      // Pulse effect: briefly scale down
+      clickButton.style.transform = 'scale(1)';
+      
+      setTimeout(() => {
+        // Return to hover scale if still hovered
+        if (clickButton.matches(':hover')) {
+          clickButton.style.transform = 'scale(1.2)';
+        }
+      }, 50); // Reduced time to 0.05 seconds
     });
 
-    // Event listener for score-per-click upgrade
+    // Upgrade score per click
     upgradeClickButton.addEventListener('click', () => {
       if (score >= upgradeClickCost) {
         score -= upgradeClickCost;
@@ -119,7 +129,7 @@
       }
     });
 
-    // Event listener for score-per-second upgrade
+    // Upgrade score addition per second
     upgradeAutomaticButton.addEventListener('click', () => {
       if (score >= upgradeAutomaticCost) {
         score -= upgradeAutomaticCost;
@@ -130,7 +140,7 @@
       }
     });
 
-    // Increase score per second if applicable
+    // Increase score per second
     setInterval(() => {
       if (scorePerSecond > 0) {
         score += scorePerSecond;
