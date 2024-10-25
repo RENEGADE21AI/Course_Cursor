@@ -89,6 +89,7 @@
         let score = 0;
         const player = document.getElementById("player");
         const platform = document.getElementById("platform");
+        const clickButton = document.getElementById("click-button");
 
         const platformHeight = 20;  // Height of the platform in pixels
         let playerPos = { x: 20, y: platformHeight }; // Start directly on top of the platform
@@ -189,9 +190,15 @@
         }
 
         // Initialize score and start the game loop
-        document.getElementById("click-button").addEventListener("click", function() {
+        clickButton.addEventListener("click", function() {
             score++;
             document.getElementById("score").innerText = score; // Update score in the top bar
+            clickButton.style.transform = "scale(1)"; // Reset button size immediately after click
+        });
+
+        // Add a temporary scale effect on click
+        clickButton.addEventListener("mousedown", function() {
+            clickButton.style.transform = "scale(1.2)"; // Scale the button up when pressed
         });
 
         updatePlayerPosition();  // Set initial player position
