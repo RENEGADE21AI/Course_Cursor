@@ -54,25 +54,20 @@
             color: white;
             border: none;
             border-radius: 10px;
-            transition: transform 0.2s; /* Transition for hover effect */
+            transition: transform 0.1s; /* Smooth transition for size change */
         }
 
         #player {
             position: absolute;
-            bottom: 30px; /* Set the player on top of the platform */
+            bottom: 40px; /* Adjust to be above the platform (20px height of platform + 20px for space) */
             left: 20px;
-            width: 50px; /* Player width */
-            height: 50px; /* Player height */
+            width: 50px; /* Reduced size to make the player smaller */
+            height: 50px; /* Adjusted height to match width */
             background-color: transparent;
             background-image: url('https://github.com/RENEGADE21CODING/Platicker/blob/main/cursor.png?raw=true');
             background-size: 100% 100%; /* Scale the image to fit */
             background-repeat: no-repeat;
             pointer-events: none;
-        }
-
-        /* Hover effect for the button */
-        #click-button:hover {
-            transform: scale(1.2); /* Increase size by 20% */
         }
     </style>
 </head>
@@ -80,34 +75,27 @@
 
     <div id="game-container">
         <div id="score-bar">Score: <span id="score">0</span></div>
-        <div id="platform"></div>
         <div id="player"></div>
+        <div id="platform"></div>
         <button id="click-button">Click Me!</button>
     </div>
 
     <script>
         let score = 0;
         const player = document.getElementById("player");
-        const platform = document.getElementById("platform");
+        const clickButton = document.getElementById("click-button");
 
-        // Set player spawn point on top of the platform
-        player.style.bottom = (30 + 20) + 'px';  // 30px above the platform height
-
-        // Handle button click
-        document.getElementById("click-button").addEventListener("click", function() {
+        // Initialize score and set up click event for the button
+        clickButton.addEventListener("click", function() {
             score++;
             document.getElementById("score").innerText = score; // Update score in the top bar
 
-            // Reset button size briefly
-            const button = this;
-            button.style.transform = "scale(1)";
+            // Reset button size and apply hover effect
+            clickButton.style.transform = 'scale(1.2)';
             setTimeout(() => {
-                if (button.matches(':hover')) {
-                    button.style.transform = "scale(1.2)"; // Reapply hover effect
-                }
-            }, 100); // 0.1 seconds
+                clickButton.style.transform = 'scale(1)';
+            }, 100);
         });
-
     </script>
 
 </body>
