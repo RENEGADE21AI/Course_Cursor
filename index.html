@@ -5,14 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Platicker - A Platform Clicker Game</title>
   <style>
-    /* Style for the body */
+    /* Body and top bar styles */
     body {
-      background-color: #f0f0f0; /* Light shade of gray */
+      background-color: #f0f0f0;
       margin: 0;
       font-family: Arial, sans-serif;
     }
-
-    /* Style for the top bar */
     #top-bar {
       position: fixed;
       top: 0;
@@ -27,57 +25,48 @@
       box-sizing: border-box;
     }
 
-    /* Style for the cash display */
+    /* Cash and upgrades styles */
     #cash {
       font-size: 1.5em;
     }
-
-    /* Style for the upgrades section */
     #upgrades {
       display: flex;
       gap: 10px;
       margin-left: auto;
-      align-items: center; /* Align items in the center */
+      align-items: center;
     }
-
-    /* Style for upgrade buttons */
     .upgrade-btn {
-      padding: 15px; /* Increased padding for larger button */
-      background-color: #add8e6; /* Very light blue */
-      color: black; /* Changed text color to black for better visibility */
+      padding: 15px;
+      background-color: #add8e6;
+      color: black;
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      font-size: 1.2em; /* Increased font size for better visibility */
-      transition: background 0.2s; /* Smooth transition for background color */
+      font-size: 1.2em;
+      transition: background 0.2s;
     }
 
-    /* Style for the click button */
+    /* Style for the click image button */
     #click-btn {
-      padding: 15px 30px;
-      font-size: 1.5em;
-      background: linear-gradient(to bottom, #00e07f, #008bcc); /* Softer gradient */
-      color: white;
+      width: 100px;
+      height: 100px;
+      background-image: url('https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/ClickCash.png?raw=true');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
       border: none;
-      border-radius: 5px;
       cursor: pointer;
       position: fixed;
       right: 20px;
       bottom: 25%;
-      transition: transform 0.2s, background 0.2s; /* Smooth transition for scaling and color */
+      transition: transform 0.2s, filter 0.2s;
+      filter: brightness(0.85); /* Darkened default state */
     }
 
-    /* Hover effect for button: brighten up the gradient */
+    /* Hover effects for pulsing */
     #click-btn:hover {
-      background: linear-gradient(to bottom, #00ff7f, #007bff); /* Brighter gradient on hover */
+      filter: brightness(1); /* Brighter on hover */
       transform: scale(1.2); /* Scale to 120% on hover */
-    }
-
-    /* Style for current cash per click and cash per second */
-    .current-value {
-      font-size: 0.8em; /* Smaller font for current values */
-      color: white; /* Text color */
-      margin-top: 5px; /* Space above the text */
     }
   </style>
 </head>
@@ -98,7 +87,8 @@
     </div>
   </div>
 
-  <button id="click-btn">Click Me!</button>
+  <!-- Click image button -->
+  <button id="click-btn"></button>
 
   <script>
     let cash = 0,
@@ -116,15 +106,15 @@
           currentSecondDisplay = document.getElementById('current-second');
 
     function updateCashDisplay() {
-      cashDisplay.textContent = `Cash: $${cash.toFixed(2)}`; // Display cash with two decimal places
+      cashDisplay.textContent = `Cash: $${cash.toFixed(2)}`;
     }
 
     function updateCurrentValues() {
-      currentClickDisplay.textContent = `Current Cash Per Click: $${clickValue.toFixed(2)}`; // Display current cash per click
-      currentSecondDisplay.textContent = `Current Cash Per Second: $${cashPerSecond.toFixed(2)}`; // Display current cash per second
+      currentClickDisplay.textContent = `Current Cash Per Click: $${clickValue.toFixed(2)}`;
+      currentSecondDisplay.textContent = `Current Cash Per Second: $${cashPerSecond.toFixed(2)}`;
     }
 
-    // Handle button click with pulsing effect
+    // Handle image click with pulsing effect
     clickButton.addEventListener('click', () => {
       cash += clickValue;
       updateCashDisplay();
@@ -135,10 +125,9 @@
         if (clickButton.matches(':hover')) {
           clickButton.style.transform = 'scale(1.2)';
         }
-      }, 50); // Reduced time to 0.05 seconds
+      }, 50);
     });
 
-    // Reset to normal size when mouse leaves button
     clickButton.addEventListener('mouseleave', () => {
       clickButton.style.transform = 'scale(1)';
     });
@@ -147,10 +136,10 @@
     upgradeClickButton.addEventListener('click', () => {
       if (cash >= upgradeClickCost) {
         cash -= upgradeClickCost;
-        clickValue = Math.ceil(clickValue * 1.15 * 100) / 100; // Increase by 15% rounded to nearest hundredth
-        upgradeClickCost = Math.ceil(upgradeClickCost * 1.15 * 100) / 100; // Cost increases by 15% rounded to nearest hundredth
+        clickValue = Math.ceil(clickValue * 1.15 * 100) / 100;
+        upgradeClickCost = Math.ceil(upgradeClickCost * 1.15 * 100) / 100;
         upgradeClickButton.textContent = `Buy More Cash Per Click (Cost: $${upgradeClickCost.toFixed(2)})`;
-        updateCurrentValues(); // Update current values display
+        updateCurrentValues();
         updateCashDisplay();
       }
     });
@@ -160,9 +149,9 @@
       if (cash >= upgradeAutomaticCost) {
         cash -= upgradeAutomaticCost;
         cashPerSecond++;
-        upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.15 * 100) / 100; // Cost increases by 15% rounded to nearest hundredth
+        upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.15 * 100) / 100;
         upgradeAutomaticButton.textContent = `Buy More Cash Per Second (Cost: $${upgradeAutomaticCost.toFixed(2)})`;
-        updateCurrentValues(); // Update current values display
+        updateCurrentValues();
         updateCashDisplay();
       }
     });
@@ -172,7 +161,7 @@
       if (cashPerSecond > 0) {
         cash += cashPerSecond;
         updateCashDisplay();
-        updateCurrentValues(); // Update current values display
+        updateCurrentValues();
       }
     }, 1000);
 
