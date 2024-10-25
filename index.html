@@ -9,6 +9,7 @@
       background-color: #f0f0f0;
       margin: 0;
       font-family: Arial, sans-serif;
+      position: relative; /* Allow absolute positioning for children */
     }
     #top-bar {
       position: fixed;
@@ -54,6 +55,14 @@
       transition: transform 0.2s, filter 0.2s;
       filter: brightness(0.9);
     }
+    #platform {
+      position: fixed;
+      bottom: 10%; /* 10% from the bottom */
+      left: 0;
+      width: 10%; /* 10% of screen width */
+      height: 10vh; /* 10% of screen height */
+      background-color: black; /* Black platform */
+    }
   </style>
 </head>
 <body>
@@ -73,6 +82,8 @@
   </div>
 
   <img id="click-image" src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/ClickCash.png?raw=true" alt="Click Me">
+
+  <div id="platform"></div> <!-- Platform element -->
 
   <script>
     let cash = 0,
