@@ -54,18 +54,6 @@
   <script>
     let score = 0;
 
-    // List of fonts to choose from
-    const fonts = [
-      'Arial, sans-serif',
-      'Courier New, monospace',
-      'Georgia, serif',
-      'Times New Roman, serif',
-      'Verdana, sans-serif',
-      'Tahoma, sans-serif',
-      'Comic Sans MS, cursive',
-      'Impact, sans-serif'
-    ];
-
     // Get references to score display and button
     const scoreDisplay = document.getElementById('score');
     const clickButton = document.getElementById('click-btn');
@@ -74,10 +62,6 @@
     clickButton.addEventListener('click', () => {
       score++;
       scoreDisplay.textContent = `Score: ${score}`;
-
-      // Change button font to a random font
-      const randomFont = fonts[Math.floor(Math.random() * fonts.length)];
-      clickButton.style.fontFamily = randomFont;
     });
   </script>
 
