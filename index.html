@@ -124,11 +124,12 @@
 
         // Handle gravity and jumping logic
         function applyGravity() {
-            velocityY -= gravity;  // Gravity pulls down
-            playerPos.y += velocityY;  // Apply velocity to player's Y position
+            // Apply gravity
+            playerPos.y -= velocityY;  // Move the player down
+            velocityY += gravity;  // Increase velocity due to gravity
 
             // If the player is touching the platform, stop falling and stay on top
-            if (isTouchingPlatform() && velocityY <= 0) {
+            if (isTouchingPlatform()) {
                 playerPos.y = platform.getBoundingClientRect().top + player.offsetHeight;  // Set player on top of the platform
                 velocityY = 0;  // Stop falling
                 isJumping = false;  // Allow jumping again
@@ -143,7 +144,7 @@
         // Respawn the player after a delay
         function respawn() {
             setTimeout(() => {
-                playerPos.y = 50;  // Reset Y position to match raised platform height
+                playerPos.y = platform.getBoundingClientRect().top + player.offsetHeight;  // Reset Y position to match platform height
                 playerPos.x = 20;  // Reset X position to starting position
                 velocityY = 0;  // Reset velocity
                 isJumping = false;  // Reset jumping state
@@ -161,7 +162,7 @@
 
             // Jump
             if ((event.key === "ArrowUp" || event.key === "w") && !isJumping) {
-                velocityY = jumpPower;  // Positive value to jump upward
+                velocityY = jumpPower;  // Set positive velocity for jumping
                 isJumping = true;  // Mark player as jumping
             }
         });
