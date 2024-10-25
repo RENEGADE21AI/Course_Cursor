@@ -89,12 +89,13 @@
         let score = 0;
         const player = document.getElementById("player");
         const scoreDisplay = document.getElementById("score");
+        const clickButton = document.getElementById("click-button");
 
         // Set the initial player position directly on top of the platform
         player.style.bottom = '30px'; // Adjusted to align with platform height
 
         // Handle the click event for the button
-        document.getElementById("click-button").addEventListener("click", function() {
+        clickButton.addEventListener("click", function() {
             score++;
             scoreDisplay.innerText = score; // Update score in the top bar
             
@@ -105,6 +106,15 @@
                     this.style.transform = 'scale(1.2)'; // Scale back up if still hovered
                 }
             }, 1); // Delay to allow the size reset to be noticeable
+        });
+
+        // Mouse enter and leave events to manage button size
+        clickButton.addEventListener("mouseenter", function() {
+            this.style.transform = 'scale(1.2)'; // Scale up when hovered
+        });
+
+        clickButton.addEventListener("mouseleave", function() {
+            this.style.transform = 'scale(1)'; // Reset size when not hovered
         });
     </script>
 
