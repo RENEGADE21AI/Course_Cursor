@@ -85,7 +85,7 @@
         const player = document.getElementById("player");
         const platform = document.getElementById("platform");
 
-        let playerPos = { x: 20, y: 30 }; // Start above the platform
+        let playerPos = { x: 20, y: 30 }; // Start position above the platform
 
         // Update player's position on screen
         function updatePlayerPosition() {
@@ -108,7 +108,7 @@
         // Ensure player's bottom does not go below the platform when touching
         function maintainPlayerOnPlatform() {
             if (isTouchingPlatform()) {
-                playerPos.y = 30; // Set player on the platform (30px above bottom)
+                playerPos.y = parseFloat(platform.style.bottom) + parseFloat(platform.style.height); // Set player on the platform
             }
         }
 
