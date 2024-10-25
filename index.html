@@ -20,9 +20,9 @@
       width: 100%;
       height: 20vh; /* Increased height to 20% of the screen */
       background-color: #333; /* Dark shade of gray */
-      color: black; /* Changed text color to black */
+      color: white; /* Changed text color back to white */
       display: flex;
-      flex-direction: column; /* Arrange elements in a column */
+      align-items: center;
       padding: 10px 20px;
       box-sizing: border-box;
     }
@@ -32,14 +32,15 @@
       font-size: 1.5em;
     }
 
-    /* Style for the upgrades display */
+    /* Style for the upgrades section */
     #upgrades {
-      margin-top: 10px;
+      display: flex;
+      gap: 10px; /* Space between buttons */
+      margin-left: auto; /* Push upgrades to the right */
     }
 
     /* Style for upgrade buttons */
     .upgrade-btn {
-      margin: 5px 0;
       padding: 10px;
       background-color: #007bff;
       color: white;
