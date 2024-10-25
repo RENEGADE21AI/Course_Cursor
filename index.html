@@ -26,16 +26,15 @@
     }
     /* Style for the button */
     #click-btn {
-      padding: 20px 40px; /* Double the size */
-      font-size: 2em; /* Increase font size */
+      padding: 15px 30px; /* Reduced size */
+      font-size: 1.5em; /* Reduced font size */
       background: linear-gradient(to bottom, #007bff, #00ff7f); /* Gradient from top to bottom */
       color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
       position: fixed;
-      left: 50%;
-      transform: translateX(-50%);
+      right: 20px; /* Positioned on the far right */
       bottom: 25%; /* Positioning the button 25% from the bottom */
     }
     #click-btn:hover {
@@ -55,6 +54,18 @@
   <script>
     let score = 0;
 
+    // List of fonts to choose from
+    const fonts = [
+      'Arial, sans-serif',
+      'Courier New, monospace',
+      'Georgia, serif',
+      'Times New Roman, serif',
+      'Verdana, sans-serif',
+      'Tahoma, sans-serif',
+      'Comic Sans MS, cursive',
+      'Impact, sans-serif'
+    ];
+
     // Get references to score display and button
     const scoreDisplay = document.getElementById('score');
     const clickButton = document.getElementById('click-btn');
@@ -63,6 +74,10 @@
     clickButton.addEventListener('click', () => {
       score++;
       scoreDisplay.textContent = `Score: ${score}`;
+
+      // Change button font to a random font
+      const randomFont = fonts[Math.floor(Math.random() * fonts.length)];
+      clickButton.style.fontFamily = randomFont;
     });
   </script>
 
