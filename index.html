@@ -39,7 +39,7 @@
             bottom: 10%; /* Raise the platform by 10% of the height */
             left: 0; /* Position the platform at the far left */
             width: 20%; /* Set platform width to 20% of screen width */
-            height: 20px;
+            height: 20px; /* Fixed height for the platform */
             background-color: black;
         }
 
@@ -63,7 +63,7 @@
 
         #player {
             position: absolute;
-            bottom: 30px; /* Spawn on the platform */
+            bottom: 30px; /* Spawn above the platform */
             left: 20px;
             width: 50px; /* Reduced size to make the player smaller */
             height: 50px; /* Adjusted height to match width */
@@ -116,6 +116,16 @@
         clickButton.addEventListener("mouseleave", function() {
             this.style.transform = 'scale(1)'; // Reset size when not hovered
         });
+
+        // Function to align player on top of the platform
+        function alignPlayerOnPlatform() {
+            const platformRect = document.getElementById("platform").getBoundingClientRect();
+            player.style.bottom = `${platformRect.height + 10}px`; // Position player on top of platform
+        }
+
+        // Call the function initially to position player
+        alignPlayerOnPlatform();
+
     </script>
 
 </body>
