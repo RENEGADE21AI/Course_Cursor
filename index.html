@@ -22,15 +22,30 @@
       background-color: #333; /* Dark shade of gray */
       color: black; /* Changed text color to black */
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 20px;
+      flex-direction: column; /* Arrange elements in a column */
+      padding: 10px 20px;
       box-sizing: border-box;
     }
 
     /* Style for the score display */
     #score {
       font-size: 1.5em;
+    }
+
+    /* Style for the upgrades display */
+    #upgrades {
+      margin-top: 10px;
+    }
+
+    /* Style for upgrade buttons */
+    .upgrade-btn {
+      margin: 5px 0;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
     }
 
     /* Style for the button */
@@ -56,43 +71,64 @@
 </head>
 <body>
 
-  <!-- Top bar with score -->
+  <!-- Top bar with score and upgrades -->
   <div id="top-bar">
     <div id="score">Score: 0</div>
+    <div id="upgrades">
+      <button class="upgrade-btn" id="upgrade-click">Increase Score per Click (Cost: 10)</button>
+      <button class="upgrade-btn" id="upgrade-automatic">Increase Score Addition per Second (Cost: 10)</button>
+    </div>
   </div>
 
   <button id="click-btn">Click Me!</button>
 
   <script>
     let score = 0;
+    let clickValue = 1; // Score per click
+    let scorePerSecond = 0; // Score addition per second
+    let upgradeClickCost = 10; // Initial cost for score per click upgrade
+    let upgradeAutomaticCost = 10; // Initial cost for score addition per second upgrade
 
-    // Get references to score display and button
+    // Get references to score display and buttons
     const scoreDisplay = document.getElementById('score');
     const clickButton = document.getElementById('click-btn');
+    const upgradeClickButton = document.getElementById('upgrade-click');
+    const upgradeAutomaticButton = document.getElementById('upgrade-automatic');
 
     // Update the score when the button is clicked
     clickButton.addEventListener('click', () => {
-      score++;
+      score += clickValue;
       scoreDisplay.textContent = `Score: ${score}`;
-
-      // Temporarily return to normal size
-      clickButton.style.transform = 'scale(1)'; // Reset to normal size
-      setTimeout(() => {
-        // Check if still hovered over
-        if (clickButton.matches(':hover')) {
-          clickButton.style.transform = 'scale(1.2)'; // Scale back to 120% if hovered
-        }
-      }, 50); // Changed to 0.05 seconds
     });
 
-    // Add event listeners for mouse enter and leave to manage hover effect
-    clickButton.addEventListener('mouseenter', () => {
-      clickButton.style.transform = 'scale(1.2)'; // Scale to 120% on hover
+    // Upgrade score per click
+    upgradeClickButton.addEventListener('click', () => {
+      if (score >= upgradeClickCost) {
+        score -= upgradeClickCost; // Deduct score
+        clickValue++; // Increase score per click
+        upgradeClickCost = Math.ceil(upgradeClickCost * 1.15); // Increase cost by 15%
+        upgradeClickButton.textContent = `Increase Score per Click (Cost: ${upgradeClickCost})`;
+        scoreDisplay.textContent = `Score: ${score}`;
+      }
     });
 
-    clickButton.addEventListener('mouseleave', () => {
-      clickButton.style.transform = 'scale(1)'; // Scale back to normal when not hovered
+    // Upgrade score addition per second
+    upgradeAutomaticButton.addEventListener('click', () => {
+      if (score >= upgradeAutomaticCost) {
+        score -= upgradeAutomaticCost; // Deduct score
+        scorePerSecond++; // Increase score addition per second
+        upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.15); // Increase cost by 15%
+        upgradeAutomaticButton.textContent = `Increase Score Addition per Second (Cost: ${upgradeAutomaticCost})`;
+        scoreDisplay.textContent = `Score: ${score}`;
+      }
     });
+
+    // Update score automatically every second
+    setInterval(() => {
+      score += scorePerSecond; // Add score per second
+      scoreDisplay.textContent = `Score: ${score}`;
+    }, 1000); // 1 second interval
+
   </script>
 
 </body>
