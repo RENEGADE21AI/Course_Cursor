@@ -37,6 +37,7 @@
       display: flex;
       gap: 10px;
       margin-left: auto;
+      flex-direction: column; /* Align buttons vertically */
     }
 
     /* Style for upgrade buttons */
@@ -71,6 +72,13 @@
       background: linear-gradient(to bottom, #00ff7f, #007bff); /* Brighter gradient on hover */
       transform: scale(1.2); /* Scale to 120% on hover */
     }
+
+    /* Style for current cash per click and cash per second */
+    .current-value {
+      font-size: 0.8em; /* Smaller font for current values */
+      color: white; /* Text color */
+      margin-top: 5px; /* Space above the text */
+    }
   </style>
 </head>
 <body>
@@ -79,8 +87,14 @@
   <div id="top-bar">
     <div id="cash">Cash: $0.00</div>
     <div id="upgrades">
-      <button class="upgrade-btn" id="upgrade-click">Buy More Cash Per Click (Cost: $10.00)</button>
-      <button class="upgrade-btn" id="upgrade-automatic">Buy More Cash Per Second (Cost: $10.00)</button>
+      <div>
+        <button class="upgrade-btn" id="upgrade-click">Buy More Cash Per Click (Cost: $10.00)</button>
+        <div class="current-value" id="current-click">Current Cash Per Click: $1.00</div>
+      </div>
+      <div>
+        <button class="upgrade-btn" id="upgrade-automatic">Buy More Cash Per Second (Cost: $10.00)</button>
+        <div class="current-value" id="current-second">Current Cash Per Second: $0.00</div>
+      </div>
     </div>
   </div>
 
@@ -97,10 +111,17 @@
     const cashDisplay = document.getElementById('cash'),
           clickButton = document.getElementById('click-btn'),
           upgradeClickButton = document.getElementById('upgrade-click'),
-          upgradeAutomaticButton = document.getElementById('upgrade-automatic');
+          upgradeAutomaticButton = document.getElementById('upgrade-automatic'),
+          currentClickDisplay = document.getElementById('current-click'),
+          currentSecondDisplay = document.getElementById('current-second');
 
     function updateCashDisplay() {
       cashDisplay.textContent = `Cash: $${cash.toFixed(2)}`; // Display cash with two decimal places
+    }
+
+    function updateCurrentValues() {
+      currentClickDisplay.textContent = `Current Cash Per Click: $${clickValue.toFixed(2)}`; // Display current cash per click
+      currentSecondDisplay.textContent = `Current Cash Per Second: $${cashPerSecond.toFixed(2)}`; // Display current cash per second
     }
 
     // Handle button click with pulsing effect
@@ -129,6 +150,7 @@
         clickValue = Math.ceil(clickValue * 1.15 * 100) / 100; // Increase by 15% rounded to nearest hundredth
         upgradeClickCost = Math.ceil(upgradeClickCost * 1.15 * 100) / 100; // Cost increases by 15% rounded to nearest hundredth
         upgradeClickButton.textContent = `Buy More Cash Per Click (Cost: $${upgradeClickCost.toFixed(2)})`;
+        updateCurrentValues(); // Update current values display
         updateCashDisplay();
       }
     });
@@ -140,6 +162,7 @@
         cashPerSecond++;
         upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.15 * 100) / 100; // Cost increases by 15% rounded to nearest hundredth
         upgradeAutomaticButton.textContent = `Buy More Cash Per Second (Cost: $${upgradeAutomaticCost.toFixed(2)})`;
+        updateCurrentValues(); // Update current values display
         updateCashDisplay();
       }
     });
@@ -149,6 +172,7 @@
       if (cashPerSecond > 0) {
         cash += cashPerSecond;
         updateCashDisplay();
+        updateCurrentValues(); // Update current values display
       }
     }, 1000);
 
