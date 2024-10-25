@@ -54,21 +54,21 @@
             color: white;
             border: none;
             border-radius: 10px;
-            transition: transform 0.1s; /* Smooth transition for size change */
         }
 
         #player {
             position: absolute;
-            bottom: 30px; /* Set the player directly above the platform */
+            bottom: 30px; /* Adjusted to make the player visually appear on top of the platform */
             left: 20px;
-            width: 50px; /* Player width */
-            height: 50px; /* Player height */
+            width: 50px; /* Reduced size to make the player smaller */
+            height: 50px; /* Adjusted height to match width */
             background-color: transparent;
             background-image: url('https://github.com/RENEGADE21CODING/Platicker/blob/main/cursor.png?raw=true');
             background-size: 100% 100%; /* Scale the image to fit */
             background-repeat: no-repeat;
             pointer-events: none;
         }
+
     </style>
 </head>
 <body>
@@ -85,33 +85,28 @@
         const player = document.getElementById("player");
         const platform = document.getElementById("platform");
 
-        // Set player's spawn point directly on top of the platform
-        const playerSpawnX = 20; // X position on the platform
-        const playerSpawnY = 30; // Set to be just above the platform
+        // Set initial player position to be on top of the platform
+        player.style.bottom = '30px'; // 30px above the bottom of the screen (same height as the platform)
 
-        // Initialize player position
-        let playerPos = { x: playerSpawnX, y: playerSpawnY };
-
-        // Update player's position on screen
-        function updatePlayerPosition() {
-            player.style.left = playerPos.x + 'px';
-            player.style.bottom = playerPos.y + 'px';  // Update bottom position based on player's Y
-        }
-
-        // Initialize score and start the game loop
+        // Initialize score and setup click event for the button
         document.getElementById("click-button").addEventListener("click", function() {
             score++;
             document.getElementById("score").innerText = score; // Update score in the top bar
-            
-            // Reset button size for 0.1 seconds then apply hover effect
-            this.style.transform = "scale(1.2)";
+            this.style.transform = "scale(1.2)"; // Increase size on click
             setTimeout(() => {
-                this.style.transform = "scale(1)";
-            }, 100);
+                this.style.transform = "scale(1)"; // Reset size back to normal after 0.1 seconds
+            }, 100); // 100 milliseconds
         });
 
-        // Update player position initially
-        updatePlayerPosition(); // Set initial player position
+        // Handle hover effect for button
+        document.getElementById("click-button").addEventListener("mouseover", function() {
+            this.style.transform = "scale(1.2)"; // Increase size when hovering
+        });
+
+        document.getElementById("click-button").addEventListener("mouseout", function() {
+            this.style.transform = "scale(1)"; // Reset size when not hovering
+        });
+
     </script>
 
 </body>
