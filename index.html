@@ -49,11 +49,11 @@
       cursor: pointer;
     }
 
-    /* Style for the button */
+    /* Style for the button with a slightly darkened default look */
     #click-btn {
       padding: 15px 30px;
       font-size: 1.5em;
-      background: linear-gradient(to bottom, #00ff7f, #007bff);
+      background: linear-gradient(to bottom, #008d5f, #005fa3); /* Darkened default gradient */
       color: white;
       border: none;
       border-radius: 5px;
@@ -61,15 +61,15 @@
       position: fixed;
       right: 20px;
       bottom: 25%;
-      transition: transform 0.2s; /* Smooth transition for scaling */
+      transition: transform 0.2s, background 0.2s; /* Smooth transition for scaling and color */
       transform: scale(1); /* Default scale */
     }
 
-    /* Hover effect for button scaling */
+    /* Hover effect for button: brighten up the gradient */
     #click-btn:hover {
+      background: linear-gradient(to bottom, #00ff7f, #007bff); /* Brighter gradient */
       transform: scale(1.2); /* Scale to 120% on hover */
     }
-
   </style>
 </head>
 <body>
