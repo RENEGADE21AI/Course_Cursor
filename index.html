@@ -46,26 +46,21 @@
       transition: background 0.2s;
     }
 
-    /* Style for the click image button */
-    #click-btn {
+    /* Style for the click image */
+    #click-image {
       width: 100px;
       height: 100px;
-      background-image: url('https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/ClickCash.png?raw=true');
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-      border: none;
       cursor: pointer;
       position: fixed;
       right: 20px;
       bottom: 25%;
       transition: transform 0.2s, filter 0.2s;
-      filter: brightness(0.85); /* Darkened default state */
+      filter: brightness(0.9); /* Slightly darkened by default */
     }
 
-    /* Hover effects for pulsing */
-    #click-btn:hover {
-      filter: brightness(1); /* Brighter on hover */
+    /* Hover effect for pulsing */
+    #click-image:hover {
+      filter: brightness(1); /* Brighten on hover */
       transform: scale(1.2); /* Scale to 120% on hover */
     }
   </style>
@@ -87,49 +82,49 @@
     </div>
   </div>
 
-  <!-- Click image button -->
-  <button id="click-btn"></button>
+  <!-- Click image -->
+  <img id="click-image" src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/ClickCash.png?raw=true" alt="Click Me">
 
   <script>
+    // Cash and upgrade values
     let cash = 0,
         clickValue = 1,
         cashPerSecond = 0,
         upgradeClickCost = 10.00,
         upgradeAutomaticCost = 10.00;
 
-    // Cache DOM elements
+    // Cached DOM elements
     const cashDisplay = document.getElementById('cash'),
-          clickButton = document.getElementById('click-btn'),
+          clickImage = document.getElementById('click-image'),
           upgradeClickButton = document.getElementById('upgrade-click'),
           upgradeAutomaticButton = document.getElementById('upgrade-automatic'),
           currentClickDisplay = document.getElementById('current-click'),
           currentSecondDisplay = document.getElementById('current-second');
 
-    function updateCashDisplay() {
+    // Update displayed cash and current values
+    function updateDisplay() {
       cashDisplay.textContent = `Cash: $${cash.toFixed(2)}`;
-    }
-
-    function updateCurrentValues() {
       currentClickDisplay.textContent = `Current Cash Per Click: $${clickValue.toFixed(2)}`;
       currentSecondDisplay.textContent = `Current Cash Per Second: $${cashPerSecond.toFixed(2)}`;
     }
 
-    // Handle image click with pulsing effect
-    clickButton.addEventListener('click', () => {
+    // Click image event with pulsing effect
+    clickImage.addEventListener('click', () => {
       cash += clickValue;
-      updateCashDisplay();
+      updateDisplay();
 
       // Brief pulse effect on click
-      clickButton.style.transform = 'scale(1)';
+      clickImage.style.transform = 'scale(1)';
       setTimeout(() => {
-        if (clickButton.matches(':hover')) {
-          clickButton.style.transform = 'scale(1.2)';
+        if (clickImage.matches(':hover')) {
+          clickImage.style.transform = 'scale(1.2)';
         }
       }, 50);
     });
 
-    clickButton.addEventListener('mouseleave', () => {
-      clickButton.style.transform = 'scale(1)';
+    // Reset scale when not hovered
+    clickImage.addEventListener('mouseleave', () => {
+      clickImage.style.transform = 'scale(1)';
     });
 
     // Upgrade cash per click
@@ -139,29 +134,26 @@
         clickValue = Math.ceil(clickValue * 1.15 * 100) / 100;
         upgradeClickCost = Math.ceil(upgradeClickCost * 1.15 * 100) / 100;
         upgradeClickButton.textContent = `Buy More Cash Per Click (Cost: $${upgradeClickCost.toFixed(2)})`;
-        updateCurrentValues();
-        updateCashDisplay();
+        updateDisplay();
       }
     });
 
-    // Upgrade cash addition per second
+    // Upgrade cash per second
     upgradeAutomaticButton.addEventListener('click', () => {
       if (cash >= upgradeAutomaticCost) {
         cash -= upgradeAutomaticCost;
-        cashPerSecond++;
+        cashPerSecond = Math.ceil((cashPerSecond + 1) * 100) / 100;
         upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.15 * 100) / 100;
         upgradeAutomaticButton.textContent = `Buy More Cash Per Second (Cost: $${upgradeAutomaticCost.toFixed(2)})`;
-        updateCurrentValues();
-        updateCashDisplay();
+        updateDisplay();
       }
     });
 
-    // Increase cash per second
+    // Automatic cash increment
     setInterval(() => {
       if (cashPerSecond > 0) {
         cash += cashPerSecond;
-        updateCashDisplay();
-        updateCurrentValues();
+        updateDisplay();
       }
     }, 1000);
 
