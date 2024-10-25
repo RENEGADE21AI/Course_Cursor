@@ -36,9 +36,11 @@
       position: fixed;
       right: 20px; /* Positioned on the far right */
       bottom: 25%; /* Positioning the button 25% from the bottom */
+      transition: transform 0.2s; /* Smooth transition for scaling */
     }
     #click-btn:hover {
       background: linear-gradient(to bottom, #00cc66, #0056b3); /* Flipped darker gradient on hover */
+      transform: scale(1.2); /* Scale to 120% on hover */
     }
   </style>
 </head>
@@ -62,6 +64,24 @@
     clickButton.addEventListener('click', () => {
       score++;
       scoreDisplay.textContent = `Score: ${score}`;
+
+      // Temporarily return to normal size
+      clickButton.style.transform = 'scale(1)'; // Reset to normal size
+      setTimeout(() => {
+        // Check if still hovered over
+        if (clickButton.matches(':hover')) {
+          clickButton.style.transform = 'scale(1.2)'; // Scale back to 120% if hovered
+        }
+      }, 100); // 0.1 seconds
+    });
+
+    // Add event listeners for mouse enter and leave to manage hover effect
+    clickButton.addEventListener('mouseenter', () => {
+      clickButton.style.transform = 'scale(1.2)'; // Scale to 120% on hover
+    });
+
+    clickButton.addEventListener('mouseleave', () => {
+      clickButton.style.transform = 'scale(1)'; // Scale back to normal when not hovered
     });
   </script>
 
