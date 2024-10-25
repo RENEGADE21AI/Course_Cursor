@@ -36,9 +36,9 @@
 
         #platform {
             position: absolute;
-            bottom: 10%; /* Raise the platform by 10% of the height */
-            left: 0; /* Position the platform at the far left */
-            width: 20%; /* Set platform width to 20% of screen width */
+            bottom: 10%; /* Place the platform above the bottom */
+            left: 0; /* Position the platform on the left */
+            width: 20%;
             height: 20px;
             background-color: black;
         }
@@ -54,20 +54,23 @@
             color: white;
             border: none;
             border-radius: 10px;
-            transition: transform 0.1s; /* Smooth transition for size change */
+            transition: transform 0.1s;
+        }
+
+        #click-button:hover {
+            transform: scale(1.2); /* Enlarge button on hover */
         }
 
         #player {
             position: absolute;
-            bottom: 40px; /* Adjust to be above the platform (20px height of platform + 20px for space) */
+            bottom: calc(10% + 20px); /* Position above platform */
             left: 20px;
-            width: 50px; /* Reduced size to make the player smaller */
-            height: 50px; /* Adjusted height to match width */
+            width: 50px;
+            height: 50px;
             background-color: transparent;
             background-image: url('https://github.com/RENEGADE21CODING/Platicker/blob/main/cursor.png?raw=true');
-            background-size: 100% 100%; /* Scale the image to fit */
+            background-size: 100% 100%; /* Scale image to fit */
             background-repeat: no-repeat;
-            pointer-events: none;
         }
     </style>
 </head>
@@ -75,25 +78,26 @@
 
     <div id="game-container">
         <div id="score-bar">Score: <span id="score">0</span></div>
-        <div id="player"></div>
         <div id="platform"></div>
+        <div id="player"></div>
         <button id="click-button">Click Me!</button>
     </div>
 
     <script>
         let score = 0;
-        const player = document.getElementById("player");
-        const clickButton = document.getElementById("click-button");
 
-        // Initialize score and set up click event for the button
+        // Enlarge and shrink "Click Me" button on click
+        const clickButton = document.getElementById("click-button");
         clickButton.addEventListener("click", function() {
             score++;
-            document.getElementById("score").innerText = score; // Update score in the top bar
+            document.getElementById("score").innerText = score;
 
-            // Reset button size and apply hover effect
-            clickButton.style.transform = 'scale(1.2)';
+            // Temporarily shrink button to original size
+            clickButton.style.transform = "scale(1)";
             setTimeout(() => {
-                clickButton.style.transform = 'scale(1)';
+                if (clickButton.matches(":hover")) {
+                    clickButton.style.transform = "scale(1.2)";
+                }
             }, 100);
         });
     </script>
