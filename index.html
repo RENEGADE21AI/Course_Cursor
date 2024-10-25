@@ -193,6 +193,13 @@
             score++;
             document.getElementById("score").innerText = score; // Update score in the top bar
             clickButton.style.transform = "scale(1)"; // Reset button size immediately after click
+
+            // Set a timeout to immediately scale back to 120% if hovered
+            setTimeout(() => {
+                if (document.body.contains(clickButton)) { // Check if still in the DOM
+                    clickButton.style.transform = "scale(1.2)"; // Scale back to 120%
+                }
+            }, 1); // 1 millisecond delay
         });
 
         // Add a temporary scale effect on click
