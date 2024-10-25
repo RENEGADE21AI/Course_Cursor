@@ -101,11 +101,13 @@
             
             // Reset the button size immediately after clicking
             this.style.transform = 'scale(1)'; // Reset size to normal
+            
+            // Set a timeout to revert to hover size if still hovered
             setTimeout(() => {
                 if (this.matches(':hover')) {
                     this.style.transform = 'scale(1.2)'; // Scale back up if still hovered
                 }
-            }, 1); // Delay to allow the size reset to be noticeable
+            }, 100); // Delay for 100 milliseconds
         });
 
         // Mouse enter and leave events to manage button size
