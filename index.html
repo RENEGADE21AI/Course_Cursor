@@ -27,8 +27,8 @@
       box-sizing: border-box;
     }
 
-    /* Style for the score display */
-    #score {
+    /* Style for the cash display */
+    #cash {
       font-size: 1.5em;
     }
 
@@ -75,38 +75,38 @@
 </head>
 <body>
 
-  <!-- Top bar with score and upgrades -->
+  <!-- Top bar with cash and upgrades -->
   <div id="top-bar">
-    <div id="score">Score: 0</div>
+    <div id="cash">Cash: $0.00</div>
     <div id="upgrades">
-      <button class="upgrade-btn" id="upgrade-click">Increase Score per Click (Cost: 10)</button>
-      <button class="upgrade-btn" id="upgrade-automatic">Increase Score Addition per Second (Cost: 10)</button>
+      <button class="upgrade-btn" id="upgrade-click">Buy More Cash Per Click (Cost: $10.00)</button>
+      <button class="upgrade-btn" id="upgrade-automatic">Buy More Cash Per Second (Cost: $10.00)</button>
     </div>
   </div>
 
   <button id="click-btn">Click Me!</button>
 
   <script>
-    let score = 0,
+    let cash = 0,
         clickValue = 1,
-        scorePerSecond = 0,
-        upgradeClickCost = 10,
-        upgradeAutomaticCost = 10;
+        cashPerSecond = 0,
+        upgradeClickCost = 10.00,
+        upgradeAutomaticCost = 10.00;
 
     // Cache DOM elements
-    const scoreDisplay = document.getElementById('score'),
+    const cashDisplay = document.getElementById('cash'),
           clickButton = document.getElementById('click-btn'),
           upgradeClickButton = document.getElementById('upgrade-click'),
           upgradeAutomaticButton = document.getElementById('upgrade-automatic');
 
-    function updateScoreDisplay() {
-      scoreDisplay.textContent = `Score: ${score}`;
+    function updateCashDisplay() {
+      cashDisplay.textContent = `Cash: $${cash.toFixed(2)}`; // Display cash with two decimal places
     }
 
     // Handle button click with pulsing effect
     clickButton.addEventListener('click', () => {
-      score += clickValue;
-      updateScoreDisplay();
+      cash += clickValue;
+      updateCashDisplay();
 
       // Brief pulse effect on click
       clickButton.style.transform = 'scale(1)';
@@ -122,33 +122,33 @@
       clickButton.style.transform = 'scale(1)';
     });
 
-    // Upgrade score per click
+    // Upgrade cash per click
     upgradeClickButton.addEventListener('click', () => {
-      if (score >= upgradeClickCost) {
-        score -= upgradeClickCost;
-        clickValue = Math.ceil(clickValue * 1.15); // Increase by 15% rounded up
-        upgradeClickCost = Math.ceil(upgradeClickCost * 1.15); // Cost increases by 15%
-        upgradeClickButton.textContent = `Increase Score per Click (Cost: ${upgradeClickCost})`;
-        updateScoreDisplay();
+      if (cash >= upgradeClickCost) {
+        cash -= upgradeClickCost;
+        clickValue = Math.ceil(clickValue * 1.15 * 100) / 100; // Increase by 15% rounded to nearest hundredth
+        upgradeClickCost = Math.ceil(upgradeClickCost * 1.15 * 100) / 100; // Cost increases by 15% rounded to nearest hundredth
+        upgradeClickButton.textContent = `Buy More Cash Per Click (Cost: $${upgradeClickCost.toFixed(2)})`;
+        updateCashDisplay();
       }
     });
 
-    // Upgrade score addition per second
+    // Upgrade cash addition per second
     upgradeAutomaticButton.addEventListener('click', () => {
-      if (score >= upgradeAutomaticCost) {
-        score -= upgradeAutomaticCost;
-        scorePerSecond++;
-        upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.15); // Cost increases by 15%
-        upgradeAutomaticButton.textContent = `Increase Score Addition per Second (Cost: ${upgradeAutomaticCost})`;
-        updateScoreDisplay();
+      if (cash >= upgradeAutomaticCost) {
+        cash -= upgradeAutomaticCost;
+        cashPerSecond++;
+        upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.15 * 100) / 100; // Cost increases by 15% rounded to nearest hundredth
+        upgradeAutomaticButton.textContent = `Buy More Cash Per Second (Cost: $${upgradeAutomaticCost.toFixed(2)})`;
+        updateCashDisplay();
       }
     });
 
-    // Increase score per second
+    // Increase cash per second
     setInterval(() => {
-      if (scorePerSecond > 0) {
-        score += scorePerSecond;
-        updateScoreDisplay();
+      if (cashPerSecond > 0) {
+        cash += cashPerSecond;
+        updateCashDisplay();
       }
     }, 1000);
 
