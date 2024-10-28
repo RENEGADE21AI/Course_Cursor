@@ -75,7 +75,7 @@
   <div class="score" id="scoreDisplay">Cash: $0.00</div>
   <div class="upgrades">
     <div>
-      <button class="upgrade-button" id="upgradeClickButton">Buy More Cash Per Click (Cost: $1.00)</button>
+      <button class="upgrade-button" id="upgradeClickButton">Buy More Cash Per Click (Cost: $10.00)</button>
       <div class="upgrade-info" id="clickInfo">Current Cash Per Click: $0.00</div>
     </div>
     <div>
@@ -92,7 +92,7 @@
   let cash = 0;
   let cashPerClick = 1.00; // Set initial cash per click to $1.00 if it's 0.00
   let cashPerSecond = 0;
-  let upgradeClickCost = 1.00;
+  let upgradeClickCost = 10.00; // Starting cost set to $10.00
   let upgradeAutomaticCost = 1.00;
 
   const clickCash = document.getElementById('clickCash');
