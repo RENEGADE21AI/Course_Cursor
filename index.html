@@ -90,7 +90,7 @@
 
 <script>
   let cash = 0;
-  let cashPerClick = 0;
+  let cashPerClick = 1.00; // Set initial cash per click to $1.00 if it's 0.00
   let cashPerSecond = 0;
   let upgradeClickCost = 1.00;
   let upgradeAutomaticCost = 1.00;
@@ -116,11 +116,7 @@
   upgradeClickButton.addEventListener('click', () => {
     if (cash >= upgradeClickCost) {
       cash -= upgradeClickCost;
-      if (cashPerClick === 0) {
-        cashPerClick = 1.00;
-      } else {
-        cashPerClick = Math.ceil(cashPerClick * 1.1 * 100) / 100;
-      }
+      cashPerClick = Math.ceil(cashPerClick * 1.1 * 100) / 100;
       upgradeClickCost = Math.ceil(upgradeClickCost * 1.15 * 100) / 100;
       upgradeClickButton.textContent = `Buy More Cash Per Click (Cost: $${upgradeClickCost.toFixed(2)})`;
       updateDisplay();
@@ -141,12 +137,7 @@
     }
   });
 
-  setInterval(() => {
-    cash += cashPerSecond;
-    updateDisplay();
-  }, 1000);
-
-  updateDisplay();
+  updateDisplay(); // Ensure initial display is correct
 </script>
 
 </body>
