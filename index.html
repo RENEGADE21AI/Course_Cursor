@@ -11,7 +11,7 @@
       box-sizing: border-box;
     }
     body {
-      background-color: #d3d3d3;
+      background-color: #d3d3d3; /* Light gray background */
       font-family: Arial, sans-serif;
       display: flex;
       flex-direction: column;
@@ -36,7 +36,7 @@
       gap: 20px;
     }
     .upgrade-btn {
-      background-color: #b4eeb4;
+      background-color: #b4eeb4; /* Light green */
       border: none;
       padding: 10px 20px;
       font-size: 1em;
@@ -53,7 +53,7 @@
       text-align: center;
     }
     #click-image {
-      width: 100px;
+      width: 120px; /* Increased size for visibility */
       height: auto;
       cursor: pointer;
       transition: transform 0.1s, filter 0.1s;
@@ -127,12 +127,8 @@
     upgradeClickButton.addEventListener('click', () => {
       if (cash >= upgradeClickCost) {
         cash -= upgradeClickCost;
-        if (isFirstClickUpgrade) {
-          clickValue = 1.00;
-          isFirstClickUpgrade = false;
-        } else {
-          clickValue = Math.ceil(clickValue * 1.1 * 100) / 100;
-        }
+        clickValue = isFirstClickUpgrade ? 1.00 : Math.ceil(clickValue * 1.1 * 100) / 100;
+        isFirstClickUpgrade = false;
         upgradeClickCost = Math.ceil(upgradeClickCost * 1.15 * 100) / 100;
         upgradeClickButton.textContent = `Buy More Cash Per Click (Cost: $${upgradeClickCost.toFixed(2)})`;
         updateDisplay();
@@ -155,7 +151,6 @@
         updateDisplay();
       }
     }, 1000);
-
   </script>
 
 </body>
