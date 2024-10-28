@@ -5,61 +5,54 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Platicker - A Platform Clicker Game</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
     body {
-      background-color: #d3d3d3; /* Light gray background */
+      background-color: #f0f0f0;
+      margin: 0;
       font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      position: relative;
     }
     #top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 20vh;
-      background-color: #b0c4de; /* Light blue-gray background */
+      background-color: #666;
       color: white;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 0 2%;
-      font-size: 1.2em;
+      padding: 10px 20px;
+      box-sizing: border-box;
     }
     #cash {
-      font-size: 1.5em;
+      font-size: 2.4em;
     }
     #upgrades {
       display: flex;
-      gap: 20px;
+      gap: 10px;
+      margin-left: auto;
+      align-items: center;
     }
     .upgrade-btn {
-      background-color: #b4eeb4; /* Light green */
+      padding: 15px;
+      background-color: #d5f5d5; /* Light green */
+      color: black;
       border: none;
-      padding: 10px 20px;
-      font-size: 1em;
-      cursor: pointer;
       border-radius: 5px;
-      transition: background-color 0.2s;
-    }
-    .upgrade-btn:hover {
-      background-color: #a5d6a5;
-    }
-    .current-value {
-      font-size: 0.9em;
-      color: #444;
-      text-align: center;
+      cursor: pointer;
+      font-size: 1.2em;
+      transition: background 0.2s;
     }
     #click-image {
-      width: 120px; /* Increased size for visibility */
+      width: auto;
       height: auto;
+      max-width: 180px;
+      max-height: 180px;
       cursor: pointer;
-      transition: transform 0.1s, filter 0.1s;
-      position: absolute;
-      bottom: 10vh;
-      right: 3%;
+      position: fixed;
+      right: 2%;
+      bottom: 25%;
+      transition: transform 0.2s, filter 0.2s;
       filter: brightness(0.9);
     }
   </style>
@@ -71,7 +64,7 @@
     <div id="upgrades">
       <div>
         <button class="upgrade-btn" id="upgrade-click">Buy More Cash Per Click (Cost: $10.00)</button>
-        <div class="current-value" id="current-click">Current Cash Per Click: $0.00</div>
+        <div class="current-value" id="current-click">Current Cash Per Click: $1.00</div>
       </div>
       <div>
         <button class="upgrade-btn" id="upgrade-automatic">Buy More Cash Per Second (Cost: $10.00)</button>
@@ -84,12 +77,10 @@
 
   <script>
     let cash = 0,
-        clickValue = 0,
+        clickValue = 1,
         cashPerSecond = 0,
         upgradeClickCost = 10.00,
-        upgradeAutomaticCost = 10.00,
-        isFirstClickUpgrade = true,
-        isFirstAutomaticUpgrade = true; // New flag for automatic upgrade
+        upgradeAutomaticCost = 10.00;
 
     const cashDisplay = document.getElementById('cash'),
           clickImage = document.getElementById('click-image'),
@@ -110,10 +101,8 @@
     });
 
     clickImage.addEventListener('click', () => {
-      if (clickValue > 0) {
-        cash += clickValue;
-        updateDisplay();
-      }
+      cash += clickValue;
+      updateDisplay();
       clickImage.style.transform = 'scale(1)';
       setTimeout(() => {
         if (clickImage.matches(':hover')) {
@@ -130,8 +119,7 @@
     upgradeClickButton.addEventListener('click', () => {
       if (cash >= upgradeClickCost) {
         cash -= upgradeClickCost;
-        clickValue = isFirstClickUpgrade ? 1.00 : Math.ceil(clickValue * 1.1 * 100) / 100; // Set to $1.00 for the first purchase
-        isFirstClickUpgrade = false;
+        clickValue = Math.ceil(clickValue * 1.1 * 100) / 100;
         upgradeClickCost = Math.ceil(upgradeClickCost * 1.15 * 100) / 100;
         upgradeClickButton.textContent = `Buy More Cash Per Click (Cost: $${upgradeClickCost.toFixed(2)})`;
         updateDisplay();
@@ -141,13 +129,17 @@
     upgradeAutomaticButton.addEventListener('click', () => {
       if (cash >= upgradeAutomaticCost) {
         cash -= upgradeAutomaticCost;
-        cashPerSecond = isFirstAutomaticUpgrade ? 1.00 : Math.ceil(cashPerSecond * 1.1 * 100) / 100; // Set to $1.00 for the first purchase
-        isFirstAutomaticUpgrade = false; // Set flag to false after first purchase
+        cashPerSecond = Math.ceil(cashPerSecond * 1.1 * 100) / 100;
         upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.15 * 100) / 100;
         upgradeAutomaticButton.textContent = `Buy More Cash Per Second (Cost: $${upgradeAutomaticCost.toFixed(2)})`;
         updateDisplay();
       }
     });
+
+    // Set initial cash per click to $1.00 if it is $0.00
+    if (clickValue === 0) {
+      clickValue = 1;
+    }
 
     setInterval(() => {
       if (cashPerSecond > 0) {
@@ -155,6 +147,7 @@
         updateDisplay();
       }
     }, 1000);
+
   </script>
 
 </body>
