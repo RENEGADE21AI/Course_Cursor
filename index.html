@@ -88,7 +88,8 @@
         cashPerSecond = 0,
         upgradeClickCost = 10.00,
         upgradeAutomaticCost = 10.00,
-        isFirstClickUpgrade = true;
+        isFirstClickUpgrade = true,
+        isFirstAutomaticUpgrade = true; // New flag for automatic upgrade
 
     const cashDisplay = document.getElementById('cash'),
           clickImage = document.getElementById('click-image'),
@@ -109,8 +110,10 @@
     });
 
     clickImage.addEventListener('click', () => {
-      cash += clickValue;
-      updateDisplay();
+      if (clickValue > 0) {
+        cash += clickValue;
+        updateDisplay();
+      }
       clickImage.style.transform = 'scale(1)';
       setTimeout(() => {
         if (clickImage.matches(':hover')) {
@@ -127,7 +130,7 @@
     upgradeClickButton.addEventListener('click', () => {
       if (cash >= upgradeClickCost) {
         cash -= upgradeClickCost;
-        clickValue = isFirstClickUpgrade ? 1.00 : Math.ceil(clickValue * 1.1 * 100) / 100;
+        clickValue = isFirstClickUpgrade ? 1.00 : Math.ceil(clickValue * 1.1 * 100) / 100; // Set to $1.00 for the first purchase
         isFirstClickUpgrade = false;
         upgradeClickCost = Math.ceil(upgradeClickCost * 1.15 * 100) / 100;
         upgradeClickButton.textContent = `Buy More Cash Per Click (Cost: $${upgradeClickCost.toFixed(2)})`;
@@ -138,7 +141,8 @@
     upgradeAutomaticButton.addEventListener('click', () => {
       if (cash >= upgradeAutomaticCost) {
         cash -= upgradeAutomaticCost;
-        cashPerSecond = Math.ceil(cashPerSecond * 1.1 * 100) / 100;
+        cashPerSecond = isFirstAutomaticUpgrade ? 1.00 : Math.ceil(cashPerSecond * 1.1 * 100) / 100; // Set to $1.00 for the first purchase
+        isFirstAutomaticUpgrade = false; // Set flag to false after first purchase
         upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.15 * 100) / 100;
         upgradeAutomaticButton.textContent = `Buy More Cash Per Second (Cost: $${upgradeAutomaticCost.toFixed(2)})`;
         updateDisplay();
