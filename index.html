@@ -17,7 +17,7 @@
       left: 0;
       width: 100%;
       height: 20vh;
-      background-color: #666;
+      background-color: #888;
       color: white;
       display: flex;
       align-items: center;
@@ -119,7 +119,7 @@
     upgradeClickButton.addEventListener('click', () => {
       if (cash >= upgradeClickCost) {
         cash -= upgradeClickCost;
-        clickValue = Math.ceil(clickValue * 1.15 * 100) / 100;
+        clickValue = Math.ceil(clickValue * 1.1 * 100) / 100;
         upgradeClickCost = Math.ceil(upgradeClickCost * 1.15 * 100) / 100;
         upgradeClickButton.textContent = `Buy More Cash Per Click (Cost: $${upgradeClickCost.toFixed(2)})`;
         updateDisplay();
@@ -129,7 +129,7 @@
     upgradeAutomaticButton.addEventListener('click', () => {
       if (cash >= upgradeAutomaticCost) {
         cash -= upgradeAutomaticCost;
-        cashPerSecond = Math.ceil((cashPerSecond + 1) * 100) / 100;
+        cashPerSecond = Math.ceil(cashPerSecond * 1.1 * 100) / 100;
         upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.15 * 100) / 100;
         upgradeAutomaticButton.textContent = `Buy More Cash Per Second (Cost: $${upgradeAutomaticCost.toFixed(2)})`;
         updateDisplay();
