@@ -6,140 +6,156 @@
   <title>Platicker - A Platform Clicker Game</title>
   <link rel="icon" href="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/CursorCoin.png?raw=true" type="image/png">
   <style>
+    /* Basic styling */
     body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       margin: 0;
-      background-color: #f0f0f0; /* Light shade of gray */
+      background-color: #d3d3d3;
+      font-family: Arial, sans-serif;
     }
-    .top-bar {
-      width: 100%;
+
+    /* Top bar */
+    #topBar {
       height: 20vh;
-      background-color: #b0c4de; /* Slightly darker light blue-gray */
+      background-color: #b0c4de; /* Light blue-gray */
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 0 1em;
-      box-sizing: border-box;
-    }
-    .score {
+      padding: 0 2%;
       color: white;
-      font-size: 2.5em; /* Larger font size for Cash display */
+      font-size: 2.5vh;
     }
-    .upgrades {
-      display: flex;
-      gap: 1em;
-    }
-    .upgrade-button {
-      padding: 10px 20px;
-      font-size: 1em;
-      color: black;
-      background-color: #d1ffd1; /* Light green */
-      border: none;
-      cursor: pointer;
+
+    #cashDisplay {
+      flex: 1;
+      color: white;
+      background-color: #333;
+      padding: 10px;
       border-radius: 5px;
-      transition: transform 0.1s;
     }
-    .upgrade-button:active {
-      transform: scale(0.95);
+
+    /* Upgrades */
+    .upgradeButton {
+      margin-left: 10px;
+      padding: 10px;
+      background-color: #b0e57c; /* Light green */
+      border: none;
+      border-radius: 5px;
+      font-size: 2vh;
+      cursor: pointer;
+      width: 18%;
     }
-    .click-cash {
-      width: 120px;
-      height: auto;
+
+    /* Cash (Click Me) Image */
+    #cashImage {
+      width: 7%; /* Adjusted size */
       position: absolute;
-      bottom: 25%;
       right: 2%;
+      bottom: 25%;
       cursor: pointer;
-      transition: transform 0.1s;
-      filter: brightness(0.9); /* Darkened gradient */
+      transition: transform 0.3s ease;
     }
-    .click-cash:hover {
+
+    #cashImage:hover {
       transform: scale(1.2);
-      filter: brightness(1);
     }
-    .setting-button {
-      width: 60px; /* Larger settings button */
-      height: 60px;
+
+    #cashImage:active {
+      animation: pulse 0.1s ease forwards;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    /* Settings Button */
+    #settingsButton {
+      margin-left: auto;
+      width: 3%;
       cursor: pointer;
     }
-    .upgrade-info {
-      font-size: 0.9em;
+
+    /* Upgrade text */
+    .upgradeDetails {
+      font-size: 1.5vh;
       color: black;
+      margin-top: 5px;
       text-align: center;
     }
   </style>
 </head>
 <body>
 
-<div class="top-bar">
-  <div class="score" id="scoreDisplay">Cash: $0.00</div>
-  <div class="upgrades">
-    <div>
-      <button class="upgrade-button" id="upgradeClickButton">Buy More Cash Per Click (Cost: $10.00)</button>
-      <div class="upgrade-info" id="clickInfo">Current Cash Per Click: $0.00</div>
-    </div>
-    <div>
-      <button class="upgrade-button" id="upgradeAutomaticButton">Buy More Cash Per Second (Cost: $10.00)</button>
-      <div class="upgrade-info" id="automaticInfo">Current Cash Per Second: $0.00</div>
-    </div>
+  <!-- Top bar for Cash and upgrades -->
+  <div id="topBar">
+    <div id="cashDisplay">Cash: $0.00</div>
+    <button id="cashPerClickUpgrade" class="upgradeButton">
+      Buy More Cash Per Click
+      <div class="upgradeDetails">Cost: $10.00</div>
+      <div class="upgradeDetails">Current Cash Per Click: $1.00</div>
+    </button>
+    <button id="cashPerSecondUpgrade" class="upgradeButton">
+      Buy More Cash Per Second
+      <div class="upgradeDetails">Cost: $10.00</div>
+      <div class="upgradeDetails">Current Cash Per Second: $0.00</div>
+    </button>
+    <img id="settingsButton" src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/JellySettingsButton.png?raw=true" alt="Settings">
   </div>
-  <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/JellySettingsButton.png?raw=true" class="setting-button" id="settingsButton">
-</div>
 
-<img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/ClickCursorCash.png?raw=true" class="click-cash" id="clickCash">
+  <!-- Click Me Image (Cash) -->
+  <img id="cashImage" src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/ClickCursorCash.png?raw=true" alt="Click Me to Earn Cash">
 
-<script>
-  let cash = 0;
-  let cashPerClick = 1.00; // Set initial cash per click to $1.00 if it's 0.00
-  let cashPerSecond = 0;
-  let upgradeClickCost = 10.00; // Starting cost set to $10.00
-  let upgradeAutomaticCost = 10.00; // Starting cost set to $10.00
+  <script>
+    let cash = 0;
+    let cashPerClick = 1.00;
+    let cashPerSecond = 0.00;
+    let clickUpgradeCost = 10.00;
+    let secondUpgradeCost = 10.00;
 
-  const clickCash = document.getElementById('clickCash');
-  const scoreDisplay = document.getElementById('scoreDisplay');
-  const upgradeClickButton = document.getElementById('upgradeClickButton');
-  const upgradeAutomaticButton = document.getElementById('upgradeAutomaticButton');
-  const clickInfo = document.getElementById('clickInfo');
-  const automaticInfo = document.getElementById('automaticInfo');
+    const cashDisplay = document.getElementById("cashDisplay");
+    const cashImage = document.getElementById("cashImage");
+    const cashPerClickUpgrade = document.getElementById("cashPerClickUpgrade");
+    const cashPerSecondUpgrade = document.getElementById("cashPerSecondUpgrade");
 
-  function updateDisplay() {
-    scoreDisplay.textContent = `Cash: $${cash.toFixed(2)}`;
-    clickInfo.textContent = `Current Cash Per Click: $${cashPerClick.toFixed(2)}`;
-    automaticInfo.textContent = `Current Cash Per Second: $${cashPerSecond.toFixed(2)}`;
-  }
-
-  clickCash.addEventListener('click', () => {
-    cash += cashPerClick;
-    updateDisplay();
-  });
-
-  upgradeClickButton.addEventListener('click', () => {
-    if (cash >= upgradeClickCost) {
-      cash -= upgradeClickCost;
-      cashPerClick = Math.ceil(cashPerClick * 1.1 * 100) / 100;
-      upgradeClickCost = Math.ceil(upgradeClickCost * 1.15 * 100) / 100;
-      upgradeClickButton.textContent = `Buy More Cash Per Click (Cost: $${upgradeClickCost.toFixed(2)})`;
-      updateDisplay();
+    function updateDisplay() {
+      cashDisplay.innerText = `Cash: $${cash.toFixed(2)}`;
+      cashPerClickUpgrade.querySelector(".upgradeDetails:nth-child(2)").innerText = `Cost: $${clickUpgradeCost.toFixed(2)}`;
+      cashPerClickUpgrade.querySelector(".upgradeDetails:nth-child(3)").innerText = `Current Cash Per Click: $${cashPerClick.toFixed(2)}`;
+      cashPerSecondUpgrade.querySelector(".upgradeDetails:nth-child(2)").innerText = `Cost: $${secondUpgradeCost.toFixed(2)}`;
+      cashPerSecondUpgrade.querySelector(".upgradeDetails:nth-child(3)").innerText = `Current Cash Per Second: $${cashPerSecond.toFixed(2)}`;
     }
-  });
 
-  upgradeAutomaticButton.addEventListener('click', () => {
-    if (cash >= upgradeAutomaticCost) {
-      cash -= upgradeAutomaticCost;
-      if (cashPerSecond === 0) {
-        cashPerSecond = 1.00;
-      } else {
-        cashPerSecond = Math.ceil(cashPerSecond * 1.1 * 100) / 100;
+    cashImage.addEventListener("click", () => {
+      if (cashPerClick === 0) cashPerClick = 1.00; // Initial cash per click setup
+      cash += cashPerClick;
+      updateDisplay();
+    });
+
+    cashPerClickUpgrade.addEventListener("click", () => {
+      if (cash >= clickUpgradeCost) {
+        cash -= clickUpgradeCost;
+        clickUpgradeCost *= 1.15;
+        cashPerClick = Math.ceil(cashPerClick * 1.10 * 100) / 100; // 10% increase, rounded to nearest hundredth
+        updateDisplay();
       }
-      upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.15 * 100) / 100;
-      upgradeAutomaticButton.textContent = `Buy More Cash Per Second (Cost: $${upgradeAutomaticCost.toFixed(2)})`;
-      updateDisplay();
-    }
-  });
+    });
 
-  updateDisplay(); // Ensure initial display is correct
-</script>
+    cashPerSecondUpgrade.addEventListener("click", () => {
+      if (cash >= secondUpgradeCost) {
+        cash -= secondUpgradeCost;
+        secondUpgradeCost *= 1.15;
+        cashPerSecond = cashPerSecond === 0 ? 1.00 : Math.ceil(cashPerSecond * 1.10 * 100) / 100; // 10% increase, rounded to nearest hundredth
+        updateDisplay();
+      }
+    });
+
+    setInterval(() => {
+      cash += cashPerSecond;
+      updateDisplay();
+    }, 1000);
+
+    updateDisplay();
+  </script>
 
 </body>
 </html>
