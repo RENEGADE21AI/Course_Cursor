@@ -52,7 +52,7 @@
       right: 2%;
       cursor: pointer;
       transition: transform 0.1s, filter 0.1s; /* Include filter transition */
-      filter: brightness(0.9); /* Darkened gradient */
+      filter: brightness(0.9); /* Darkened gradient by default */
     }
     .setting-button {
       width: 60px; /* Larger settings button */
@@ -149,7 +149,7 @@
 
   // Hover effect to change brightness
   clickCash.addEventListener('mouseenter', () => {
-    clickCash.style.filter = 'brightness(1)'; // Brighter when hovered
+    clickCash.style.filter = 'brightness(1)'; // Normal brightness when hovered
     clickCash.style.transform = 'scale(1.2)'; // Slightly larger on hover
   });
 
