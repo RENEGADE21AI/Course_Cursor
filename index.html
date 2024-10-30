@@ -22,6 +22,7 @@
       justify-content: space-between;
       padding: 0 1em;
       box-sizing: border-box;
+      position: relative;
     }
     .score {
       color: white;
@@ -57,7 +58,7 @@
       transform: scale(1.2);
     }
     .setting-button, .stats-button {
-      width: 60px; /* Larger settings button */
+      width: 60px; /* Button size */
       height: 60px;
       cursor: pointer;
     }
@@ -66,37 +67,30 @@
       color: black;
       text-align: center;
     }
-    /* Settings Overlay */
+    /* Settings Pop-up Styles */
+    .settings-popup {
+      display: none; /* Initially hidden */
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px; /* Adjusted size */
+      height: 400px; /* Adjusted size */
+      background-color: white;
+      border: 2px solid #333;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      z-index: 1000; /* Higher than other elements */
+      padding: 20px;
+    }
     .overlay {
+      display: none; /* Initially hidden */
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.5); /* Dark semi-transparent background */
-      display: none; /* Hidden by default */
-      align-items: center;
-      justify-content: center;
-      z-index: 10; /* Above other elements */
-    }
-    .settings-popup {
-      width: 300px;
-      height: 300px;
-      background-color: white;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-    .close-button {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      cursor: pointer;
-      font-size: 1.5em;
-      background-color: transparent;
-      border: none;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 900; /* Lower than popup */
     }
   </style>
 </head>
@@ -120,14 +114,14 @@
 
 <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/ClickCursorCash.png?raw=true" class="click-cash" id="clickCash">
 
-<!-- Settings Overlay -->
-<div class="overlay" id="settingsOverlay">
-  <div class="settings-popup">
-    <button class="close-button" id="closeSettingsButton">&times;</button>
-    <h2>Settings</h2>
-    <p>Adjust your game settings here.</p>
-    <!-- Add more settings options as needed -->
-  </div>
+<!-- Overlay -->
+<div class="overlay" id="overlay"></div>
+
+<!-- Settings Pop-up -->
+<div class="settings-popup" id="settingsPopup">
+  <h2>Settings</h2>
+  <p>Adjust your game settings here.</p>
+  <button id="closeSettings">Close</button>
 </div>
 
 <script>
@@ -143,9 +137,9 @@
   const upgradeAutomaticButton = document.getElementById('upgradeAutomaticButton');
   const clickInfo = document.getElementById('clickInfo');
   const automaticInfo = document.getElementById('automaticInfo');
-  const settingsButton = document.getElementById('settingsButton');
-  const settingsOverlay = document.getElementById('settingsOverlay');
-  const closeSettingsButton = document.getElementById('closeSettingsButton');
+  const settingsPopup = document.getElementById('settingsPopup');
+  const overlay = document.getElementById('overlay');
+  const closeSettingsButton = document.getElementById('closeSettings');
 
   function updateDisplay() {
     scoreDisplay.textContent = `Cash: $${cash.toFixed(2)}`;
@@ -189,12 +183,16 @@
     updateDisplay();
   }, 1000);
 
+  // Settings button functionality
   settingsButton.addEventListener('click', () => {
-    settingsOverlay.style.display = 'flex'; // Show the overlay
+    settingsPopup.style.display = 'block'; // Show pop-up
+    overlay.style.display = 'block'; // Show overlay
   });
 
+  // Close button functionality
   closeSettingsButton.addEventListener('click', () => {
-    settingsOverlay.style.display = 'none'; // Hide the overlay
+    settingsPopup.style.display = 'none'; // Hide pop-up
+    overlay.style.display = 'none'; // Hide overlay
   });
 
   updateDisplay(); // Ensure initial display is correct
