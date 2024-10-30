@@ -92,6 +92,16 @@
       background-color: rgba(0, 0, 0, 0.5);
       z-index: 900; /* Lower than popup */
     }
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 1.5em;
+      color: black;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -119,9 +129,9 @@
 
 <!-- Settings Pop-up -->
 <div class="settings-popup" id="settingsPopup">
+  <button class="close-button" id="closeSettings">X</button>
   <h2>Settings</h2>
   <p>Adjust your game settings here.</p>
-  <button id="closeSettings">Close</button>
 </div>
 
 <script>
