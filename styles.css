@@ -76,43 +76,17 @@ body {
   z-index: 5; /* Below pop-up */
 }
 
-/* Add styles for Login/Register inputs */
-.login-form, .register-form {
-  display: none; /* Hide both forms initially */
-}
-
-.input-field {
-  margin-bottom: 15px; /* Space between input fields */
-  width: 100%; /* Full width inputs */
-  padding: 10px; /* Padding inside inputs */
-}
-
+/* Add styles for action buttons */
 .action-button {
   width: 100%; /* Full width for action buttons */
   padding: 10px;
   margin-top: 10px;
-}
-
-.level-design, .login-register, .reset-progress {
   background-color: #f0f0f0; /* Light background for action buttons */
   border: none;
   cursor: pointer;
   border-radius: 5px;
 }
 
-.level-design:hover, .login-register:hover, .reset-progress:hover {
+.action-button:hover {
   background-color: #e0e0e0; /* Darker on hover */
-}
-
-.tab {
-  cursor: pointer;
-  padding: 10px;
-  margin: 0 5px;
-  background-color: #d3d3d3; /* Light gray */
-  border: none;
-  border-radius: 5px;
-}
-
-.tab:hover {
-  background-color: #b0b0b0; /* Darker gray on hover */
 }
