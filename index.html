@@ -22,7 +22,6 @@
       justify-content: space-between;
       padding: 0 1em;
       box-sizing: border-box;
-      position: relative;
     }
     .score {
       color: white;
@@ -58,8 +57,8 @@
       transform: scale(1.2);
     }
     .setting-button, .stats-button {
-      width: 60px; /* Button size */
-      height: 60px;
+      width: 60px; /* Settings button */
+      height: 60px; /* Stats button */
       cursor: pointer;
     }
     .upgrade-info {
@@ -67,40 +66,35 @@
       color: black;
       text-align: center;
     }
-    /* Settings Pop-up Styles */
-    .settings-popup, .stats-popup {
-      display: none; /* Initially hidden */
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 400px; /* Adjusted size */
-      height: 400px; /* Adjusted size */
-      background-color: white;
-      border: 2px solid #333;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-      z-index: 1000; /* Higher than other elements */
-      padding: 20px;
-    }
     .overlay {
-      display: none; /* Initially hidden */
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 900; /* Lower than popup */
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+    }
+    .popup {
+      background: white;
+      width: 400px; /* Set the size */
+      height: 400px; /* Set the size */
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     }
     .close-button {
       position: absolute;
       top: 10px;
       right: 10px;
-      font-size: 1.5em;
-      color: black;
-      background: none;
-      border: none;
       cursor: pointer;
+      font-size: 1.5em;
     }
   </style>
 </head>
@@ -124,23 +118,20 @@
 
 <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/ClickCursorCash.png?raw=true" class="click-cash" id="clickCash">
 
-<!-- Overlay -->
-<div class="overlay" id="overlay"></div>
-
-<!-- Settings Pop-up -->
-<div class="settings-popup" id="settingsPopup">
-  <button class="close-button" id="closeSettings">X</button>
-  <h2>Settings</h2>
-  <p>Adjust your game settings here.</p>
+<div class="overlay" id="settingsOverlay">
+  <div class="popup">
+    <div class="close-button" id="closeSettings">X</div>
+    <h2>Settings</h2>
+    <p>Settings options here...</p>
+  </div>
 </div>
 
-<!-- Stats Pop-up -->
-<div class="stats-popup" id="statsPopup">
-  <button class="close-button" id="closeStats">X</button>
-  <h2>Game Stats</h2>
-  <p>Cash Earned: $<span id="cashEarned">0.00</span></p>
-  <p>Cash Per Click: $<span id="cashPerClickStat">0.50</span></p>
-  <p>Cash Per Second: $<span id="cashPerSecondStat">0.25</span></p>
+<div class="overlay" id="statsOverlay">
+  <div class="popup">
+    <div class="close-button" id="closeStats">X</div>
+    <h2>Stats</h2>
+    <p>Stats options here...</p>
+  </div>
 </div>
 
 <script>
@@ -156,31 +147,21 @@
   const upgradeAutomaticButton = document.getElementById('upgradeAutomaticButton');
   const clickInfo = document.getElementById('clickInfo');
   const automaticInfo = document.getElementById('automaticInfo');
-  const settingsPopup = document.getElementById('settingsPopup');
-  const statsPopup = document.getElementById('statsPopup');
-  const overlay = document.getElementById('overlay');
-  const closeSettingsButton = document.getElementById('closeSettings');
-  const closeStatsButton = document.getElementById('closeStats');
-  const cashEarnedDisplay = document.getElementById('cashEarned');
-  const cashPerClickStatDisplay = document.getElementById('cashPerClickStat');
-  const cashPerSecondStatDisplay = document.getElementById('cashPerSecondStat');
+  const settingsOverlay = document.getElementById('settingsOverlay');
+  const statsOverlay = document.getElementById('statsOverlay');
+  const closeSettings = document.getElementById('closeSettings');
+  const closeStats = document.getElementById('closeStats');
 
   function updateDisplay() {
     scoreDisplay.textContent = `Cash: $${cash.toFixed(2)}`;
     clickInfo.textContent = `Current Cash Per Click: $${cashPerClick.toFixed(2)}`;
     automaticInfo.textContent = `Current Cash Per Second: $${cashPerSecond.toFixed(2)}`;
-  }
-
-  function updateStatsDisplay() {
-    cashEarnedDisplay.textContent = cash.toFixed(2);
-    cashPerClickStatDisplay.textContent = cashPerClick.toFixed(2);
-    cashPerSecondStatDisplay.textContent = cashPerSecond.toFixed(2);
+    localStorage.setItem('gameState', JSON.stringify({ cash, cashPerClick, cashPerSecond, upgradeClickCost, upgradeAutomaticCost }));
   }
 
   clickCash.addEventListener('click', () => {
     cash += cashPerClick;
     updateDisplay();
-    updateStatsDisplay(); // Update stats display on click
     // Pulsing effect
     clickCash.style.transform = 'scale(1.1)';
     setTimeout(() => {
@@ -195,7 +176,6 @@
       upgradeClickCost = Math.ceil(upgradeClickCost * 1.15 * 100) / 100; // Increase cost by 15%
       upgradeClickButton.textContent = `Buy More Cash Per Click (Cost: $${upgradeClickCost.toFixed(2)})`;
       updateDisplay();
-      updateStatsDisplay(); // Update stats display after upgrade
     }
   });
 
@@ -206,36 +186,51 @@
       upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.15 * 100) / 100; // Increase cost by 15%
       upgradeAutomaticButton.textContent = `Buy More Cash Per Second (Cost: $${upgradeAutomaticCost.toFixed(2)})`;
       updateDisplay();
-      updateStatsDisplay(); // Update stats display after upgrade
     }
   });
 
-  document.getElementById('settingsButton').addEventListener('click', () => {
-    settingsPopup.style.display = 'block';
-    overlay.style.display = 'block';
-  });
-
-  document.getElementById('statsButton').addEventListener('click', () => {
-    statsPopup.style.display = 'block';
-    overlay.style.display = 'block';
-    updateStatsDisplay(); // Update stats when opening the popup
-  });
-
-  closeSettingsButton.addEventListener('click', () => {
-    settingsPopup.style.display = 'none';
-    overlay.style.display = 'none';
-  });
-
-  closeStatsButton.addEventListener('click', () => {
-    statsPopup.style.display = 'none';
-    overlay.style.display = 'none';
-  });
-
+  // Function to increment cash every second
   setInterval(() => {
-    cash += cashPerSecond; // Increase cash every second
+    cash += cashPerSecond;
     updateDisplay();
-    updateStatsDisplay(); // Update stats display every second
   }, 1000);
+
+  // Load game state from localStorage
+  window.onload = () => {
+    const savedState = localStorage.getItem('gameState');
+    if (savedState) {
+      const { cash: savedCash, cashPerClick: savedCashPerClick, cashPerSecond: savedCashPerSecond, upgradeClickCost: savedUpgradeClickCost, upgradeAutomaticCost: savedUpgradeAutomaticCost } = JSON.parse(savedState);
+      cash = savedCash;
+      cashPerClick = savedCashPerClick;
+      cashPerSecond = savedCashPerSecond;
+      upgradeClickCost = savedUpgradeClickCost;
+      upgradeAutomaticCost = savedUpgradeAutomaticCost;
+      updateDisplay();
+      upgradeClickButton.textContent = `Buy More Cash Per Click (Cost: $${upgradeClickCost.toFixed(2)})`;
+      upgradeAutomaticButton.textContent = `Buy More Cash Per Second (Cost: $${upgradeAutomaticCost.toFixed(2)})`;
+    }
+  };
+
+  // Show settings overlay
+  document.getElementById('settingsButton').addEventListener('click', () => {
+    settingsOverlay.style.display = 'flex';
+  });
+
+  // Close settings overlay
+  closeSettings.addEventListener('click', () => {
+    settingsOverlay.style.display = 'none';
+  });
+
+  // Show stats overlay
+  document.getElementById('statsButton').addEventListener('click', () => {
+    statsOverlay.style.display = 'flex';
+  });
+
+  // Close stats overlay
+  closeStats.addEventListener('click', () => {
+    statsOverlay.style.display = 'none';
+  });
+
 </script>
 </body>
 </html>
