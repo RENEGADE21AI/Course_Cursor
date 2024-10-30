@@ -34,12 +34,21 @@ body {
   background-color: #87ceeb; /* Lighter blue on hover */
 }
 
+/* Updated Cash image size */
 .click-cash {
   position: absolute;
   bottom: 10px; /* Positioning cash image */
   left: 50%;
   transform: translateX(-50%);
   cursor: pointer;
+  width: 50px; /* Reduced size */
+  height: 50px; /* Reduced size */
+}
+
+.stats-button,
+.setting-button {
+  width: 60px; /* Set button width */
+  height: 60px; /* Set button height */
 }
 
 .popup {
