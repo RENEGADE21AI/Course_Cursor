@@ -36,11 +36,10 @@
   <h2>Settings</h2>
   <button class="action-button level-design">Level Design</button>
   <button class="action-button login-register" id="loginRegisterButton">Login/Register</button>
-  <button class="action-button reset-progress" id="resetProgressButton">Reset Progress</button>
   
   <div id="loginRegisterContainer" style="display:none;">
     <div class="tab-container">
-      <div class="tab" id="loginTab">Login</div>
+      <div class="tab active" id="loginTab">Login</div>
       <div class="tab" id="registerTab">Register</div>
     </div>
     
@@ -51,6 +50,8 @@
       <button type="submit">Submit</button>
     </form>
   </div>
+  
+  <button class="action-button reset-progress" id="resetProgressButton">Reset Progress</button>
 </div>
 
 <!-- Stats Popup -->
@@ -60,6 +61,6 @@
   <p>Current Stats will be displayed here.</p>
 </div>
 
-<script src="script.js"></script>
+<script src="script.js" defer></script>
 </body>
 </html>
