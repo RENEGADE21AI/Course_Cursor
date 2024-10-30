@@ -90,7 +90,7 @@ body {
   text-align: center;
 }
 
-.tab:hover {
+.tab.active {
   background-color: #007bff; /* Active tab hover color */
 }
 
