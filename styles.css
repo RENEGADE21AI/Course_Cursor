@@ -1,102 +1,142 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #f2f2f2;
+  background-color: #f5f5f5; /* Light gray background for the game */
 }
 
 .top-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #d9d9d9;
-  height: 20vh;
-  padding: 0 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  background-color: #d3d3d3; /* Light gray background */
+  height: 20%; /* 20% of the screen height */
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .score {
-  font-size: 24px;
-  color: black;
+  color: white; /* Score text color */
+  font-size: 1.5em; /* Score text size */
 }
 
 .upgrades {
   display: flex;
-  gap: 20px;
+  justify-content: space-between;
+  flex-grow: 1;
+  margin: 0 20px;
 }
 
 .upgrade-button {
-  background-color: #a3c2e7;
+  background-color: #b0e0e6; /* Light blue color */
+  color: #000; /* Button text color */
   border: none;
   border-radius: 5px;
   padding: 10px;
+  font-size: 1em;
   cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.upgrade-button:hover {
+  background-color: #87cefa; /* Change color on hover */
 }
 
 .upgrade-info {
-  font-size: 14px;
+  font-size: 0.9em; /* Smaller text for upgrade info */
+  color: #000; /* Text color for upgrade info */
   margin-top: 5px;
 }
 
-.stats-button, .setting-button {
+.stats-button,
+.setting-button {
   width: 60px;
   height: 60px;
   cursor: pointer;
 }
 
 .click-cash {
-  cursor: pointer;
+  width: 100px; /* Adjust as needed */
+  height: auto; /* Maintain aspect ratio */
   position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 10%; /* Position above the bottom */
+  left: calc(50% - 50px); /* Center horizontally */
 }
 
 .overlay {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: none;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7); /* Dark overlay */
+  display: none; /* Hidden by default */
+  z-index: 10; /* Ensure it appears above other content */
 }
 
 .popup {
   position: fixed;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  background: #fff; /* White background for pop-ups */
+  border-radius: 10px;
   padding: 20px;
-  width: 300px;
-  max-width: 80%;
-  z-index: 10;
+  width: 300px; /* Width of the pop-up */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  display: none; /* Hidden by default */
+  z-index: 20; /* Above overlay */
 }
 
 .close-button {
   cursor: pointer;
   float: right;
-  font-size: 20px;
+  font-size: 1.5em;
+  color: #000;
 }
 
-.login-register-tabs {
-  margin-top: 20px;
+h2 {
+  margin-top: 0;
+  font-size: 1.5em;
 }
 
-.tab {
-  display: inline-block;
-  padding: 10px;
-  background-color: #a3c2e7;
-  border: 1px solid #007bff;
+.action-button {
+  background-color: #87cefa; /* Light blue for action buttons */
+  color: #000; /* Button text color */
+  border: none;
   border-radius: 5px;
+  padding: 10px;
+  width: 100%; /* Full width */
+  font-size: 1em;
   cursor: pointer;
-  margin: 0 5px;
+  margin-bottom: 10px; /* Space between buttons */
 }
 
-input {
-  display: block;
-  margin-top: 10px;
+.login-register {
+  display: none; /* Initially hide login/register forms */
+}
+
+.login-form, .register-form {
+  display: none; /* Hide forms by default */
+}
+
+input[type="text"],
+input[type="password"] {
   width: 100%;
-  padding: 8px;
+  padding: 10px;
+  margin-top: 5px;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+
+input[type="submit"] {
+  background-color: #87cefa; /* Button color */
+  color: #000; /* Button text color */
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background-color: #00bfff; /* Darker blue on hover */
 }
