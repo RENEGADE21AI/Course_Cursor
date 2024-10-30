@@ -38,28 +38,18 @@
   <button class="action-button login-register" id="loginRegisterButton">Login/Register</button>
   <button class="action-button reset-progress" id="resetProgressButton">Reset Progress</button>
   
-  <!-- Login/Register Tab Section -->
-  <div id="loginRegisterTabs" class="tab-container">
-    <div class="tab" id="loginTab" onclick="showTab('login')">Login</div>
-    <div class="tab" id="registerTab" onclick="showTab('register')">Register</div>
-
-    <div id="loginForm" class="form">
-      <input type="text" id="loginUsername" placeholder="Username" required>
-      <input type="password" id="loginPassword" placeholder="Password" required>
-      <!-- Captcha would typically be implemented here -->
-      <p>Please complete the CAPTCHA:</p>
-      <div class="captcha">[CAPTCHA goes here]</div>
-      <button class="action-button" id="submitLogin">Login</button>
+  <div id="loginRegisterContainer" style="display:none;">
+    <div class="tab-container">
+      <div class="tab" id="loginTab">Login</div>
+      <div class="tab" id="registerTab">Register</div>
     </div>
-
-    <div id="registerForm" class="form" style="display: none;">
-      <input type="text" id="registerUsername" placeholder="Username" required>
-      <input type="password" id="registerPassword" placeholder="Password" required>
-      <!-- Captcha would typically be implemented here -->
-      <p>Please complete the CAPTCHA:</p>
-      <div class="captcha">[CAPTCHA goes here]</div>
-      <button class="action-button" id="submitRegister">Register</button>
-    </div>
+    
+    <form id="loginRegisterForm" class="form">
+      <input type="text" id="usernameInput" placeholder="Username" required>
+      <input type="password" id="passwordInput" placeholder="Password" required>
+      <div class="captcha">I am not a robot (CAPTCHA here)</div>
+      <button type="submit">Submit</button>
+    </form>
   </div>
 </div>
 
