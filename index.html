@@ -6,129 +6,12 @@
   <title>Platicker - A Platform Clicker Game</title>
   <link rel="icon" href="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/CursorCoin.png?raw=true" type="image/png">
   <style>
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 0;
-      background-color: #f0f0f0; /* Light shade of gray */
-    }
-    .top-bar {
-      width: 100%;
-      height: 20vh;
-      background-color: #b0c4de; /* Slightly darker light blue-gray */
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 1em;
-      box-sizing: border-box;
-    }
-    .score {
-      color: white;
-      font-size: 2.5em; /* Larger font size for Cash display */
-    }
-    .upgrades {
-      display: flex;
-      gap: 1em;
-    }
-    .upgrade-button {
-      padding: 10px 20px;
-      font-size: 1em;
-      color: black;
-      background-color: #d1ffd1; /* Light green */
-      border: none;
-      cursor: pointer;
-      border-radius: 5px;
-      transition: transform 0.1s;
-    }
-    .upgrade-button:active {
-      transform: scale(0.95);
-    }
-    .click-cash {
-      width: 120px;
-      height: auto;
-      position: absolute;
-      bottom: 25%;
-      right: 2%;
-      cursor: pointer;
-      transition: transform 0.1s;
-    }
-    .click-cash:hover {
-      transform: scale(1.2);
-    }
-    .setting-button {
-      width: 60px; /* Larger settings button */
-      height: 60px;
-      cursor: pointer;
-    }
-    .stats-button {
-      width: 60px; /* Stats button */
-      height: 60px;
-      cursor: pointer;
-      margin-left: 1px; /* Space between buttons */
-    }
-    .upgrade-info {
-      font-size: 0.9em;
-      color: black;
-      text-align: center;
-    }
-    /* Popup styles */
-    .popup {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: white;
-      border: 2px solid #333;
-      padding: 20px;
-      z-index: 1000;
-      display: none; /* Hidden by default */
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      width: 400px; /* Set width to twice as large */
-      height: 400px; /* Set height to twice as large */
-    }
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 900;
-      display: none; /* Hidden by default */
-    }
-    .close-button {
-      cursor: pointer;
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 1.5em;
-      color: red;
-    }
-    .action-button {
-      width: 100%;
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-bottom: 10px; /* Spacing between buttons */
-    }
-    .level-design {
-      background-color: blue;
-      color: white;
-    }
-    .login-register {
-      background-color: green;
-      color: white;
-    }
-    .reset-progress {
-      background-color: red;
-      color: white;
-    }
+    /* Add CSS here for styling elements like buttons, popups, etc. */
   </style>
 </head>
 <body>
 
+<!-- Main Game Interface -->
 <div class="top-bar">
   <div class="score" id="scoreDisplay">Cash: $0.00</div>
   <div class="upgrades">
@@ -141,37 +24,36 @@
       <div class="upgrade-info" id="automaticInfo">Current Cash Per Second: $0.25</div>
     </div>
   </div>
-  <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/VGstats.png?raw=true" class="stats-button" id="statsButton">
+  <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/VGstats.png?raw=true" class="setting-button" id="statsButton">
   <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/JellySettingsButton.png?raw=true" class="setting-button" id="settingsButton">
 </div>
 
 <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/ClickCursorCash.png?raw=true" class="click-cash" id="clickCash">
 
-<!-- Overlay for popups -->
-<div class="overlay" id="overlay"></div>
-
-<!-- Settings Popup -->
-<div class="popup" id="settingsPopup">
-  <span class="close-button" id="closeSettingsPopup">&times;</span>
-  <h2>Settings</h2>
-  <button class="action-button level-design">Level Design</button>
-  <button class="action-button login-register">Login/Register</button>
-  <button class="action-button reset-progress" id="resetProgressButton">Reset Progress</button>
+<!-- Popups -->
+<div class="popup-overlay" id="settingsPopupOverlay" style="display: none;">
+  <div class="popup-content" id="settingsPopupContent">
+    <span class="close-button" id="closeSettingsPopup">&times;</span>
+    <button id="levelDesignButton" class="popup-button blue">Level Design</button>
+    <button id="loginRegisterButton" class="popup-button green">Login/Register</button>
+    <button id="resetProgressButton" class="popup-button red">Reset Progress</button>
+  </div>
 </div>
 
-<!-- Stats Popup -->
-<div class="popup" id="statsPopup">
-  <span class="close-button" id="closeStatsPopup">&times;</span>
-  <h2>Stats</h2>
-  <p>Current Stats will be displayed here.</p>
+<div class="popup-overlay" id="statsPopupOverlay" style="display: none;">
+  <div class="popup-content" id="statsPopupContent">
+    <span class="close-button" id="closeStatsPopup">&times;</span>
+    <h2>Stats</h2>
+    <p>Display any game statistics here.</p>
+  </div>
 </div>
 
 <script>
   let cash = 0;
-  let cashPerClick = 0.50; // Set initial cash per click to $0.50
-  let cashPerSecond = 0.25; // Set initial cash per second to $0.25
-  let upgradeClickCost = 10.00; // Starting cost set to $10.00
-  let upgradeAutomaticCost = 10.00; // Starting cost set to $10.00
+  let cashPerClick = 0.50;
+  let cashPerSecond = 0.25;
+  let upgradeClickCost = 10.00;
+  let upgradeAutomaticCost = 10.00;
 
   const clickCash = document.getElementById('clickCash');
   const scoreDisplay = document.getElementById('scoreDisplay');
@@ -179,10 +61,31 @@
   const upgradeAutomaticButton = document.getElementById('upgradeAutomaticButton');
   const clickInfo = document.getElementById('clickInfo');
   const automaticInfo = document.getElementById('automaticInfo');
-
-  const settingsPopup = document.getElementById('settingsPopup');
-  const statsPopup = document.getElementById('statsPopup');
-  const overlay = document.getElementById('overlay');
+  
+  // Load saved progress from local storage
+  function loadProgress() {
+    const savedData = JSON.parse(localStorage.getItem('gameProgress'));
+    if (savedData) {
+      cash = savedData.cash || 0;
+      cashPerClick = savedData.cashPerClick || 0.50;
+      cashPerSecond = savedData.cashPerSecond || 0.25;
+      upgradeClickCost = savedData.upgradeClickCost || 10.00;
+      upgradeAutomaticCost = savedData.upgradeAutomaticCost || 10.00;
+      updateDisplay();
+    }
+  }
+  
+  // Save progress to local storage
+  function saveProgress() {
+    const gameData = {
+      cash,
+      cashPerClick,
+      cashPerSecond,
+      upgradeClickCost,
+      upgradeAutomaticCost
+    };
+    localStorage.setItem('gameProgress', JSON.stringify(gameData));
+  }
 
   function updateDisplay() {
     scoreDisplay.textContent = `Cash: $${cash.toFixed(2)}`;
@@ -193,74 +96,49 @@
   clickCash.addEventListener('click', () => {
     cash += cashPerClick;
     updateDisplay();
-    // Pulsing effect
-    clickCash.style.transform = 'scale(1.1)';
-    setTimeout(() => {
-      clickCash.style.transform = 'scale(1)';
-    }, 100);
+    saveProgress();
   });
 
   upgradeClickButton.addEventListener('click', () => {
     if (cash >= upgradeClickCost) {
       cash -= upgradeClickCost;
-      cashPerClick = Math.ceil(cashPerClick * 1.15 * 100) / 100; // Increase by 15%
-      upgradeClickCost = Math.ceil(upgradeClickCost * 1.15 * 100) / 100; // Increase cost by 15%
+      cashPerClick = Math.ceil(cashPerClick * 1.15 * 100) / 100;
+      upgradeClickCost = Math.ceil(upgradeClickCost * 1.15 * 100) / 100;
       upgradeClickButton.textContent = `Buy More Cash Per Click (Cost: $${upgradeClickCost.toFixed(2)})`;
       updateDisplay();
+      saveProgress();
     }
   });
 
   upgradeAutomaticButton.addEventListener('click', () => {
     if (cash >= upgradeAutomaticCost) {
       cash -= upgradeAutomaticCost;
-      cashPerSecond = Math.ceil(cashPerSecond * 1.15 * 100) / 100; // Increase by 15%
-      upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.15 * 100) / 100; // Increase cost by 15%
+      cashPerSecond = Math.ceil(cashPerSecond * 1.15 * 100) / 100;
+      upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.15 * 100) / 100;
       upgradeAutomaticButton.textContent = `Buy More Cash Per Second (Cost: $${upgradeAutomaticCost.toFixed(2)})`;
       updateDisplay();
+      saveProgress();
     }
   });
 
-  // Automatic cash increase every second
   setInterval(() => {
     cash += cashPerSecond;
     updateDisplay();
+    saveProgress();
   }, 1000);
 
-  // Show settings popup
-  document.getElementById('settingsButton').addEventListener('click', () => {
-    settingsPopup.style.display = 'block';
-    overlay.style.display = 'block';
-  });
-
-  // Close settings popup
-  document.getElementById('closeSettingsPopup').addEventListener('click', () => {
-    settingsPopup.style.display = 'none';
-    overlay.style.display = 'none';
-  });
-
-  // Show stats popup
-  document.getElementById('statsButton').addEventListener('click', () => {
-    statsPopup.style.display = 'block';
-    overlay.style.display = 'block';
-  });
-
-  // Close stats popup
-  document.getElementById('closeStatsPopup').addEventListener('click', () => {
-    statsPopup.style.display = 'none';
-    overlay.style.display = 'none';
-  });
-
-  // Reset progress
   document.getElementById('resetProgressButton').addEventListener('click', () => {
     cash = 0;
-    cashPerClick = 0.50; // Reset to initial value
-    cashPerSecond = 0.25; // Reset to initial value
-    upgradeClickCost = 10.00; // Reset upgrade cost
-    upgradeAutomaticCost = 10.00; // Reset upgrade cost
+    cashPerClick = 0.50;
+    cashPerSecond = 0.25;
+    upgradeClickCost = 10.00;
+    upgradeAutomaticCost = 10.00;
+    localStorage.removeItem('gameProgress');
     updateDisplay();
-    settingsPopup.style.display = 'none'; // Close the popup after reset
-    overlay.style.display = 'none'; // Close the overlay after reset
   });
+
+  loadProgress();
+  updateDisplay();
 </script>
 
 </body>
