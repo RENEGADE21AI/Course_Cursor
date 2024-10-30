@@ -6,7 +6,88 @@
   <title>Platicker - A Platform Clicker Game</title>
   <link rel="icon" href="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/CursorCoin.png?raw=true" type="image/png">
   <style>
-    /* Add CSS here for styling elements like buttons, popups, etc. */
+    /* Basic styles for layout preservation */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .top-bar {
+      width: 100%;
+      height: 20vh;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #d3d3d3;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    .score {
+      color: white;
+      font-size: 1.5em;
+      flex: 1;
+    }
+    .upgrades {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    .upgrade-button {
+      padding: 10px;
+      font-size: 1em;
+      background-color: #e0f7fa;
+    }
+    .setting-button {
+      width: 60px;
+      height: 60px;
+      cursor: pointer;
+    }
+    .click-cash {
+      margin-top: 10px;
+      cursor: pointer;
+      width: 100px;
+    }
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .popup-content {
+      background: white;
+      padding: 20px;
+      border-radius: 5px;
+      width: 40%;
+      max-width: 400px;
+      position: relative;
+      box-sizing: border-box;
+    }
+    .popup-button {
+      width: 100%;
+      padding: 15px;
+      margin: 5px 0;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .popup-button.blue { background-color: blue; }
+    .popup-button.green { background-color: green; }
+    .popup-button.red { background-color: red; }
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 20px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -30,7 +111,7 @@
 
 <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/ClickCursorCash.png?raw=true" class="click-cash" id="clickCash">
 
-<!-- Popups -->
+<!-- Settings Popup -->
 <div class="popup-overlay" id="settingsPopupOverlay" style="display: none;">
   <div class="popup-content" id="settingsPopupContent">
     <span class="close-button" id="closeSettingsPopup">&times;</span>
@@ -40,6 +121,7 @@
   </div>
 </div>
 
+<!-- Stats Popup -->
 <div class="popup-overlay" id="statsPopupOverlay" style="display: none;">
   <div class="popup-content" id="statsPopupContent">
     <span class="close-button" id="closeStatsPopup">&times;</span>
@@ -55,13 +137,6 @@
   let upgradeClickCost = 10.00;
   let upgradeAutomaticCost = 10.00;
 
-  const clickCash = document.getElementById('clickCash');
-  const scoreDisplay = document.getElementById('scoreDisplay');
-  const upgradeClickButton = document.getElementById('upgradeClickButton');
-  const upgradeAutomaticButton = document.getElementById('upgradeAutomaticButton');
-  const clickInfo = document.getElementById('clickInfo');
-  const automaticInfo = document.getElementById('automaticInfo');
-  
   // Load saved progress from local storage
   function loadProgress() {
     const savedData = JSON.parse(localStorage.getItem('gameProgress'));
@@ -74,7 +149,7 @@
       updateDisplay();
     }
   }
-  
+
   // Save progress to local storage
   function saveProgress() {
     const gameData = {
@@ -87,45 +162,38 @@
     localStorage.setItem('gameProgress', JSON.stringify(gameData));
   }
 
+  // Update display values
   function updateDisplay() {
-    scoreDisplay.textContent = `Cash: $${cash.toFixed(2)}`;
-    clickInfo.textContent = `Current Cash Per Click: $${cashPerClick.toFixed(2)}`;
-    automaticInfo.textContent = `Current Cash Per Second: $${cashPerSecond.toFixed(2)}`;
+    document.getElementById('scoreDisplay').textContent = `Cash: $${cash.toFixed(2)}`;
+    document.getElementById('clickInfo').textContent = `Current Cash Per Click: $${cashPerClick.toFixed(2)}`;
+    document.getElementById('automaticInfo').textContent = `Current Cash Per Second: $${cashPerSecond.toFixed(2)}`;
   }
 
-  clickCash.addEventListener('click', () => {
+  document.getElementById('clickCash').addEventListener('click', () => {
     cash += cashPerClick;
     updateDisplay();
     saveProgress();
   });
 
-  upgradeClickButton.addEventListener('click', () => {
+  document.getElementById('upgradeClickButton').addEventListener('click', () => {
     if (cash >= upgradeClickCost) {
       cash -= upgradeClickCost;
       cashPerClick = Math.ceil(cashPerClick * 1.15 * 100) / 100;
       upgradeClickCost = Math.ceil(upgradeClickCost * 1.15 * 100) / 100;
-      upgradeClickButton.textContent = `Buy More Cash Per Click (Cost: $${upgradeClickCost.toFixed(2)})`;
       updateDisplay();
       saveProgress();
     }
   });
 
-  upgradeAutomaticButton.addEventListener('click', () => {
+  document.getElementById('upgradeAutomaticButton').addEventListener('click', () => {
     if (cash >= upgradeAutomaticCost) {
       cash -= upgradeAutomaticCost;
       cashPerSecond = Math.ceil(cashPerSecond * 1.15 * 100) / 100;
       upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.15 * 100) / 100;
-      upgradeAutomaticButton.textContent = `Buy More Cash Per Second (Cost: $${upgradeAutomaticCost.toFixed(2)})`;
       updateDisplay();
       saveProgress();
     }
   });
-
-  setInterval(() => {
-    cash += cashPerSecond;
-    updateDisplay();
-    saveProgress();
-  }, 1000);
 
   document.getElementById('resetProgressButton').addEventListener('click', () => {
     cash = 0;
@@ -135,6 +203,20 @@
     upgradeAutomaticCost = 10.00;
     localStorage.removeItem('gameProgress');
     updateDisplay();
+  });
+
+  // Popup controls
+  document.getElementById('settingsButton').addEventListener('click', () => {
+    document.getElementById('settingsPopupOverlay').style.display = 'flex';
+  });
+  document.getElementById('closeSettingsPopup').addEventListener('click', () => {
+    document.getElementById('settingsPopupOverlay').style.display = 'none';
+  });
+  document.getElementById('statsButton').addEventListener('click', () => {
+    document.getElementById('statsPopupOverlay').style.display = 'flex';
+  });
+  document.getElementById('closeStatsPopup').addEventListener('click', () => {
+    document.getElementById('statsPopupOverlay').style.display = 'none';
   });
 
   loadProgress();
