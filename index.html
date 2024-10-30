@@ -68,7 +68,7 @@
       text-align: center;
     }
     /* Settings Pop-up Styles */
-    .settings-popup {
+    .settings-popup, .stats-popup {
       display: none; /* Initially hidden */
       position: fixed;
       top: 50%;
@@ -134,6 +134,15 @@
   <p>Adjust your game settings here.</p>
 </div>
 
+<!-- Stats Pop-up -->
+<div class="stats-popup" id="statsPopup">
+  <button class="close-button" id="closeStats">X</button>
+  <h2>Game Stats</h2>
+  <p>Cash Earned: $<span id="cashEarned">0.00</span></p>
+  <p>Cash Per Click: $<span id="cashPerClickStat">0.50</span></p>
+  <p>Cash Per Second: $<span id="cashPerSecondStat">0.25</span></p>
+</div>
+
 <script>
   let cash = 0;
   let cashPerClick = 0.50; // Set initial cash per click to $0.50
@@ -148,8 +157,13 @@
   const clickInfo = document.getElementById('clickInfo');
   const automaticInfo = document.getElementById('automaticInfo');
   const settingsPopup = document.getElementById('settingsPopup');
+  const statsPopup = document.getElementById('statsPopup');
   const overlay = document.getElementById('overlay');
   const closeSettingsButton = document.getElementById('closeSettings');
+  const closeStatsButton = document.getElementById('closeStats');
+  const cashEarnedDisplay = document.getElementById('cashEarned');
+  const cashPerClickStatDisplay = document.getElementById('cashPerClickStat');
+  const cashPerSecondStatDisplay = document.getElementById('cashPerSecondStat');
 
   function updateDisplay() {
     scoreDisplay.textContent = `Cash: $${cash.toFixed(2)}`;
@@ -157,9 +171,16 @@
     automaticInfo.textContent = `Current Cash Per Second: $${cashPerSecond.toFixed(2)}`;
   }
 
+  function updateStatsDisplay() {
+    cashEarnedDisplay.textContent = cash.toFixed(2);
+    cashPerClickStatDisplay.textContent = cashPerClick.toFixed(2);
+    cashPerSecondStatDisplay.textContent = cashPerSecond.toFixed(2);
+  }
+
   clickCash.addEventListener('click', () => {
     cash += cashPerClick;
     updateDisplay();
+    updateStatsDisplay(); // Update stats display on click
     // Pulsing effect
     clickCash.style.transform = 'scale(1.1)';
     setTimeout(() => {
@@ -174,6 +195,7 @@
       upgradeClickCost = Math.ceil(upgradeClickCost * 1.15 * 100) / 100; // Increase cost by 15%
       upgradeClickButton.textContent = `Buy More Cash Per Click (Cost: $${upgradeClickCost.toFixed(2)})`;
       updateDisplay();
+      updateStatsDisplay(); // Update stats display after upgrade
     }
   });
 
@@ -184,29 +206,36 @@
       upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.15 * 100) / 100; // Increase cost by 15%
       upgradeAutomaticButton.textContent = `Buy More Cash Per Second (Cost: $${upgradeAutomaticCost.toFixed(2)})`;
       updateDisplay();
+      updateStatsDisplay(); // Update stats display after upgrade
     }
   });
 
-  // Function to increment cash every second
-  setInterval(() => {
-    cash += cashPerSecond;
-    updateDisplay();
-  }, 1000);
-
-  // Settings button functionality
-  settingsButton.addEventListener('click', () => {
-    settingsPopup.style.display = 'block'; // Show pop-up
-    overlay.style.display = 'block'; // Show overlay
+  document.getElementById('settingsButton').addEventListener('click', () => {
+    settingsPopup.style.display = 'block';
+    overlay.style.display = 'block';
   });
 
-  // Close button functionality
+  document.getElementById('statsButton').addEventListener('click', () => {
+    statsPopup.style.display = 'block';
+    overlay.style.display = 'block';
+    updateStatsDisplay(); // Update stats when opening the popup
+  });
+
   closeSettingsButton.addEventListener('click', () => {
-    settingsPopup.style.display = 'none'; // Hide pop-up
-    overlay.style.display = 'none'; // Hide overlay
+    settingsPopup.style.display = 'none';
+    overlay.style.display = 'none';
   });
 
-  updateDisplay(); // Ensure initial display is correct
-</script>
+  closeStatsButton.addEventListener('click', () => {
+    statsPopup.style.display = 'none';
+    overlay.style.display = 'none';
+  });
 
+  setInterval(() => {
+    cash += cashPerSecond; // Increase cash every second
+    updateDisplay();
+    updateStatsDisplay(); // Update stats display every second
+  }, 1000);
+</script>
 </body>
 </html>
