@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Platicker - A Platform Clicker Game</title>
   <link rel="icon" href="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/CursorCoin.png?raw=true" type="image/png">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -46,101 +46,6 @@
   <p>Current Stats will be displayed here.</p>
 </div>
 
-<script>
-  let cash = 0;
-  let cashPerClick = 0.50;
-  let cashPerSecond = 0.25;
-  let upgradeClickCost = 10.00;
-  let upgradeAutomaticCost = 10.00;
-
-  const loadGame = () => {
-    cash = parseFloat(localStorage.getItem('cash')) || 0;
-    cashPerClick = parseFloat(localStorage.getItem('cashPerClick')) || 0.50;
-    cashPerSecond = parseFloat(localStorage.getItem('cashPerSecond')) || 0.25;
-    upgradeClickCost = parseFloat(localStorage.getItem('upgradeClickCost')) || 10.00;
-    upgradeAutomaticCost = parseFloat(localStorage.getItem('upgradeAutomaticCost')) || 10.00;
-    updateDisplay();
-  };
-
-  const saveGame = () => {
-    localStorage.setItem('cash', cash);
-    localStorage.setItem('cashPerClick', cashPerClick);
-    localStorage.setItem('cashPerSecond', cashPerSecond);
-    localStorage.setItem('upgradeClickCost', upgradeClickCost);
-    localStorage.setItem('upgradeAutomaticCost', upgradeAutomaticCost);
-  };
-
-  const updateDisplay = () => {
-    document.getElementById('scoreDisplay').textContent = `Cash: $${cash.toFixed(2)}`;
-    document.getElementById('clickInfo').textContent = `Current Cash Per Click: $${cashPerClick.toFixed(2)}`;
-    document.getElementById('automaticInfo').textContent = `Current Cash Per Second: $${cashPerSecond.toFixed(2)}`;
-  };
-
-  document.getElementById('clickCash').addEventListener('click', () => {
-    cash += cashPerClick;
-    updateDisplay();
-    saveGame();
-  });
-
-  document.getElementById('upgradeClickButton').addEventListener('click', () => {
-    if (cash >= upgradeClickCost) {
-      cash -= upgradeClickCost;
-      cashPerClick = Math.ceil(cashPerClick * 1.15 * 100) / 100;
-      upgradeClickCost = Math.ceil(upgradeClickCost * 1.15 * 100) / 100;
-      document.getElementById('upgradeClickButton').textContent = `Buy More Cash Per Click (Cost: $${upgradeClickCost.toFixed(2)})`;
-      updateDisplay();
-      saveGame();
-    }
-  });
-
-  document.getElementById('upgradeAutomaticButton').addEventListener('click', () => {
-    if (cash >= upgradeAutomaticCost) {
-      cash -= upgradeAutomaticCost;
-      cashPerSecond = Math.ceil(cashPerSecond * 1.15 * 100) / 100;
-      upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.15 * 100) / 100;
-      document.getElementById('upgradeAutomaticButton').textContent = `Buy More Cash Per Second (Cost: $${upgradeAutomaticCost.toFixed(2)})`;
-      updateDisplay();
-      saveGame();
-    }
-  });
-
-  setInterval(() => {
-    cash += cashPerSecond;
-    updateDisplay();
-    saveGame();
-  }, 1000);
-
-  document.getElementById('settingsButton').addEventListener('click', () => {
-    document.getElementById('settingsPopup').style.display = 'block';
-    document.getElementById('overlay').style.display = 'block';
-  });
-
-  document.getElementById('statsButton').addEventListener('click', () => {
-    document.getElementById('statsPopup').style.display = 'block';
-    document.getElementById('overlay').style.display = 'block';
-  });
-
-  document.getElementById('closeSettingsPopup').addEventListener('click', () => {
-    document.getElementById('settingsPopup').style.display = 'none';
-    document.getElementById('overlay').style.display = 'none';
-  });
-
-  document.getElementById('closeStatsPopup').addEventListener('click', () => {
-    document.getElementById('statsPopup').style.display = 'none';
-    document.getElementById('overlay').style.display = 'none';
-  });
-
-  document.getElementById('resetProgressButton').addEventListener('click', () => {
-    localStorage.clear();
-    cash = 0;
-    cashPerClick = 0.50;
-    cashPerSecond = 0.25;
-    upgradeClickCost = 10.00;
-    upgradeAutomaticCost = 10.00;
-    updateDisplay();
-  });
-
-  loadGame();
-</script>
+<script src="script.js"></script>
 </body>
 </html>
