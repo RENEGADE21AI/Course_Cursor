@@ -1,132 +1,102 @@
-// Variables for cash and upgrades
-let cash = 0.00;
-let cashPerClick = 0.50;
-let cashPerSecond = 0.25;
-let upgradeClickCost = 10.00;
-let upgradeAutomaticCost = 10.00;
-
-// Load saved values from local storage
-function loadProgress() {
-    cash = parseFloat(localStorage.getItem('cash')) || 0;
-    cashPerClick = parseFloat(localStorage.getItem('cashPerClick')) || 0.50;
-    cashPerSecond = parseFloat(localStorage.getItem('cashPerSecond')) || 0.25;
-    upgradeClickCost = parseFloat(localStorage.getItem('upgradeClickCost')) || 10.00;
-    upgradeAutomaticCost = parseFloat(localStorage.getItem('upgradeAutomaticCost')) || 10.00;
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
 }
 
-// Save values to local storage
-function saveProgress() {
-    localStorage.setItem('cash', cash);
-    localStorage.setItem('cashPerClick', cashPerClick);
-    localStorage.setItem('cashPerSecond', cashPerSecond);
-    localStorage.setItem('upgradeClickCost', upgradeClickCost);
-    localStorage.setItem('upgradeAutomaticCost', upgradeAutomaticCost);
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #d9d9d9;
+  height: 20vh;
+  padding: 0 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-// Update the cash display
-function updateDisplay() {
-    document.getElementById('scoreDisplay').innerText = `Cash: $${cash.toFixed(2)}`;
-    document.getElementById('clickInfo').innerText = `Current Cash Per Click: $${cashPerClick.toFixed(2)}`;
-    document.getElementById('automaticInfo').innerText = `Current Cash Per Second: $${cashPerSecond.toFixed(2)}`;
-    document.getElementById('upgradeClickButton').innerText = `Buy More Cash Per Click (Cost: $${upgradeClickCost.toFixed(2)})`;
-    document.getElementById('upgradeAutomaticButton').innerText = `Buy More Cash Per Second (Cost: $${upgradeAutomaticCost.toFixed(2)})`;
+.score {
+  font-size: 24px;
+  color: black;
 }
 
-// Click cash function
-document.getElementById('clickCash').addEventListener('click', () => {
-    cash += cashPerClick;
-    updateDisplay();
-    saveProgress();
-});
+.upgrades {
+  display: flex;
+  gap: 20px;
+}
 
-// Upgrade buttons
-document.getElementById('upgradeClickButton').addEventListener('click', () => {
-    if (cash >= upgradeClickCost) {
-        cash -= upgradeClickCost;
-        cashPerClick *= 1.10; // Increase by 10%
-        upgradeClickCost = Math.round(upgradeClickCost * 1.15 * 100) / 100; // Increase cost by 15%
-        updateDisplay();
-        saveProgress();
-    }
-});
+.upgrade-button {
+  background-color: #a3c2e7;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+}
 
-document.getElementById('upgradeAutomaticButton').addEventListener('click', () => {
-    if (cash >= upgradeAutomaticCost) {
-        cash -= upgradeAutomaticCost;
-        cashPerSecond *= 1.10; // Increase by 10%
-        upgradeAutomaticCost = Math.round(upgradeAutomaticCost * 1.15 * 100) / 100; // Increase cost by 15%
-        updateDisplay();
-        saveProgress();
-    }
-});
+.upgrade-info {
+  font-size: 14px;
+  margin-top: 5px;
+}
 
-// Automatic cash increment
-setInterval(() => {
-    cash += cashPerSecond;
-    updateDisplay();
-    saveProgress();
-}, 1000);
+.stats-button, .setting-button {
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+}
 
-// Popups functionality
-const overlay = document.getElementById('overlay');
-const settingsPopup = document.getElementById('settingsPopup');
-const statsPopup = document.getElementById('statsPopup');
+.click-cash {
+  cursor: pointer;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
 
-// Open Settings Popup
-document.getElementById('settingsButton').addEventListener('click', () => {
-    overlay.style.display = 'block';
-    settingsPopup.style.display = 'block';
-});
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+}
 
-// Close Settings Popup
-document.getElementById('closeSettingsPopup').addEventListener('click', () => {
-    overlay.style.display = 'none';
-    settingsPopup.style.display = 'none';
-    document.getElementById('loginRegisterContainer').style.display = 'none'; // Hide Login/Register container when closing
-});
+.popup {
+  position: fixed;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  width: 300px;
+  max-width: 80%;
+  z-index: 10;
+}
 
-// Open Stats Popup
-document.getElementById('statsButton').addEventListener('click', () => {
-    overlay.style.display = 'block';
-    statsPopup.style.display = 'block';
-});
+.close-button {
+  cursor: pointer;
+  float: right;
+  font-size: 20px;
+}
 
-// Close Stats Popup
-document.getElementById('closeStatsPopup').addEventListener('click', () => {
-    overlay.style.display = 'none';
-    statsPopup.style.display = 'none';
-});
+.login-register-tabs {
+  margin-top: 20px;
+}
 
-// Reset Progress button
-document.getElementById('resetProgressButton').addEventListener('click', () => {
-    cash = 0;
-    cashPerClick = 0.50;
-    cashPerSecond = 0.25;
-    upgradeClickCost = 10.00;
-    upgradeAutomaticCost = 10.00;
-    saveProgress();
-    updateDisplay();
-});
+.tab {
+  display: inline-block;
+  padding: 10px;
+  background-color: #a3c2e7;
+  border: 1px solid #007bff;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 5px;
+}
 
-// Toggle Login/Register
-document.getElementById('loginRegisterButton').addEventListener('click', () => {
-    const container = document.getElementById('loginRegisterContainer');
-    container.style.display = (container.style.display === 'none' || container.style.display === '') ? 'block' : 'none';
-});
-
-// Tab switching for Login/Register
-document.getElementById('loginTab').addEventListener('click', () => {
-    document.getElementById('loginRegisterForm').style.display = 'block';
-    document.getElementById('registerTab').classList.remove('active');
-    document.getElementById('loginTab').classList.add('active');
-});
-
-document.getElementById('registerTab').addEventListener('click', () => {
-    document.getElementById('loginRegisterForm').style.display = 'none';
-    document.getElementById('loginTab').classList.remove('active');
-    document.getElementById('registerTab').classList.add('active');
-});
-
-// Load progress on start
-loadProgress();
-updateDisplay();
+input {
+  display: block;
+  margin-top: 10px;
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
