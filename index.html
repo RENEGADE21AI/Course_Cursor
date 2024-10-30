@@ -156,7 +156,7 @@
   <h2>Settings</h2>
   <button class="action-button level-design">Level Design</button>
   <button class="action-button login-register">Login/Register</button>
-  <button class="action-button reset-progress">Reset Progress</button>
+  <button class="action-button reset-progress" id="resetProgressButton">Reset Progress</button>
 </div>
 
 <!-- Stats Popup -->
@@ -220,7 +220,7 @@
     }
   });
 
-  // Function to increment cash every second
+  // Automatic cash increase every second
   setInterval(() => {
     cash += cashPerSecond;
     updateDisplay();
@@ -248,6 +248,18 @@
   document.getElementById('closeStatsPopup').addEventListener('click', () => {
     statsPopup.style.display = 'none';
     overlay.style.display = 'none';
+  });
+
+  // Reset progress
+  document.getElementById('resetProgressButton').addEventListener('click', () => {
+    cash = 0;
+    cashPerClick = 0.50; // Reset to initial value
+    cashPerSecond = 0.25; // Reset to initial value
+    upgradeClickCost = 10.00; // Reset upgrade cost
+    upgradeAutomaticCost = 10.00; // Reset upgrade cost
+    updateDisplay();
+    settingsPopup.style.display = 'none'; // Close the popup after reset
+    overlay.style.display = 'none'; // Close the overlay after reset
   });
 </script>
 
