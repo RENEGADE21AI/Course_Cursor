@@ -75,11 +75,11 @@
   <div class="upgrades">
     <div>
       <button class="upgrade-button" id="upgradeClickButton">Buy More Cash Per Click (Cost: $10.00)</button>
-      <div class="upgrade-info" id="clickInfo">Current Cash Per Click: $0.00</div>
+      <div class="upgrade-info" id="clickInfo">Current Cash Per Click: $0.50</div>
     </div>
     <div>
       <button class="upgrade-button" id="upgradeAutomaticButton">Buy More Cash Per Second (Cost: $10.00)</button>
-      <div class="upgrade-info" id="automaticInfo">Current Cash Per Second: $0.00</div>
+      <div class="upgrade-info" id="automaticInfo">Current Cash Per Second: $0.25</div>
     </div>
   </div>
   <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/JellySettingsButton.png?raw=true" class="setting-button" id="settingsButton">
@@ -90,14 +90,9 @@
 <script>
   let cash = 0;
   let cashPerClick = 0.50; // Set initial cash per click to $0.50
-  let cashPerSecond = 0;
+  let cashPerSecond = 0; // Set initial cash per second to $0.00
   let upgradeClickCost = 10.00; // Starting cost set to $10.00
   let upgradeAutomaticCost = 10.00; // Starting cost set to $10.00
-
-  // Check if cashPerClick is $0.00 and set it to $0.50
-  if (cashPerClick === 0.00) {
-      cashPerClick = 0.50;
-  }
 
   const clickCash = document.getElementById('clickCash');
   const scoreDisplay = document.getElementById('scoreDisplay');
@@ -125,8 +120,8 @@
   upgradeClickButton.addEventListener('click', () => {
     if (cash >= upgradeClickCost) {
       cash -= upgradeClickCost;
-      cashPerClick = Math.ceil(cashPerClick * 1.1 * 100) / 100;
-      upgradeClickCost = Math.ceil(upgradeClickCost * 1.15 * 100) / 100;
+      cashPerClick = Math.ceil(cashPerClick * 1.15 * 100) / 100; // Increase by 15%
+      upgradeClickCost = Math.ceil(upgradeClickCost * 1.15 * 100) / 100; // Increase cost by 15%
       upgradeClickButton.textContent = `Buy More Cash Per Click (Cost: $${upgradeClickCost.toFixed(2)})`;
       updateDisplay();
     }
@@ -135,12 +130,8 @@
   upgradeAutomaticButton.addEventListener('click', () => {
     if (cash >= upgradeAutomaticCost) {
       cash -= upgradeAutomaticCost;
-      if (cashPerSecond === 0) {
-        cashPerSecond = 0.25; // Set to $0.25 instead of $1.00
-      } else {
-        cashPerSecond = Math.ceil(cashPerSecond * 1.1 * 100) / 100;
-      }
-      upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.15 * 100) / 100;
+      cashPerSecond = cashPerSecond === 0 ? 0.25 : Math.ceil(cashPerSecond * 1.15 * 100) / 100; // Set to $0.25 if it's $0.00, otherwise increase by 15%
+      upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.15 * 100) / 100; // Increase cost by 15%
       upgradeAutomaticButton.textContent = `Buy More Cash Per Second (Cost: $${upgradeAutomaticCost.toFixed(2)})`;
       updateDisplay();
     }
