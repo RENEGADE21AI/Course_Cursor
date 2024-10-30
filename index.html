@@ -56,10 +56,11 @@
     .click-cash:hover {
       transform: scale(1.2);
     }
-    .setting-button {
-      width: 60px; /* Larger settings button */
+    .setting-button, .stats-button {
+      width: 60px; /* Button size */
       height: 60px;
       cursor: pointer;
+      margin-left: 10px; /* Space between buttons */
     }
     .upgrade-info {
       font-size: 0.9em;
@@ -82,6 +83,7 @@
       <div class="upgrade-info" id="automaticInfo">Current Cash Per Second: $0.25</div>
     </div>
   </div>
+  <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/VGstats.png?raw=true" class="stats-button" id="statsButton">
   <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/JellySettingsButton.png?raw=true" class="setting-button" id="settingsButton">
 </div>
 
@@ -90,7 +92,7 @@
 <script>
   let cash = 0;
   let cashPerClick = 0.50; // Set initial cash per click to $0.50
-  let cashPerSecond = 0; // Set initial cash per second to $0.00
+  let cashPerSecond = 0.25; // Set initial cash per second to $0.25
   let upgradeClickCost = 10.00; // Starting cost set to $10.00
   let upgradeAutomaticCost = 10.00; // Starting cost set to $10.00
 
@@ -130,7 +132,7 @@
   upgradeAutomaticButton.addEventListener('click', () => {
     if (cash >= upgradeAutomaticCost) {
       cash -= upgradeAutomaticCost;
-      cashPerSecond = cashPerSecond === 0 ? 0.25 : Math.ceil(cashPerSecond * 1.15 * 100) / 100; // Set to $0.25 if it's $0.00, otherwise increase by 15%
+      cashPerSecond = Math.ceil(cashPerSecond * 1.15 * 100) / 100; // Increase by 15%
       upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.15 * 100) / 100; // Increase cost by 15%
       upgradeAutomaticButton.textContent = `Buy More Cash Per Second (Cost: $${upgradeAutomaticCost.toFixed(2)})`;
       updateDisplay();
