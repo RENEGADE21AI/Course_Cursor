@@ -102,11 +102,39 @@ body {
 }
 
 .stat-box {
+  width: 90%; /* Width of stat boxes */
+  padding: 10px; /* Padding for stat boxes */
   background-color: #d3d3d3; /* Light gray background */
-  color: black;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 5px;
-  width: 300px; /* Adjust width as needed */
-  text-align: center;
+  color: black; /* Text color */
+  margin: 10px 0; /* Margin between boxes */
+  text-align: center; /* Center text */
+  border-radius: 5px; /* Rounded corners */
+}
+
+.settings-button {
+  width: 200px; /* Width of buttons */
+  height: 50px; /* Height of buttons */
+  color: white; /* Text color */
+  font-size: 1.2em; /* Font size */
+  border: none; /* No border */
+  border-radius: 5px; /* Rounded corners */
+  margin: 10px 0; /* Margin between buttons */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Transition for hover effect */
+}
+
+.login-button {
+  background-color: #28a745; /* Green */
+}
+
+.level-design-button {
+  background-color: #40e0d0; /* Turquoise */
+}
+
+.reset-button {
+  background-color: #dc3545; /* Red */
+}
+
+.settings-button:hover {
+  opacity: 0.8; /* Slightly transparent on hover */
 }
