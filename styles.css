@@ -1,84 +1,101 @@
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+  background-color: #d3d3d3; /* Light gray background */
+  margin: 0;
+  font-family: Arial, sans-serif;
 }
 
 .top-bar {
-    background-color: #b0c4de; /* Light Blue Gray */
-    height: 20vh; /* 20% of the viewport height */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    position: relative;
-}
-
-.game-bar {
-    background-color: #d3d3d3; /* Lighter Gray */
-    height: 80vh; /* 80% of the viewport height */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-}
-
-.click-cash {
-    cursor: pointer;
-}
-
-.upgrades {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #a2c2e6; /* Light blue-gray color for the top bar */
+  padding: 20px;
+  height: 20vh; /* Height of the top bar */
 }
 
 .score {
-    color: white;
-    font-size: 24px;
+  color: white;
+  font-size: 24px;
+}
+
+.upgrades {
+  display: flex;
+  gap: 20px; /* Spacing between buttons */
 }
 
 .upgrade-button {
-    background-color: #add8e6; /* Light Blue */
-    border: none;
-    padding: 10px;
-    margin: 5px 0;
-    cursor: pointer;
+  background-color: #add8e6; /* Light blue background */
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
 }
 
-.stats-button, .setting-button {
-    cursor: pointer;
+.upgrade-button:hover {
+  background-color: #87ceeb; /* Lighter blue on hover */
 }
 
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+/* Updated Cash image size */
+.click-cash {
+  position: absolute;
+  bottom: 10px; /* Positioning cash image */
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+  width: 50px; /* Reduced size */
+  height: 50px; /* Reduced size */
+}
+
+.stats-button,
+.setting-button {
+  width: 60px; /* Set button width */
+  height: 60px; /* Set button height */
 }
 
 .popup {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    width: 300px; /* Adjust width if necessary */
-    position: relative;
-    display: flex;
-    flex-direction: column;
+  position: fixed; /* Fixed position for pop-ups */
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Offset to truly center */
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 10; /* Ensure pop-up is above other elements */
+  width: 400px; /* Set a specific width for pop-ups */
+  max-width: 90%; /* Responsive width */
 }
 
 .close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
+  cursor: pointer;
+  font-size: 24px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
+.overlay {
+  position: fixed; /* Full-screen overlay */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none; /* Initially hidden */
+  z-index: 5; /* Below pop-up */
+}
+
+/* Add styles for action buttons */
 .action-button {
-    margin: 10px 0;
+  width: 100%; /* Full width for action buttons */
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #f0f0f0; /* Light background for action buttons */
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.action-button:hover {
+  background-color: #e0e0e0; /* Darker on hover */
 }
