@@ -34,15 +34,15 @@ body {
   background-color: #87ceeb; /* Lighter blue on hover */
 }
 
-/* Updated Cash image size */
+/* Updated Cash image size with aspect ratio maintained */
 .click-cash {
   position: absolute;
-  bottom: 10px; /* Positioning cash image */
+  bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
   cursor: pointer;
-  width: 50px; /* Reduced size */
-  height: 50px; /* Reduced size */
+  width: 50px; /* Adjust to preserve aspect ratio */
+  height: auto; /* Maintain original aspect ratio */
 }
 
 .stats-button,
