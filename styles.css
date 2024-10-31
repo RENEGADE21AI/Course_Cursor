@@ -29,17 +29,15 @@ function updateDisplay() {
     clickInfo.textContent = `Current Cash Per Click: $${cashPerClick.toFixed(2)}`;
     automaticInfo.textContent = `Current Cash Per Second: $${cashPerSecond.toFixed(2)}`;
     highestCashDisplay.textContent = highestCash.toFixed(2);
-    netCashDisplay.textContent = (netCash).toFixed(2);
+    netCashDisplay.textContent = netCash.toFixed(2);
     localStorage.setItem('gameState', JSON.stringify({ cash, cashPerClick, cashPerSecond, upgradeClickCost, upgradeAutomaticCost, highestCash, netCash }));
 }
 
-// Increment cash per click and update Net Cash without deducting
 clickCash.addEventListener('click', () => {
     cash += cashPerClick;
-    highestCash = Math.max(highestCash, cash);
-    netCash += cashPerClick; // Only increase net cash by cash per click
+    highestCash = Math.max(highestCash, cash); // Update highest cash if current cash is greater
+    netCash += cashPerClick; // Increase net cash by cash per click
     updateDisplay();
-
     // Pulsing effect
     clickCash.style.transform = 'scale(1.1)';
     setTimeout(() => {
@@ -67,11 +65,11 @@ upgradeAutomaticButton.addEventListener('click', () => {
     }
 });
 
-// Function to increment cash every second without reducing Net Cash when spending
+// Function to increment cash every second
 setInterval(() => {
     cash += cashPerSecond;
-    highestCash = Math.max(highestCash, cash);
-    netCash += cashPerSecond; // Increase net cash by cash per second increment only
+    highestCash = Math.max(highestCash, cash); // Update highest cash if current cash is greater
+    netCash += cashPerSecond; // Increase net cash by cash per second
     updateDisplay();
 }, 1000);
 
@@ -126,8 +124,27 @@ closeResetConfirmation.addEventListener('click', () => {
 
 // Confirm reset progress
 confirmResetButton.addEventListener('click', () => {
+    // Reset variables to initial values
+    cash = 0;
+    cashPerClick = 0.50; // Reset to initial cash per click
+    cashPerSecond = 0.25; // Reset to initial cash per second
+    upgradeClickCost = 10.00; // Reset initial cost of click upgrade
+    upgradeAutomaticCost = 10.00; // Reset initial cost of automatic upgrade
+    highestCash = 0;
+    netCash = 0;
+
+    // Clear saved data from localStorage
+    localStorage.removeItem('gameState');
+
+    // Update button text to reflect reset costs
+    upgradeClickButton.textContent = `Buy More Cash Per Click (Cost: $${upgradeClickCost.toFixed(2)})`;
+    upgradeAutomaticButton.textContent = `Buy More Cash Per Second (Cost: $${upgradeAutomaticCost.toFixed(2)})`;
+
+    // Update displayed values to reset state
+    updateDisplay();
+
+    // Hide reset confirmation overlay
     resetConfirmationOverlay.style.display = 'none';
-    // Functionality for resetting will be added later
 });
 
 // Cancel reset progress
