@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Platicker - A Platform Clicker Game</title>
   <link rel="icon" href="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/CursorCoin.png?raw=true" type="image/png">
-  <link rel="stylesheet" href="styles.css"> <!-- Link to CSS -->
+  <link rel="stylesheet" href="styles.css"> <!-- Link to external CSS -->
 </head>
 <body>
 
@@ -31,9 +31,9 @@
   <div class="popup">
     <div class="close-button" id="closeSettings">X</div>
     <h2>Settings</h2>
-    <button class="settings-button login-button">Login/Register</button>
-    <button class="settings-button level-design-button">Level Design</button>
-    <button class="settings-button reset-button">Reset Progress</button>
+    <button class="settings-button login-button" id="loginRegisterButton">Login/Register</button>
+    <button class="settings-button level-design-button" id="levelDesignButton">Level Design</button>
+    <button class="settings-button reset-button" id="resetProgressButton">Reset Progress</button>
   </div>
 </div>
 
@@ -46,6 +46,18 @@
   </div>
 </div>
 
-<script src="script.js"></script> <!-- Link to JavaScript -->
+<div class="overlay" id="resetConfirmationOverlay">
+  <div class="popup">
+    <div class="close-button" id="closeResetConfirmation">X</div>
+    <h2>Do You Really Want to Reset Your Progress?</h2>
+    <p>It Will be Lost Forever!</p>
+    <div>
+      <button class="settings-button login-button" id="confirmResetButton">Yes</button>
+      <button class="settings-button reset-button" id="cancelResetButton">Back</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script> <!-- Link to external JavaScript -->
 </body>
 </html>
