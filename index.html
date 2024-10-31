@@ -27,33 +27,36 @@
 
 <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/ClickCursorCash.png?raw=true" class="click-cash" id="clickCash">
 
+<!-- Settings Overlay -->
 <div class="overlay" id="settingsOverlay">
   <div class="popup">
     <div class="close-button" id="closeSettings">X</div>
     <h2>Settings</h2>
-    <button class="setting-button" id="resetProgressButton">Reset Progress</button>
-    <button class="setting-button" id="levelDesignButton">Level Design</button>
-    <button class="setting-button" id="loginRegisterButton">Login/Register</button>
+    <button class="settings-button login-button" id="loginButton">Login/Register</button>
+    <button class="settings-button level-design-button" id="levelDesignButton">Level Design</button>
+    <button class="settings-button reset-button" id="resetProgressButton">Reset Progress</button>
   </div>
 </div>
 
+<!-- Stats Overlay -->
 <div class="overlay" id="statsOverlay">
   <div class="popup">
     <div class="close-button" id="closeStats">X</div>
     <h2>Stats</h2>
-    <div class="stat-box">Your Highest Amount of Cash Saved Up: <span id="highestCashDisplay">$0.00</span></div>
-    <div class="stat-box">Your Net Cash: <span id="netCashDisplay">$0.00</span></div>
+    <div class="stat-box">Your Highest Amount of Cash Saved Up: $<span id="highestCashDisplay">0.00</span></div>
+    <div class="stat-box">Your Net Cash: $<span id="netCashDisplay">0.00</span></div>
   </div>
 </div>
 
+<!-- Reset Confirmation Overlay -->
 <div class="overlay" id="resetConfirmationOverlay">
   <div class="popup">
     <div class="close-button" id="closeResetConfirmation">X</div>
-    <h2>Reset Progress</h2>
-    <p>Do You Really Want to Reset Your Progress? It Will be Lost Forever!</p>
-    <div class="reset-buttons">
-      <button class="reset-button" id="confirmResetButton">Yes</button>
-      <button class="reset-button" id="cancelResetButton">Back</button>
+    <h2>Do You Really Want to Reset Your Progress?</h2>
+    <p>It Will be Lost Forever!</p>
+    <div>
+      <button class="settings-button login-button" id="confirmResetButton">Yes</button>
+      <button class="settings-button reset-button" id="cancelResetButton">Back</button>
     </div>
   </div>
 </div>
