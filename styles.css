@@ -120,19 +120,19 @@ body {
   border-radius: 5px; /* Rounded corners */
   margin: 10px 0; /* Margin between buttons */
   cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Transition for hover effect */
+  transition: background-color 0.3s, opacity 0.3s; /* Transition for hover effect */
 }
 
 .login-button {
-  background-color: #28a745; /* Green */
+  background: linear-gradient(to bottom, #218838, #4caf50); /* Green gradient */
 }
 
 .level-design-button {
-  background-color: #40e0d0; /* Turquoise */
+  background: linear-gradient(to bottom, #00bfff, #40e0d0); /* Turquoise gradient */
 }
 
 .reset-button {
-  background-color: #dc3545; /* Red */
+  background: linear-gradient(to bottom, #c82333, #dc3545); /* Red gradient */
 }
 
 .settings-button:hover {
