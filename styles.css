@@ -73,7 +73,7 @@ body {
 .popup {
   background: white;
   width: 400px; /* Set the size */
-  height: 400px; /* Set the size */
+  height: auto; /* Set the size */
   position: relative;
   display: flex;
   flex-direction: column;
@@ -87,4 +87,13 @@ body {
   right: 10px;
   cursor: pointer;
   font-size: 1.5em;
+}
+.stat-box {
+  background-color: #d3d3d3; /* Light gray background */
+  color: black;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  width: 300px; /* Adjust width as needed */
+  text-align: center;
 }
