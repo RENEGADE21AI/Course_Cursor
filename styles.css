@@ -12,6 +12,8 @@ body {
   align-items: center; /* Center items vertically */
   justify-content: space-between; /* Space items evenly */
   padding: 0 20px; /* Padding for spacing */
+  position: relative; /* Added to allow positioning of child elements */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
 }
 
 .score {
@@ -32,6 +34,8 @@ body {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  color: black; /* Button text color */
+  font-size: 16px; /* Button text size */
 }
 
 .stats-button,
@@ -39,6 +43,7 @@ body {
   width: 60px;
   height: 60px;
   cursor: pointer;
+  margin-left: 20px; /* Space between buttons */
 }
 
 .click-cash {
@@ -75,4 +80,34 @@ body {
 .close-button {
   cursor: pointer;
   float: right; /* Float close button to the right */
+  font-size: 24px; /* Close button size */
+  color: #333; /* Close button color */
+}
+
+.close-button:hover {
+  color: red; /* Change color on hover */
+}
+
+.action-button {
+  margin: 5px 0; /* Space between action buttons */
+  padding: 10px; /* Padding for button size */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px; /* Button text size */
+}
+
+.level-design {
+  background-color: blue; /* Color for Level Design button */
+  color: white; /* Text color */
+}
+
+.login-register {
+  background-color: green; /* Color for Login/Register button */
+  color: white; /* Text color */
+}
+
+.reset-progress {
+  background-color: red; /* Color for Reset Progress button */
+  color: white; /* Text color */
 }
