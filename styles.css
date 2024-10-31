@@ -1,129 +1,136 @@
-/* General Styling */
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f4f4f9;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
+let cash = 0;
+let cashPerClick = 0.50; // Set initial cash per click to $0.50
+let cashPerSecond = 0.25; // Set initial cash per second to $0.25
+let upgradeClickCost = 10.00; // Starting cost set to $10.00
+let upgradeAutomaticCost = 10.00; // Starting cost set to $10.00
+let highestCash = 0; // Track the highest amount of cash saved up
+let netCash = 0; // Track net cash
+
+const clickCash = document.getElementById('clickCash');
+const scoreDisplay = document.getElementById('scoreDisplay');
+const upgradeClickButton = document.getElementById('upgradeClickButton');
+const upgradeAutomaticButton = document.getElementById('upgradeAutomaticButton');
+const clickInfo = document.getElementById('clickInfo');
+const automaticInfo = document.getElementById('automaticInfo');
+const settingsOverlay = document.getElementById('settingsOverlay');
+const statsOverlay = document.getElementById('statsOverlay');
+const closeSettings = document.getElementById('closeSettings');
+const closeStats = document.getElementById('closeStats');
+const resetProgressButton = document.getElementById('resetProgressButton');
+const resetConfirmationOverlay = document.getElementById('resetConfirmationOverlay');
+const closeResetConfirmation = document.getElementById('closeResetConfirmation');
+const confirmResetButton = document.getElementById('confirmResetButton');
+const cancelResetButton = document.getElementById('cancelResetButton');
+const highestCashDisplay = document.getElementById('highestCash');
+const netCashDisplay = document.getElementById('netCash');
+
+function updateDisplay() {
+    scoreDisplay.textContent = `Cash: $${cash.toFixed(2)}`;
+    clickInfo.textContent = `Current Cash Per Click: $${cashPerClick.toFixed(2)}`;
+    automaticInfo.textContent = `Current Cash Per Second: $${cashPerSecond.toFixed(2)}`;
+    highestCashDisplay.textContent = highestCash.toFixed(2);
+    netCashDisplay.textContent = (netCash).toFixed(2);
+    localStorage.setItem('gameState', JSON.stringify({ cash, cashPerClick, cashPerSecond, upgradeClickCost, upgradeAutomaticCost, highestCash, netCash }));
 }
 
-.top-bar {
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
-  padding: 10px;
-  background-color: #3a3a3a;
-}
+// Increment cash per click and update Net Cash without deducting
+clickCash.addEventListener('click', () => {
+    cash += cashPerClick;
+    highestCash = Math.max(highestCash, cash);
+    netCash += cashPerClick; // Only increase net cash by cash per click
+    updateDisplay();
 
-.score {
-  color: white;
-  font-size: 24px;
-}
+    // Pulsing effect
+    clickCash.style.transform = 'scale(1.1)';
+    setTimeout(() => {
+        clickCash.style.transform = 'scale(1)';
+    }, 100);
+});
 
-.upgrades {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+upgradeClickButton.addEventListener('click', () => {
+    if (cash >= upgradeClickCost) {
+        cash -= upgradeClickCost;
+        cashPerClick = Math.ceil(cashPerClick * 1.15 * 100) / 100; // Increase by 15%
+        upgradeClickCost = Math.ceil(upgradeClickCost * 1.15 * 100) / 100; // Increase cost by 15%
+        upgradeClickButton.textContent = `Buy More Cash Per Click (Cost: $${upgradeClickCost.toFixed(2)})`;
+        updateDisplay();
+    }
+});
 
-.upgrade-button {
-  font-size: 18px;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  background-color: #6a8caf;
-  color: white;
-}
+upgradeAutomaticButton.addEventListener('click', () => {
+    if (cash >= upgradeAutomaticCost) {
+        cash -= upgradeAutomaticCost;
+        cashPerSecond = Math.ceil(cashPerSecond * 1.15 * 100) / 100; // Increase by 15%
+        upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.15 * 100) / 100; // Increase cost by 15%
+        upgradeAutomaticButton.textContent = `Buy More Cash Per Second (Cost: $${upgradeAutomaticCost.toFixed(2)})`;
+        updateDisplay();
+    }
+});
 
-.upgrade-info {
-  font-size: 16px;
-  color: #3a3a3a;
-}
+// Function to increment cash every second without reducing Net Cash when spending
+setInterval(() => {
+    cash += cashPerSecond;
+    highestCash = Math.max(highestCash, cash);
+    netCash += cashPerSecond; // Increase net cash by cash per second increment only
+    updateDisplay();
+}, 1000);
 
-.stats-button, .setting-button, .click-cash {
-  width: 50px;
-  height: 50px;
-  cursor: pointer;
-}
+// Load game state from localStorage
+window.onload = () => {
+    const savedState = localStorage.getItem('gameState');
+    if (savedState) {
+        const { cash: savedCash, cashPerClick: savedCashPerClick, cashPerSecond: savedCashPerSecond, upgradeClickCost: savedUpgradeClickCost, upgradeAutomaticCost: savedUpgradeAutomaticCost, highestCash: savedHighestCash, netCash: savedNetCash } = JSON.parse(savedState);
+        cash = savedCash;
+        cashPerClick = savedCashPerClick;
+        cashPerSecond = savedCashPerSecond;
+        upgradeClickCost = savedUpgradeClickCost;
+        upgradeAutomaticCost = savedUpgradeAutomaticCost;
+        highestCash = savedHighestCash;
+        netCash = savedNetCash;
+        updateDisplay();
+        upgradeClickButton.textContent = `Buy More Cash Per Click (Cost: $${upgradeClickCost.toFixed(2)})`;
+        upgradeAutomaticButton.textContent = `Buy More Cash Per Second (Cost: $${upgradeAutomaticCost.toFixed(2)})`;
+    }
+};
 
-.overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  justify-content: center;
-  align-items: center;
-}
+// Show settings overlay
+document.getElementById('settingsButton').addEventListener('click', () => {
+    settingsOverlay.style.display = 'flex';
+});
 
-.popup {
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  width: 300px;
-  text-align: center;
-}
+// Close settings overlay
+closeSettings.addEventListener('click', () => {
+    settingsOverlay.style.display = 'none';
+});
 
-.close-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  cursor: pointer;
-  font-size: 20px;
-}
+// Show stats overlay
+document.getElementById('statsButton').addEventListener('click', () => {
+    statsOverlay.style.display = 'flex';
+    updateDisplay();
+});
 
-.stat-box {
-  background-color: #d3d3d3;
-  color: black;
-  padding: 10px;
-  border-radius: 5px;
-  margin: 10px 0;
-}
+// Close stats overlay
+closeStats.addEventListener('click', () => {
+    statsOverlay.style.display = 'none';
+});
 
-/* Button Gradients */
-.gradient-green {
-  background: linear-gradient(to bottom, #4caf50, #66bb6a); /* Good Green Gradient */
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  width: 100%;
-}
+// Show reset confirmation overlay
+resetProgressButton.addEventListener('click', () => {
+    resetConfirmationOverlay.style.display = 'flex';
+});
 
-.gradient-turquoise {
-  background: linear-gradient(to bottom, #00bfa5, #4dd0e1); /* Good Turquoise Gradient */
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  width: 100%;
-}
+// Close reset confirmation overlay
+closeResetConfirmation.addEventListener('click', () => {
+    resetConfirmationOverlay.style.display = 'none';
+});
 
-.gradient-red {
-  background: linear-gradient(to bottom, #e53935, #ef5350); /* Good Red Gradient */
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  width: 100%;
-}
+// Confirm reset progress
+confirmResetButton.addEventListener('click', () => {
+    resetConfirmationOverlay.style.display = 'none';
+    // Functionality for resetting will be added later
+});
 
-/* Confirmation Buttons */
-.confirmation-buttons {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-}
+// Cancel reset progress
+cancelResetButton.addEventListener('click', () => {
+    resetConfirmationOverlay.style.display = 'none';
+});
