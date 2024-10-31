@@ -1,96 +1,74 @@
+/* General Styling */
 body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f9;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0;
-  background-color: #f0f0f0; /* good very light gray color */
+  justify-content: center;
+  min-height: 100vh;
 }
 
 .top-bar {
-  width: 100%;
-  height: 20vh;
-  background-color: #b0c4de; /* good top bar color */
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 1em;
-  box-sizing: border-box;
+  justify-content: space-around;
+  width: 100%;
+  padding: 10px;
+  background-color: #3a3a3a;
 }
 
 .score {
   color: white;
-  font-size: 2.5em; /* Larger font size for Cash display */
+  font-size: 24px;
 }
 
 .upgrades {
   display: flex;
-  gap: 1em;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .upgrade-button {
-  padding: 10px 20px;
-  font-size: 1em;
-  color: black;
-  background-color: #d1ffd1; /* good Light green for upgrade buttons */
+  font-size: 18px;
+  padding: 10px;
   border: none;
-  cursor: pointer;
   border-radius: 5px;
-  transition: transform 0.1s;
-}
-
-.upgrade-button:active {
-  transform: scale(0.95);
-}
-
-.click-cash {
-  width: 120px;
-  height: auto;
-  position: absolute;
-  bottom: 25%;
-  right: 2%;
   cursor: pointer;
-  transition: transform 0.1s;
-}
-
-.click-cash:hover {
-  transform: scale(1.2);
-}
-
-.setting-button, .stats-button {
-  width: 60px; /* Settings button */
-  height: 60px; /* Stats button */
-  cursor: pointer;
+  background-color: #6a8caf;
+  color: white;
 }
 
 .upgrade-info {
-  font-size: 0.9em;
-  color: black;
-  text-align: center;
+  font-size: 16px;
+  color: #3a3a3a;
+}
+
+.stats-button, .setting-button, .click-cash {
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
 }
 
 .overlay {
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  display: none;
+  background-color: rgba(0, 0, 0, 0.7);
   justify-content: center;
   align-items: center;
-  z-index: 1;
 }
 
 .popup {
-  background: white;
-  width: 400px; /* Set the size */
-  height: auto; /* Set the size */
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  text-align: center;
 }
 
 .close-button {
@@ -98,43 +76,54 @@ body {
   top: 10px;
   right: 10px;
   cursor: pointer;
-  font-size: 1.5em;
+  font-size: 20px;
 }
 
 .stat-box {
-  width: 90%; /* Width of stat boxes */
-  padding: 10px; /* Padding for stat boxes */
-  background-color: #d3d3d3; /* Light gray background */
-  color: black; /* Text color */
-  margin: 10px 0; /* Margin between boxes */
-  text-align: center; /* Center text */
-  border-radius: 5px; /* Rounded corners */
+  background-color: #d3d3d3;
+  color: black;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px 0;
 }
 
-.settings-button {
-  width: 200px; /* Width of buttons */
-  height: 50px; /* Height of buttons */
-  color: white; /* Text color */
-  font-size: 1.2em; /* Font size */
-  border: none; /* No border */
-  border-radius: 5px; /* Rounded corners */
-  margin: 10px 0; /* Margin between buttons */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s, opacity 0.3s; /* Transition for hover effect */
+/* Button Gradients */
+.gradient-green {
+  background: linear-gradient(to bottom, #4caf50, #66bb6a); /* Good Green Gradient */
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  width: 100%;
 }
 
-.login-button {
-  background: linear-gradient(to bottom, #218838, #4caf50); /* good Green gradient */
+.gradient-turquoise {
+  background: linear-gradient(to bottom, #00bfa5, #4dd0e1); /* Good Turquoise Gradient */
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  width: 100%;
 }
 
-.level-design-button {
-  background: linear-gradient(to bottom, #00bfff, #40e0d0); /* good Turquoise gradient */
+.gradient-red {
+  background: linear-gradient(to bottom, #e53935, #ef5350); /* Good Red Gradient */
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  width: 100%;
 }
 
-.reset-button {
-  background: linear-gradient(to bottom, #c82333, #dc3545); /* good Red gradient */
-}
-
-.settings-button:hover {
-  opacity: 0.8; /* Slightly transparent on hover */
+/* Confirmation Buttons */
+.confirmation-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
 }
