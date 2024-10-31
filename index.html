@@ -1,60 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Platicker - A Platform Clicker Game</title>
-    <link rel="icon" href="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/CursorCoin.png?raw=true" type="image/png">
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Platicker - A Platform Clicker Game</title>
+  <link rel="icon" href="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/CursorCoin.png?raw=true" type="image/png">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <div class="top-bar">
-    <div class="score" id="scoreDisplay">Cash: $0.00</div>
-    <div class="upgrades">
-        <div>
-            <button class="upgrade-button" id="upgradeClickButton">Buy More Cash Per Click (Cost: $10.00)</button>
-            <div class="upgrade-info" id="clickInfo">Current Cash Per Click: $0.50</div>
-        </div>
-        <div>
-            <button class="upgrade-button" id="upgradeAutomaticButton">Buy More Cash Per Second (Cost: $10.00)</button>
-            <div class="upgrade-info" id="automaticInfo">Current Cash Per Second: $0.25</div>
-        </div>
+  <div class="score" id="scoreDisplay">Cash: $0.00</div>
+  <div class="upgrades">
+    <div>
+      <button class="upgrade-button" id="upgradeClickButton">Buy More Cash Per Click (Cost: $10.00)</button>
+      <div class="upgrade-info" id="clickInfo">Current Cash Per Click: $0.50</div>
     </div>
-    <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/VGstats.png?raw=true" class="stats-button" id="statsButton">
-    <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/JellySettingsButton.png?raw=true" class="setting-button" id="settingsButton">
+    <div>
+      <button class="upgrade-button" id="upgradeAutomaticButton">Buy More Cash Per Second (Cost: $10.00)</button>
+      <div class="upgrade-info" id="automaticInfo">Current Cash Per Second: $0.25</div>
+    </div>
+  </div>
+  <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/VGstats.png?raw=true" class="stats-button" id="statsButton">
+  <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/JellySettingsButton.png?raw=true" class="setting-button" id="settingsButton">
 </div>
 
 <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/ClickCursorCash.png?raw=true" class="click-cash" id="clickCash">
 
 <div class="overlay" id="settingsOverlay">
-    <div class="popup">
-        <div class="close-button" id="closeSettings">X</div>
-        <h2>Settings</h2>
-        <button class="login-button" id="loginRegisterButton">Login/Register</button>
-        <button class="level-design-button" id="levelDesignButton">Level Design</button>
-        <button class="reset-button" id="resetProgressButton">Reset Progress</button>
-    </div>
+  <div class="popup">
+    <div class="close-button" id="closeSettings">X</div>
+    <h2>Settings</h2>
+    <button class="setting-button" id="resetProgressButton">Reset Progress</button>
+    <button class="setting-button">Level Design</button>
+    <button class="setting-button">Login/Register</button>
+  </div>
 </div>
 
 <div class="overlay" id="statsOverlay">
-    <div class="popup">
-        <div class="close-button" id="closeStats">X</div>
-        <h2>Stats</h2>
-        <div class="upgrade-info" id="highestCashInfo">Your Highest Amount of Cash Saved Up: $0.00</div>
-        <div class="upgrade-info" id="netCashInfo">Your Net Cash: $0.00</div>
-    </div>
+  <div class="popup">
+    <div class="close-button" id="closeStats">X</div>
+    <h2>Stats</h2>
+    <div class="stats-box">Your Highest Amount of Cash Saved Up: $<span id="highestCash">0.00</span></div>
+    <div class="stats-box">Your Net Cash: $<span id="netCash">0.00</span></div>
+  </div>
 </div>
 
 <div class="overlay" id="resetConfirmationOverlay">
-    <div class="popup reset-confirmation-popup">
-        <div class="close-button" id="closeResetConfirmation">X</div>
-        <h2>Do You Really Want to Reset Your Progress? It Will be Lost Forever!</h2>
-        <div>
-            <button class="upgrade-button confirm-reset" id="confirmResetButton">Yes</button>
-            <button class="upgrade-button cancel-reset" id="cancelResetButton">Back</button>
-        </div>
+  <div class="reset-confirmation-popup">
+    <h2>Do You Really Want to Reset Your Progress? It Will be Lost Forever!</h2>
+    <div class="reset-buttons">
+      <button class="reset-button" id="confirmResetButton">Yes</button>
+      <button class="reset-button" id="cancelResetButton">Back</button>
     </div>
+  </div>
 </div>
 
 <script src="script.js"></script>
