@@ -31,9 +31,9 @@
   <div class="popup">
     <div class="close-button" id="closeSettings">X</div>
     <h2>Settings</h2>
-    <button class="setting-button" id="resetProgressButton">Reset Progress</button>
-    <button class="setting-button">Level Design</button>
-    <button class="setting-button">Login/Register</button>
+    <button class="gradient-button" id="resetProgressButton">Reset Progress</button> <!-- Reset Progress Button -->
+    <button class="gradient-button green" id="levelDesignButton">Level Design</button> <!-- Level Design Button -->
+    <button class="gradient-button green" id="loginRegisterButton">Login/Register</button> <!-- Login/Register Button -->
   </div>
 </div>
 
@@ -41,17 +41,19 @@
   <div class="popup">
     <div class="close-button" id="closeStats">X</div>
     <h2>Stats</h2>
-    <div class="stats-box">Your Highest Amount of Cash Saved Up: $<span id="highestCash">0.00</span></div>
-    <div class="stats-box">Your Net Cash: $<span id="netCash">0.00</span></div>
+    <div class="stat-box">Your Highest Amount of Cash Saved Up: <span id="highestCashDisplay">$0.00</span></div>
+    <div class="stat-box">Your Net Cash: <span id="netCashDisplay">$0.00</span></div>
   </div>
 </div>
 
 <div class="overlay" id="resetConfirmationOverlay">
-  <div class="reset-confirmation-popup">
-    <h2>Do You Really Want to Reset Your Progress? It Will be Lost Forever!</h2>
-    <div class="reset-buttons">
-      <button class="reset-button" id="confirmResetButton">Yes</button>
-      <button class="reset-button" id="cancelResetButton">Back</button>
+  <div class="popup">
+    <div class="close-button" id="closeResetConfirmation">X</div>
+    <h2>Do You Really Want to Reset Your Progress?</h2>
+    <p>It Will be Lost Forever!</p>
+    <div class="confirmation-buttons">
+      <button class="gradient-button green" id="confirmResetButton">Yes</button> <!-- Confirm Reset Button -->
+      <button class="gradient-button red" id="cancelResetButton">Back</button> <!-- Cancel Reset Button -->
     </div>
   </div>
 </div>
