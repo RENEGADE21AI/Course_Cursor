@@ -10,22 +10,22 @@
 </head>
 <body>
     <div class="top-bar">
-        <div class="score">Cash: $0.00</div>
+        <div class="score" id="score">Cash: $0.00</div>
         <div class="upgrades">
             <button class="upgrade-button" id="buyCashPerClick">Buy More Cash Per Click</button>
             <div class="currentCashPerClick" id="currentCashPerClick" style="color: white;">Current Cash Per Click: $0.00</div>
             <button class="upgrade-button" id="buyCashPerSecond">Buy More Cash Per Second</button>
             <div class="currentCashPerSecond" id="currentCashPerSecond" style="color: white;">Current Cash Per Second: $0.00</div>
         </div>
-        <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/VGstats.png?raw=true" class="stats-button" id="statsButton" alt="Stats">
-        <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/JellySettingsButton.png?raw=true" class="setting-button" id="settingsButton" alt="Settings">
+        <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/VGstats.png?raw=true" class="stats-button" id="statsButton" alt="Stats" style="width: 60px; height: 60px;">
+        <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/JellySettingsButton.png?raw=true" class="setting-button" id="settingsButton" alt="Settings" style="width: 60px; height: 60px;">
     </div>
 
     <div class="game-bar">
         <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/ClickCursorCash.png?raw=true" class="click-cash" id="clickCash" alt="Cash (Click Me)" style="width: 150px; height: auto;">
     </div>
 
-    <div class="overlay" id="overlay">
+    <div class="overlay" id="overlay" style="display: none;">
         <div class="popup" id="settingsPopup">
             <span class="close-button" id="closeSettingsPopup">&times;</span>
             <h3>Settings</h3>
@@ -61,7 +61,5 @@
             <!-- Stats content here -->
         </div>
     </div>
-
-    <script src="script.js"></script>
 </body>
 </html>
