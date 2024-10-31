@@ -41,7 +41,7 @@ body {
   left: 50%;
   transform: translateX(-50%);
   cursor: pointer;
-  width: 100px; /* Set to 100px */
+  width: 150px; /* Set width to 150px */
   height: auto; /* Maintain aspect ratio */
 }
 
