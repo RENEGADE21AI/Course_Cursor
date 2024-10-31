@@ -1,150 +1,126 @@
 body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0;
-  background-color: #f0f0f0; /* good very light gray color */
 }
 
 .top-bar {
+  background-color: #333; /* Dark gray */
+  color: white;
   width: 100%;
-  height: 20vh;
-  background-color: #b0c4de; /* good top bar color */
+  padding: 10px;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 0 1em;
-  box-sizing: border-box;
+  align-items: center;
 }
 
 .score {
-  color: white;
-  font-size: 2.5em; /* Larger font size for Cash display */
+  font-size: 24px;
 }
 
 .upgrades {
   display: flex;
-  gap: 1em;
+  gap: 10px;
 }
 
 .upgrade-button {
-  padding: 10px 20px;
-  font-size: 1em;
-  color: black;
-  background-color: #d1ffd1; /* good Light green for upgrade buttons */
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: transform 0.1s;
-}
-
-.upgrade-button:active {
-  transform: scale(0.95);
-}
-
-.click-cash {
-  width: 120px;
-  height: auto;
-  position: absolute;
-  bottom: 25%;
-  right: 2%;
-  cursor: pointer;
-  transition: transform 0.1s;
-}
-
-.click-cash:hover {
-  transform: scale(1.2);
-}
-
-.setting-button, .stats-button {
-  width: 60px; /* Settings button */
-  height: 60px; /* Stats button */
-  cursor: pointer;
-}
-
-.upgrade-info {
-  font-size: 0.9em;
-  color: black;
-  text-align: center;
-}
-
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 1;
-}
-
-.popup {
-  background: white;
-  width: 400px; /* Set the size */
-  height: auto; /* Auto height to fit content */
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-.close-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  cursor: pointer;
-  font-size: 1.5em;
-}
-
-/* Styles for Stat Boxes */
-.stat-box {
-  background-color: #d3d3d3; /* Light gray background */
-  color: black; /* Black text color */
   padding: 10px;
-  margin: 10px 0;
-  text-align: center; /* Center text */
-  width: 100%; /* Full width */
-}
-
-/* Styles for Reset Confirmation */
-.reset-buttons {
-  display: flex;
-  justify-content: space-between; /* Space buttons evenly */
-  width: 100%; /* Full width for buttons */
-}
-
-.reset-button {
-  padding: 10px 20px;
-  font-size: 1em;
+  font-size: 16px;
+  background-color: #007bff; /* Blue */
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
-/* Gradient Backgrounds for Buttons */
-#loginRegisterButton {
-  background: linear-gradient(to bottom, #4caf50, #a5d6a7); /* good green gradient */
+.upgrade-info {
+  margin-top: 5px;
 }
 
-#levelDesignButton {
-  background: linear-gradient(to bottom, #40e0d0, #b2fef7); /* good turquoise gradient */
+.stats-button,
+.setting-button {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
 }
 
-#resetProgressButton {
-  background: linear-gradient(to bottom, #f44336, #ef9a9a); /* good red gradient */
+.click-cash {
+  width: 100px;
+  cursor: pointer;
 }
 
-.reset-button#confirmResetButton {
-  background: linear-gradient(to bottom, #4caf50, #a5d6a7); /* good green gradient */
+.overlay {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+  justify-content: center;
+  align-items: center;
 }
 
-.reset-button#cancelResetButton {
-  background: linear-gradient(to bottom, #f44336, #ef9a9a); /* good red gradient */
+.popup {
+  background-color: white; /* White background for the pop-up */
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px; /* Width of pop-up */
+  text-align: center; /* Center text in pop-up */
+}
+
+.close-button {
+  cursor: pointer;
+  color: #ff0000; /* Red for close button */
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.stat-box {
+  background-color: lightgray; /* Light gray for stats boxes */
+  padding: 10px;
+  margin: 10px 0;
+}
+
+#resetConfirmationOverlay {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+  justify-content: center;
+  align-items: center;
+}
+
+.popup div {
+  display: flex;
+  justify-content: center; /* Center the buttons horizontally */
+  margin-top: 20px; /* Space above buttons */
+}
+
+.settings-button {
+  padding: 10px;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  color: white; /* White text for buttons */
+}
+
+.login-button {
+  background: linear-gradient(to bottom, #007bff, #66aaff); /* Good green gradient */
+}
+
+.level-design-button {
+  background: linear-gradient(to bottom, #40e0d0, #80f0e0); /* Good turquoise gradient */
+}
+
+.reset-button {
+  background: linear-gradient(to bottom, #ff4500, #ff7f50); /* Good red gradient */
 }
