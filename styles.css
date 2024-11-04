@@ -3,13 +3,13 @@ body {
   flex-direction: column;
   align-items: center;
   margin: 0;
-  background-color: #f0f0f0;
+  background-color: #f0f0f0; /* good very light gray color */
 }
 
 .top-bar {
   width: 100%;
   height: 20vh;
-  background-color: #b0c4de;
+  background-color: #b0c4de; /* good top bar color */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -19,7 +19,7 @@ body {
 
 .score {
   color: white;
-  font-size: 2.5em;
+  font-size: 2.5em; /* Larger font size for Cash display */
 }
 
 .upgrades {
@@ -31,7 +31,7 @@ body {
   padding: 10px 20px;
   font-size: 1em;
   color: black;
-  background-color: #d1ffd1;
+  background-color: #d1ffd1; /* good Light green for upgrade buttons */
   border: none;
   cursor: pointer;
   border-radius: 5px;
@@ -57,8 +57,8 @@ body {
 }
 
 .setting-button, .stats-button {
-  width: 60px;
-  height: 60px;
+  width: 60px; /* Settings button */
+  height: 60px; /* Stats button */
   cursor: pointer;
 }
 
@@ -83,16 +83,14 @@ body {
 
 .popup {
   background: white;
-  width: 400px;
-  height: 400px;
+  width: 400px; /* Set the size */
+  height: auto; /* Set the size */
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  padding: 20px;
-  text-align: center;
 }
 
 .close-button {
@@ -103,62 +101,40 @@ body {
   font-size: 1.5em;
 }
 
-.login-register-button {
-  background: linear-gradient(to bottom, #228b22, #32cd32); /* good green gradient */
-  color: white;
-  padding: 10px 20px;
-  margin: 10px 0;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
+.stat-box {
+  width: 90%; /* Width of stat boxes */
+  padding: 10px; /* Padding for stat boxes */
+  background-color: #d3d3d3; /* Light gray background */
+  color: black; /* Text color */
+  margin: 10px 0; /* Margin between boxes */
+  text-align: center; /* Center text */
+  border-radius: 5px; /* Rounded corners */
+}
+
+.settings-button {
+  width: 200px; /* Width of buttons */
+  height: 50px; /* Height of buttons */
+  color: white; /* Text color */
+  font-size: 1.2em; /* Font size */
+  border: none; /* No border */
+  border-radius: 5px; /* Rounded corners */
+  margin: 10px 0; /* Margin between buttons */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s, opacity 0.3s; /* Transition for hover effect */
+}
+
+.login-button {
+  background: linear-gradient(to bottom, #218838, #4caf50); /* good Green gradient */
 }
 
 .level-design-button {
-  background: linear-gradient(to bottom, #008080, #40e0d0); /* good turquoise gradient */
-  color: white;
-  padding: 10px 20px;
-  margin: 10px 0;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
+  background: linear-gradient(to bottom, #00bfff, #40e0d0); /* good Turquoise gradient */
 }
 
-.reset-progress-button {
-  background: linear-gradient(to bottom, #b22222, #ff6347); /* good red gradient */
-  color: white;
-  padding: 10px 20px;
-  margin: 10px 0;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
+.reset-button {
+  background: linear-gradient(to bottom, #c82333, #dc3545); /* good Red gradient */
 }
 
-.stat-box {
-  background-color: #dcdcdc; /* good light gray */
-  color: black;
-  font-size: 1.1em;
-  padding: 10px;
-  margin: 10px 0;
-  width: 90%;
-  text-align: center;
-}
-
-.confirm-reset-button {
-  background: linear-gradient(to bottom, #228b22, #32cd32); /* good green gradient */
-  color: white;
-  padding: 10px 20px;
-  margin: 10px;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.cancel-reset-button {
-  background: linear-gradient(to bottom, #b22222, #ff6347); /* good red gradient */
-  color: white;
-  padding: 10px 20px;
-  margin: 10px;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
+.settings-button:hover {
+  opacity: 0.8; /* Slightly transparent on hover */
 }
