@@ -167,4 +167,6 @@ body {
   transition: background-color 0.3s, opacity 0.3s;
 }
 
-.settings-button:hover, .login-popup
+.settings-button:hover, .login-popup-button:hover, .register-popup-button:hover {
+  opacity: 0.8;
+}
