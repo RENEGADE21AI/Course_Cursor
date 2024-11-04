@@ -1,64 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Platicker - A Platform Clicker Game</title>
-  <link rel="icon" href="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/CursorCoin.png?raw=true" type="image/png">
-  <link rel="stylesheet" href="styles.css"> <!-- Link to external CSS -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clicker Game</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-<div class="top-bar">
-  <div class="score" id="scoreDisplay">Cash: $0.00</div>
-  <div class="upgrades">
-    <div>
-      <button class="upgrade-button" id="upgradeClickButton">Buy More Cash Per Click (Cost: $10.00)</button>
-      <div class="upgrade-info" id="clickInfo">Current Cash Per Click: $0.50</div>
+    <div class="top-bar">
+        <div id="scoreDisplay" class="score">Cash: $0.00</div>
+        <div class="upgrades">
+            <button id="upgradeClickButton" class="upgrade-button">Buy More Cash Per Click (Cost: $10.00)</button>
+            <button id="upgradeAutomaticButton" class="upgrade-button">Buy More Cash Per Second (Cost: $10.00)</button>
+        </div>
+        <img id="settingsButton" src="settings-icon.png" class="setting-button" alt="Settings">
+        <img id="statsButton" src="stats-icon.png" class="stats-button" alt="Stats">
     </div>
-    <div>
-      <button class="upgrade-button" id="upgradeAutomaticButton">Buy More Cash Per Second (Cost: $10.00)</button>
-      <div class="upgrade-info" id="automaticInfo">Current Cash Per Second: $0.25</div>
+    
+    <img id="clickCash" src="cash-icon.png" class="click-cash" alt="Cash Icon">
+
+    <!-- Settings Pop-up -->
+    <div id="settingsOverlay" class="overlay">
+        <div class="popup">
+            <span id="closeSettings" class="close-button">&times;</span>
+            <h2>Settings</h2>
+            <button id="resetProgressButton" class="settings-button reset-button">Reset Progress</button>
+            <!-- Additional Settings buttons can be added here -->
+        </div>
     </div>
-  </div>
-  <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/VGstats.png?raw=true" class="stats-button" id="statsButton">
-  <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/JellySettingsButton.png?raw=true" class="setting-button" id="settingsButton">
-</div>
 
-<img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/ClickCursorCash.png?raw=true" class="click-cash" id="clickCash">
-
-<div class="overlay" id="settingsOverlay">
-  <div class="popup">
-    <div class="close-button" id="closeSettings">X</div>
-    <h2>Settings</h2>
-    <button class="settings-button login-button" id="loginRegisterButton">Login/Register</button>
-    <button class="settings-button level-design-button" id="levelDesignButton">Level Design</button>
-    <button class="settings-button reset-button" id="resetProgressButton">Reset Progress</button>
-  </div>
-</div>
-
-<div class="overlay" id="statsOverlay">
-  <div class="popup">
-    <div class="close-button" id="closeStats">X</div>
-    <h2>Stats</h2>
-    <div class="stat-box">Your Highest Amount of Cash Saved Up: $<span id="highestCash">0.00</span></div>
-    <div class="stat-box">Your Net Cash: $<span id="netCash">0.00</span></div>
-  </div>
-</div>
-
-<div class="overlay" id="resetConfirmationOverlay">
-  <div class="popup">
-    <div class="close-button" id="closeResetConfirmation">X</div>
-    <h2>Do You Really Want to Reset Your Progress?</h2>
-    <p>It Will be Lost Forever!</p>
-    <div style="width: 100%; display: flex; justify-content: center;">
-      <button class="settings-button login-button" id="confirmResetButton">Yes</button>
-      <button class="settings-button reset-button" id="cancelResetButton">Back</button>
+    <!-- Stats Pop-up -->
+    <div id="statsOverlay" class="overlay">
+        <div class="popup">
+            <span id="closeStats" class="close-button">&times;</span>
+            <h2>Stats</h2>
+            <div class="stat-scrollable">
+                <div class="stat-box">Your Highest Amount of Cash Saved Up: $<span id="highestCash">0.00</span></div>
+                <div class="stat-box">Your Net Cash: $<span id="netCash">0.00</span></div>
+                <div class="stat-box">Your Hours Played: <span id="hoursPlayed">0.00</span></div>
+                <!-- Add more stat boxes here -->
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
-<script src="script.js"></script> <!-- Link to external JavaScript -->
+    <!-- Reset Confirmation Pop-up -->
+    <div id="resetConfirmationOverlay" class="overlay">
+        <div class="popup">
+            <span id="closeResetConfirmation" class="close-button">&times;</span>
+            <h2>Confirm Reset Progress</h2>
+            <p>Are you sure you want to reset your progress? This action cannot be undone.</p>
+            <button id="confirmResetButton" class="settings-button reset-button">Confirm Reset</button>
+            <button id="cancelResetButton" class="settings-button">Cancel</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
-
