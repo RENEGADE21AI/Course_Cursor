@@ -4,17 +4,17 @@
   "description": "A platform clicker game with Supabase integration",
   "main": "script.js",
   "scripts": {
-    "start": "live-server",
+    "start": "browser-sync start --server --files 'index.html, script.js, styles.css'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.46.1",
     "dotenv": "^16.4.5"
   },
-  "devDependencies": {
-    "live-server": "^1.2.0"
-  },
   "keywords": [],
   "author": "MichaelDB",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^3.0.3"
+  }
 }
