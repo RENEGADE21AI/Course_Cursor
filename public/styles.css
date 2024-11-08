@@ -82,7 +82,7 @@ body {
 }
 
 .popup {
-  background: white;
+  background: #f2f2f2; /* Subtle background color effect for overlay */
   width: 400px;
   position: relative;
   display: flex;
