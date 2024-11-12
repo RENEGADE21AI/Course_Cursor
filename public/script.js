@@ -150,3 +150,13 @@ confirmResetButton.addEventListener('click', () => {
 cancelResetButton.addEventListener('click', () => {
     resetConfirmationOverlay.style.display = 'none';
 });
+
+// Show login/register pop-up when button is clicked
+document.getElementById("loginRegisterButton").onclick = function () {
+  document.getElementById("loginRegisterOverlay").style.display = "flex";
+};
+
+// Hide login/register pop-up when close button is clicked
+document.getElementById("closeLoginRegister").onclick = function () {
+  document.getElementById("loginRegisterOverlay").style.display = "none";
+};
