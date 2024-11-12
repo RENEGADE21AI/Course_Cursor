@@ -1,67 +1,46 @@
 // server.js
 const express = require('express');
+const bcrypt = require('bcrypt');
 const { createClient } = require('@supabase/supabase-js');
 const dotenv = require('dotenv');
-const path = require('path');
-const bodyParser = require('body-parser');
 
 dotenv.config();
-
 const app = express();
 const PORT = process.env.PORT;
+app.use(express.json());
 
-// Serve static files
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.json()); // For parsing application/json
-
-// Initialize Supabase client
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
-// API route for registering a new user
-app.post('/api/register', async (req, res) => {
-  const { email, password } = req.body;
+app.post('/api/auth/register', async (req, res) => {
+    const { email, password, username } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  const { data, error } = await supabase.auth.signUp({ email, password });
+    const { data, error } = await supabase
+        .from('users')
+        .insert([{ email, password: hashedPassword, username }]);
 
-  if (error) return res.status(400).json({ error: error.message });
-  res.json({ user: data.user });
+    if (error) {
+        res.status(400).json({ error: error.message });
+    } else {
+        res.json({ message: 'User registered successfully!' });
+    }
 });
 
-// API route for logging in an existing user
-app.post('/api/login', async (req, res) => {
-  const { email, password } = req.body;
+app.post('/api/auth/login', async (req, res) => {
+    const { email, password } = req.body;
+    const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('email', email)
+        .single();
 
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-
-  if (error) return res.status(400).json({ error: error.message });
-  res.json({ user: data.user });
+    if (error || !data || !(await bcrypt.compare(password, data.password))) {
+        res.status(401).json({ error: 'Invalid credentials' });
+    } else {
+        res.json({ message: 'Logged in successfully!', user_id: data.id });
+    }
 });
 
-// API route to get game data
-app.get('/api/game', async (req, res) => {
-  const { user_id } = req.query;
-  const { data, error } = await supabase
-    .from('game_data')
-    .select('*')
-    .eq('user_id', user_id);
-
-  if (error) return res.status(400).json({ error: error.message });
-  res.json(data);
-});
-
-// API route to update or insert game data
-app.post('/api/game', async (req, res) => {
-  const { user_id, cash, cash_per_click, cash_per_second } = req.body;
-
-  const { data, error } = await supabase
-    .from('game_data')
-    .upsert([{ user_id, cash, cash_per_click, cash_per_second }]);
-
-  if (error) return res.status(400).json({ error: error.message });
-  res.json(data);
-});
-
-// Start the server
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });
