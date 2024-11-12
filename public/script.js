@@ -1,4 +1,14 @@
-// Game variables
+// Import dotenv configuration if running in a server-side environment
+if (typeof process !== 'undefined' && process.env) {
+    require('dotenv').config();
+}
+
+// Supabase setup
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+// Game state variables
 let cash = 0;
 let cashPerClick = 0.50;
 let cashPerSecond = 0.25;
@@ -8,7 +18,7 @@ let highestCash = 0;
 let netCash = 0;
 let totalHoursPlayed = 0;
 
-// HTML element references
+// HTML elements
 const clickCash = document.getElementById('clickCash');
 const scoreDisplay = document.getElementById('scoreDisplay');
 const upgradeClickButton = document.getElementById('upgradeClickButton');
@@ -35,14 +45,8 @@ const loginButton = document.getElementById('loginButton');
 const registerButton = document.getElementById('registerButton');
 const emailInput = document.getElementById('emailInput');
 const passwordInput = document.getElementById('passwordInput');
-const logoutButton = document.getElementById('logoutButton');
 
-// Supabase authentication setup
-const supabaseUrl = 'https://your-project-id.supabase.co'; // Replace with your Supabase URL
-const supabaseKey = 'your-anon-key'; // Replace with your Supabase anon key
-const supabase = createClient(supabaseUrl, supabaseKey);
-
-// Function to update the display based on game state
+// Function to update display elements based on game state
 function updateDisplay() {
     scoreDisplay.textContent = `Cash: $${cash.toFixed(2)}`;
     clickInfo.textContent = `Current Cash Per Click: $${cashPerClick.toFixed(2)}`;
@@ -54,220 +58,85 @@ function updateDisplay() {
     hoursPlayedDisplay.textContent = totalHoursPlayed.toFixed(2);
 }
 
-// Function to save game state to localStorage and Supabase
-function saveGameState(user_id) {
-    localStorage.setItem('gameState', JSON.stringify({
-        cash, cashPerClick, cashPerSecond, upgradeClickCost, upgradeAutomaticCost, highestCash, netCash, totalHoursPlayed
-    }));
-
-    // Save to database under user_id
-    fetch('/api/game', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            user_id,
-            cash,
-            cash_per_click: cashPerClick,
-            cash_per_second: cashPerSecond,
-            highest_cash: highestCash,
-            net_cash: netCash,
-            total_hours_played: totalHoursPlayed
-        })
-    });
-}
-
-// Login function
-loginButton.addEventListener('click', async () => {
-    const email = emailInput.value;
-    const password = passwordInput.value;
-
-    const { user, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-    });
-
-    if (error) {
-        alert('Error logging in: ' + error.message);
-    } else {
-        alert('Logged in successfully!');
-        loginRegisterOverlay.style.display = 'none';
-        loadUserData(user.id); // Load user's game data
-    }
-});
-
-// Register function
-registerButton.addEventListener('click', async () => {
-    const email = emailInput.value;
-    const password = passwordInput.value;
-
-    const { user, error } = await supabase.auth.signUp({
-        email,
-        password,
-    });
-
-    if (error) {
-        alert('Error registering: ' + error.message);
-    } else {
-        alert('Registered successfully!');
-        loginRegisterOverlay.style.display = 'none';
-        loadUserData(user.id); // Load user's game data
-    }
-});
-
-// Load user's game data from Supabase
-async function loadUserData(user_id) {
-    const { data, error } = await supabase
-        .from('game_data')
-        .select('*')
-        .eq('user_id', user_id)
-        .single();
-
-    if (error) {
-        alert('Error loading game data: ' + error.message);
-    } else {
-        cash = data.cash;
-        cashPerClick = data.cash_per_click;
-        cashPerSecond = data.cash_per_second;
-        highestCash = data.highest_cash;
-        netCash = data.net_cash;
-        totalHoursPlayed = data.total_hours_played;
-        updateDisplay();
-    }
-}
-
-// Logout function
-logoutButton.addEventListener('click', async () => {
-    await supabase.auth.signOut();
-    alert('Logged out successfully');
-    cash = 0;
-    updateDisplay();
-    localStorage.removeItem('gameState');
-});
-
-// Show login/register modal
-document.getElementById('loginRegisterButton').onclick = function () {
-    loginRegisterOverlay.style.display = 'flex';
-};
-
-// Hide login/register modal
-closeLoginRegister.onclick = function () {
-    loginRegisterOverlay.style.display = 'none';
-};
-
-// Game click and upgrade functionality
+// Click event to add cash based on cashPerClick
 clickCash.addEventListener('click', () => {
     cash += cashPerClick;
-    highestCash = Math.max(highestCash, cash);
-    netCash += cashPerClick;
+    if (cash > highestCash) highestCash = cash;
     updateDisplay();
-    clickCash.style.transform = 'scale(1.1)';
-    setTimeout(() => {
-        clickCash.style.transform = 'scale(1)';
-    }, 100);
 });
 
+// Function to upgrade cash per click
 upgradeClickButton.addEventListener('click', () => {
     if (cash >= upgradeClickCost) {
         cash -= upgradeClickCost;
-        cashPerClick = Math.ceil(cashPerClick * 1.15 * 100) / 100;
-        upgradeClickCost = Math.ceil(upgradeClickCost * 1.15 * 100) / 100;
+        cashPerClick += 0.25;
+        upgradeClickCost *= 1.5;
         updateDisplay();
     }
 });
 
+// Function to upgrade cash per second
 upgradeAutomaticButton.addEventListener('click', () => {
     if (cash >= upgradeAutomaticCost) {
         cash -= upgradeAutomaticCost;
-        cashPerSecond = Math.ceil(cashPerSecond * 1.15 * 100) / 100;
-        upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.15 * 100) / 100;
+        cashPerSecond += 0.10;
+        upgradeAutomaticCost *= 1.5;
         updateDisplay();
     }
 });
 
-// Periodically add cash per second
+// Automatic cash generation based on cashPerSecond
 setInterval(() => {
     cash += cashPerSecond;
-    highestCash = Math.max(highestCash, cash);
-    netCash += cashPerSecond;
-    totalHoursPlayed += 1 / 3600;
+    if (cash > highestCash) highestCash = cash;
     updateDisplay();
 }, 1000);
 
-// Load saved state from localStorage on window load
-window.onload = () => {
-    const savedState = localStorage.getItem('gameState');
-    if (savedState) {
-        const { cash: savedCash, cashPerClick: savedCashPerClick, cashPerSecond: savedCashPerSecond, upgradeClickCost: savedUpgradeClickCost, upgradeAutomaticCost: savedUpgradeAutomaticCost, highestCash: savedHighestCash, netCash: savedNetCash, totalHoursPlayed: savedTotalHoursPlayed } = JSON.parse(savedState);
-        cash = savedCash;
-        cashPerClick = savedCashPerClick;
-        cashPerSecond = savedCashPerSecond;
-        upgradeClickCost = savedUpgradeClickCost;
-        upgradeAutomaticCost = savedUpgradeAutomaticCost;
-        highestCash = savedHighestCash;
-        netCash = savedNetCash;
-        totalHoursPlayed = savedTotalHoursPlayed;
-        updateDisplay();
-    }
-};
+// Event listeners for overlays
+closeSettings.addEventListener('click', () => settingsOverlay.style.display = 'none');
+closeStats.addEventListener('click', () => statsOverlay.style.display = 'none');
+resetProgressButton.addEventListener('click', () => resetConfirmationOverlay.style.display = 'block');
+closeResetConfirmation.addEventListener('click', () => resetConfirmationOverlay.style.display = 'none');
+cancelResetButton.addEventListener('click', () => resetConfirmationOverlay.style.display = 'none');
 
-// Save game state every 1 second
-setInterval(() => {
-    const user = supabase.auth.user();
-    if (user) {
-        saveGameState(user.id);
-    }
-}, 1000);
-// Open the login/register pop-up when Login/Register button is clicked
-document.getElementById("loginRegisterButton").onclick = function () {
-    document.getElementById("loginRegisterOverlay").style.display = "flex";
-};
+// Reset game progress
+confirmResetButton.addEventListener('click', () => {
+    cash = 0;
+    cashPerClick = 0.50;
+    cashPerSecond = 0.25;
+    upgradeClickCost = 10.00;
+    upgradeAutomaticCost = 10.00;
+    highestCash = 0;
+    netCash = 0;
+    totalHoursPlayed = 0;
+    updateDisplay();
+    resetConfirmationOverlay.style.display = 'none';
+});
 
-// Close the login/register pop-up
-document.getElementById("closeLoginRegister").onclick = function () {
-    document.getElementById("loginRegisterOverlay").style.display = "none";
-};
-
-// Function to handle login
-async function handleLogin() {
-    const email = document.getElementById("emailInput").value;
-    const password = document.getElementById("passwordInput").value;
-    const message = document.getElementById("loginRegisterMessage");
-
-    const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-    });
-
-    const result = await response.json();
-    if (result.error) {
-        message.textContent = result.error;
+// Login/Register event listeners
+closeLoginRegister.addEventListener('click', () => loginRegisterOverlay.style.display = 'none');
+loginButton.addEventListener('click', async () => {
+    const email = emailInput.value;
+    const password = passwordInput.value;
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+        alert('Login failed');
     } else {
-        message.textContent = "Logged in successfully!";
-        // Load game data here based on user ID
+        alert('Login successful');
+        loginRegisterOverlay.style.display = 'none';
     }
-}
-
-// Function to handle registration
-async function handleRegister() {
-    const email = document.getElementById("emailInput").value;
-    const password = document.getElementById("passwordInput").value;
-    const username = document.getElementById("usernameInput").value;
-    const message = document.getElementById("loginRegisterMessage");
-
-    const response = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, username })
-    });
-
-    const result = await response.json();
-    if (result.error) {
-        message.textContent = result.error;
+});
+registerButton.addEventListener('click', async () => {
+    const email = emailInput.value;
+    const password = passwordInput.value;
+    const { data, error } = await supabase.auth.signUp({ email, password });
+    if (error) {
+        alert('Registration failed');
     } else {
-        message.textContent = "Registered successfully! Please log in.";
+        alert('Registration successful');
+        loginRegisterOverlay.style.display = 'none';
     }
-}
+});
 
-document.getElementById("loginButton").addEventListener("click", handleLogin);
-document.getElementById("registerButton").addEventListener("click", handleRegister);
+// Initial display update
+updateDisplay();
