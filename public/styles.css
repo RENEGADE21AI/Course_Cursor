@@ -141,6 +141,16 @@ body {
   background: linear-gradient(to bottom, #c82333, #dc3545); /* Red gradient */
 }
 
+input[type="text"], input[type="password"], input[type="email"] {
+  width: 80%;
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+
 .login-popup-button {
   background: linear-gradient(to bottom, #007bff, #0056b3); /* Blue gradient for login */
   color: white;
