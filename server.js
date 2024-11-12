@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const bcrypt = require('bcrypt');
 const { createClient } = require('@supabase/supabase-js');
@@ -6,11 +5,22 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 const app = express();
-const PORT = process.env.PORT;
-app.use(express.json());
+const PORT = process.env.PORT || 3000;
 
+// Initialize Supabase client
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
+app.use(express.json());
+
+// Serve static files from the 'public' directory
+app.use(express.static('public'));
+
+// Root route that serves index.html
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/public/index.html');
+});
+
+// User registration route
 app.post('/api/auth/register', async (req, res) => {
     const { email, password, username } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -26,6 +36,7 @@ app.post('/api/auth/register', async (req, res) => {
     }
 });
 
+// User login route
 app.post('/api/auth/login', async (req, res) => {
     const { email, password } = req.body;
     const { data, error } = await supabase
@@ -41,6 +52,7 @@ app.post('/api/auth/login', async (req, res) => {
     }
 });
 
+// Start the server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
