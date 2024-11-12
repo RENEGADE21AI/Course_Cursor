@@ -1,4 +1,14 @@
-// Game variables
+// Import dotenv configuration if running in a server-side environment
+if (typeof process !== 'undefined' && process.env) {
+    require('dotenv').config();
+}
+
+// Supabase setup
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+// Game state variables
 let cash = 0;
 let cashPerClick = 0.50;
 let cashPerSecond = 0.25;
@@ -8,7 +18,7 @@ let highestCash = 0;
 let netCash = 0;
 let totalHoursPlayed = 0;
 
-// HTML element references
+// HTML elements
 const clickCash = document.getElementById('clickCash');
 const scoreDisplay = document.getElementById('scoreDisplay');
 const upgradeClickButton = document.getElementById('upgradeClickButton');
@@ -28,7 +38,15 @@ const highestCashDisplay = document.getElementById('highestCash');
 const netCashDisplay = document.getElementById('netCash');
 const hoursPlayedDisplay = document.getElementById('hoursPlayed');
 
-// Update display based on current game state
+// Login/Register modal elements
+const loginRegisterOverlay = document.getElementById('loginRegisterOverlay');
+const closeLoginRegister = document.getElementById('closeLoginRegister');
+const loginButton = document.getElementById('loginButton');
+const registerButton = document.getElementById('registerButton');
+const emailInput = document.getElementById('emailInput');
+const passwordInput = document.getElementById('passwordInput');
+
+// Function to update display elements based on game state
 function updateDisplay() {
     scoreDisplay.textContent = `Cash: $${cash.toFixed(2)}`;
     clickInfo.textContent = `Current Cash Per Click: $${cashPerClick.toFixed(2)}`;
@@ -40,97 +58,48 @@ function updateDisplay() {
     hoursPlayedDisplay.textContent = totalHoursPlayed.toFixed(2);
 }
 
-// Save game state to localStorage periodically
-function saveGameState() {
-    localStorage.setItem('gameState', JSON.stringify({ cash, cashPerClick, cashPerSecond, upgradeClickCost, upgradeAutomaticCost, highestCash, netCash, totalHoursPlayed }));
-}
-
-// Button functionality for earning cash and upgrading
+// Click event to add cash based on cashPerClick
 clickCash.addEventListener('click', () => {
     cash += cashPerClick;
-    highestCash = Math.max(highestCash, cash);
-    netCash += cashPerClick;
+    if (cash > highestCash) highestCash = cash;
     updateDisplay();
-    clickCash.style.transform = 'scale(1.1)';
-    setTimeout(() => {
-        clickCash.style.transform = 'scale(1)';
-    }, 100);
 });
 
+// Function to upgrade cash per click
 upgradeClickButton.addEventListener('click', () => {
     if (cash >= upgradeClickCost) {
         cash -= upgradeClickCost;
-        cashPerClick = Math.ceil(cashPerClick * 1.15 * 100) / 100;
-        upgradeClickCost = Math.ceil(upgradeClickCost * 1.15 * 100) / 100;
+        cashPerClick += 0.25;
+        upgradeClickCost *= 1.5;
         updateDisplay();
     }
 });
 
+// Function to upgrade cash per second
 upgradeAutomaticButton.addEventListener('click', () => {
     if (cash >= upgradeAutomaticCost) {
         cash -= upgradeAutomaticCost;
-        cashPerSecond = Math.ceil(cashPerSecond * 1.15 * 100) / 100;
-        upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.15 * 100) / 100;
+        cashPerSecond += 0.10;
+        upgradeAutomaticCost *= 1.5;
         updateDisplay();
     }
 });
 
-// Periodically add cash per second
+// Automatic cash generation based on cashPerSecond
 setInterval(() => {
     cash += cashPerSecond;
-    highestCash = Math.max(highestCash, cash);
-    netCash += cashPerSecond;
-    totalHoursPlayed += 1 / 3600;
+    if (cash > highestCash) highestCash = cash;
     updateDisplay();
 }, 1000);
 
-// Load saved state from localStorage on window load
-window.onload = () => {
-    const savedState = localStorage.getItem('gameState');
-    if (savedState) {
-        const { cash: savedCash, cashPerClick: savedCashPerClick, cashPerSecond: savedCashPerSecond, upgradeClickCost: savedUpgradeClickCost, upgradeAutomaticCost: savedUpgradeAutomaticCost, highestCash: savedHighestCash, netCash: savedNetCash, totalHoursPlayed: savedTotalHoursPlayed } = JSON.parse(savedState);
-        cash = savedCash;
-        cashPerClick = savedCashPerClick;
-        cashPerSecond = savedCashPerSecond;
-        upgradeClickCost = savedUpgradeClickCost;
-        upgradeAutomaticCost = savedUpgradeAutomaticCost;
-        highestCash = savedHighestCash;
-        netCash = savedNetCash;
-        totalHoursPlayed = savedTotalHoursPlayed;
-        updateDisplay();
-    }
-};
+// Event listeners for overlays
+closeSettings.addEventListener('click', () => settingsOverlay.style.display = 'none');
+closeStats.addEventListener('click', () => statsOverlay.style.display = 'none');
+resetProgressButton.addEventListener('click', () => resetConfirmationOverlay.style.display = 'block');
+closeResetConfirmation.addEventListener('click', () => resetConfirmationOverlay.style.display = 'none');
+cancelResetButton.addEventListener('click', () => resetConfirmationOverlay.style.display = 'none');
 
-// Save game state every 1 second
-setInterval(saveGameState, 1000);
-
-// Button functions for settings and stats
-document.getElementById('settingsButton').addEventListener('click', () => {
-    settingsOverlay.style.display = 'flex';
-});
-
-closeSettings.addEventListener('click', () => {
-    settingsOverlay.style.display = 'none';
-});
-
-document.getElementById('statsButton').addEventListener('click', () => {
-    statsOverlay.style.display = 'flex';
-    updateDisplay();
-});
-
-closeStats.addEventListener('click', () => {
-    statsOverlay.style.display = 'none';
-});
-
-// Reset confirmation overlay
-resetProgressButton.addEventListener('click', () => {
-    resetConfirmationOverlay.style.display = 'flex';
-});
-
-closeResetConfirmation.addEventListener('click', () => {
-    resetConfirmationOverlay.style.display = 'none';
-});
-
+// Reset game progress
 confirmResetButton.addEventListener('click', () => {
     cash = 0;
     cashPerClick = 0.50;
@@ -140,23 +109,34 @@ confirmResetButton.addEventListener('click', () => {
     highestCash = 0;
     netCash = 0;
     totalHoursPlayed = 0;
-
-    localStorage.removeItem('gameState');
-
     updateDisplay();
     resetConfirmationOverlay.style.display = 'none';
 });
 
-cancelResetButton.addEventListener('click', () => {
-    resetConfirmationOverlay.style.display = 'none';
+// Login/Register event listeners
+closeLoginRegister.addEventListener('click', () => loginRegisterOverlay.style.display = 'none');
+loginButton.addEventListener('click', async () => {
+    const email = emailInput.value;
+    const password = passwordInput.value;
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+        alert('Login failed');
+    } else {
+        alert('Login successful');
+        loginRegisterOverlay.style.display = 'none';
+    }
+});
+registerButton.addEventListener('click', async () => {
+    const email = emailInput.value;
+    const password = passwordInput.value;
+    const { data, error } = await supabase.auth.signUp({ email, password });
+    if (error) {
+        alert('Registration failed');
+    } else {
+        alert('Registration successful');
+        loginRegisterOverlay.style.display = 'none';
+    }
 });
 
-// Show login/register pop-up when button is clicked
-document.getElementById("loginRegisterButton").onclick = function () {
-  document.getElementById("loginRegisterOverlay").style.display = "flex";
-};
-
-// Hide login/register pop-up when close button is clicked
-document.getElementById("closeLoginRegister").onclick = function () {
-  document.getElementById("loginRegisterOverlay").style.display = "none";
-};
+// Initial display update
+updateDisplay();
