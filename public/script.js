@@ -28,6 +28,20 @@ const highestCashDisplay = document.getElementById('highestCash');
 const netCashDisplay = document.getElementById('netCash');
 const hoursPlayedDisplay = document.getElementById('hoursPlayed');
 
+// Login/Register modal elements
+const loginRegisterOverlay = document.getElementById('loginRegisterOverlay');
+const closeLoginRegister = document.getElementById('closeLoginRegister');
+const loginButton = document.getElementById('loginButton');
+const registerButton = document.getElementById('registerButton');
+const emailInput = document.getElementById('emailInput');
+const passwordInput = document.getElementById('passwordInput');
+const logoutButton = document.getElementById('logoutButton');
+
+// Supabase authentication setup
+const supabaseUrl = 'https://your-project-id.supabase.co'; // Replace with your Supabase URL
+const supabaseKey = 'your-anon-key'; // Replace with your Supabase anon key
+const supabase = createClient(supabaseUrl, supabaseKey);
+
 // Function to update the display based on game state
 function updateDisplay() {
     scoreDisplay.textContent = `Cash: $${cash.toFixed(2)}`;
@@ -40,18 +54,18 @@ function updateDisplay() {
     hoursPlayedDisplay.textContent = totalHoursPlayed.toFixed(2);
 }
 
-// Function to save game state to localStorage and database
-function saveGameState() {
+// Function to save game state to localStorage and Supabase
+function saveGameState(user_id) {
     localStorage.setItem('gameState', JSON.stringify({
         cash, cashPerClick, cashPerSecond, upgradeClickCost, upgradeAutomaticCost, highestCash, netCash, totalHoursPlayed
     }));
 
-    // Save to database
+    // Save to database under user_id
     fetch('/api/game', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            user_id: "user-id-placeholder",  // Replace with actual user ID
+            user_id,
             cash,
             cash_per_click: cashPerClick,
             cash_per_second: cashPerSecond,
@@ -62,7 +76,85 @@ function saveGameState() {
     });
 }
 
-// Button functionality for earning cash and upgrading
+// Login function
+loginButton.addEventListener('click', async () => {
+    const email = emailInput.value;
+    const password = passwordInput.value;
+
+    const { user, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+    });
+
+    if (error) {
+        alert('Error logging in: ' + error.message);
+    } else {
+        alert('Logged in successfully!');
+        loginRegisterOverlay.style.display = 'none';
+        loadUserData(user.id); // Load user's game data
+    }
+});
+
+// Register function
+registerButton.addEventListener('click', async () => {
+    const email = emailInput.value;
+    const password = passwordInput.value;
+
+    const { user, error } = await supabase.auth.signUp({
+        email,
+        password,
+    });
+
+    if (error) {
+        alert('Error registering: ' + error.message);
+    } else {
+        alert('Registered successfully!');
+        loginRegisterOverlay.style.display = 'none';
+        loadUserData(user.id); // Load user's game data
+    }
+});
+
+// Load user's game data from Supabase
+async function loadUserData(user_id) {
+    const { data, error } = await supabase
+        .from('game_data')
+        .select('*')
+        .eq('user_id', user_id)
+        .single();
+
+    if (error) {
+        alert('Error loading game data: ' + error.message);
+    } else {
+        cash = data.cash;
+        cashPerClick = data.cash_per_click;
+        cashPerSecond = data.cash_per_second;
+        highestCash = data.highest_cash;
+        netCash = data.net_cash;
+        totalHoursPlayed = data.total_hours_played;
+        updateDisplay();
+    }
+}
+
+// Logout function
+logoutButton.addEventListener('click', async () => {
+    await supabase.auth.signOut();
+    alert('Logged out successfully');
+    cash = 0;
+    updateDisplay();
+    localStorage.removeItem('gameState');
+});
+
+// Show login/register modal
+document.getElementById('loginRegisterButton').onclick = function () {
+    loginRegisterOverlay.style.display = 'flex';
+};
+
+// Hide login/register modal
+closeLoginRegister.onclick = function () {
+    loginRegisterOverlay.style.display = 'none';
+};
+
+// Game click and upgrade functionality
 clickCash.addEventListener('click', () => {
     cash += cashPerClick;
     highestCash = Math.max(highestCash, cash);
@@ -119,46 +211,9 @@ window.onload = () => {
 };
 
 // Save game state every 1 second
-setInterval(saveGameState, 1000);
-
-// Event listeners for settings and stats overlays
-document.getElementById('settingsButton').addEventListener('click', () => {
-    settingsOverlay.style.display = 'flex';
-});
-closeSettings.addEventListener('click', () => {
-    settingsOverlay.style.display = 'none';
-});
-
-document.getElementById('statsButton').addEventListener('click', () => {
-    statsOverlay.style.display = 'flex';
-    updateDisplay();
-});
-closeStats.addEventListener('click', () => {
-    statsOverlay.style.display = 'none';
-});
-
-// Reset confirmation overlay
-resetProgressButton.addEventListener('click', () => {
-    resetConfirmationOverlay.style.display = 'flex';
-});
-closeResetConfirmation.addEventListener('click', () => {
-    resetConfirmationOverlay.style.display = 'none';
-});
-
-confirmResetButton.addEventListener('click', () => {
-    cash = 0;
-    cashPerClick = 0.50;
-    cashPerSecond = 0.25;
-    upgradeClickCost = 10.00;
-    upgradeAutomaticCost = 10.00;
-    highestCash = 0;
-    netCash = 0;
-    totalHoursPlayed = 0;
-
-    localStorage.removeItem('gameState');
-    updateDisplay();
-    resetConfirmationOverlay.style.display = 'none';
-});
-cancelResetButton.addEventListener('click', () => {
-    resetConfirmationOverlay.style.display = 'none';
-});
+setInterval(() => {
+    const user = supabase.auth.user();
+    if (user) {
+        saveGameState(user.id);
+    }
+}, 1000);
