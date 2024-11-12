@@ -217,3 +217,57 @@ setInterval(() => {
         saveGameState(user.id);
     }
 }, 1000);
+// Open the login/register pop-up when Login/Register button is clicked
+document.getElementById("loginRegisterButton").onclick = function () {
+    document.getElementById("loginRegisterOverlay").style.display = "flex";
+};
+
+// Close the login/register pop-up
+document.getElementById("closeLoginRegister").onclick = function () {
+    document.getElementById("loginRegisterOverlay").style.display = "none";
+};
+
+// Function to handle login
+async function handleLogin() {
+    const email = document.getElementById("emailInput").value;
+    const password = document.getElementById("passwordInput").value;
+    const message = document.getElementById("loginRegisterMessage");
+
+    const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+    });
+
+    const result = await response.json();
+    if (result.error) {
+        message.textContent = result.error;
+    } else {
+        message.textContent = "Logged in successfully!";
+        // Load game data here based on user ID
+    }
+}
+
+// Function to handle registration
+async function handleRegister() {
+    const email = document.getElementById("emailInput").value;
+    const password = document.getElementById("passwordInput").value;
+    const username = document.getElementById("usernameInput").value;
+    const message = document.getElementById("loginRegisterMessage");
+
+    const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, username })
+    });
+
+    const result = await response.json();
+    if (result.error) {
+        message.textContent = result.error;
+    } else {
+        message.textContent = "Registered successfully! Please log in.";
+    }
+}
+
+document.getElementById("loginButton").addEventListener("click", handleLogin);
+document.getElementById("registerButton").addEventListener("click", handleRegister);
