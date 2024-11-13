@@ -1,13 +1,3 @@
-// Import dotenv configuration if running in a server-side environment
-if (typeof process !== 'undefined' && process.env) {
-    require('dotenv').config();
-}
-
-// Supabase setup
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
-
 // Game state variables
 let cash = 0;
 let cashPerClick = 0.50;
