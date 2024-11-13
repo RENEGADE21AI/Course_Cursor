@@ -38,6 +38,7 @@ const loginButton = document.getElementById('loginButton');
 const registerButton = document.getElementById('registerButton');
 const emailInput = document.getElementById('emailInput');
 const passwordInput = document.getElementById('passwordInput');
+const usernameInput = document.getElementById('usernameInput');
 
 // Function to update display elements based on game state
 function updateDisplay() {
@@ -126,30 +127,70 @@ confirmResetButton.addEventListener('click', () => {
     resetConfirmationOverlay.style.display = 'none';
 });
 
-// Login/Register event listeners
+// Function to handle registration
+async function handleRegister() {
+    const email = emailInput.value;
+    const password = passwordInput.value;
+    const username = usernameInput.value;
+
+    try {
+        const { user, error } = await supabase.auth.signUp({ email, password });
+        if (error) throw error;
+
+        await supabase.from("users").insert([
+            {
+                id: user.id,
+                email: user.email,
+                username: username,
+                created_at: new Date(),
+                last_active: new Date()
+            }
+        ]);
+        alert("Registration successful! Please log in.");
+    } catch (error) {
+        alert("Error registering: " + error.message);
+    }
+}
+
+// Function to handle login
+async function handleLogin() {
+    const email = emailInput.value;
+    const password = passwordInput.value;
+
+    try {
+        const { user, error } = await supabase.auth.signIn({ email, password });
+        if (error) throw error;
+
+        alert("Login successful!");
+        const { data: gameData, fetchError } = await supabase
+            .from("game_data")
+            .select("*")
+            .eq("user_id", user.id)
+            .single();
+
+        if (fetchError) throw fetchError;
+        loadGameData(gameData);
+    } catch (error) {
+        alert("Error logging in: " + error.message);
+    }
+}
+
+// Utility function to load game data into the game
+function loadGameData(gameData) {
+    cash = gameData.cash;
+    cashPerClick = gameData.cash_per_click;
+    cashPerSecond = gameData.cash_per_second;
+    highestCash = gameData.highest_cash;
+    netCash = gameData.net_cash;
+    totalHoursPlayed = gameData.total_hours_played;
+
+    updateDisplay();
+}
+
+// Attach event listeners to login and register buttons
+loginButton.addEventListener("click", handleLogin);
+registerButton.addEventListener("click", handleRegister);
 closeLoginRegister.addEventListener('click', () => loginRegisterOverlay.style.display = 'none');
-loginButton.addEventListener('click', async () => {
-    const email = emailInput.value;
-    const password = passwordInput.value;
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) {
-        alert('Login failed');
-    } else {
-        alert('Login successful');
-        loginRegisterOverlay.style.display = 'none';
-    }
-});
-registerButton.addEventListener('click', async () => {
-    const email = emailInput.value;
-    const password = passwordInput.value;
-    const { data, error } = await supabase.auth.signUp({ email, password });
-    if (error) {
-        alert('Registration failed');
-    } else {
-        alert('Registration successful');
-        loginRegisterOverlay.style.display = 'none';
-    }
-});
 
 // Initial display update
 updateDisplay();
