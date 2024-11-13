@@ -17,6 +17,8 @@ const clickInfo = document.getElementById('clickInfo');
 const automaticInfo = document.getElementById('automaticInfo');
 const settingsOverlay = document.getElementById('settingsOverlay');
 const statsOverlay = document.getElementById('statsOverlay');
+const settingsButton = document.getElementById('settingsButton');
+const statsButton = document.getElementById('statsButton');
 const closeSettings = document.getElementById('closeSettings');
 const closeStats = document.getElementById('closeStats');
 const resetProgressButton = document.getElementById('resetProgressButton');
@@ -60,7 +62,7 @@ upgradeClickButton.addEventListener('click', () => {
     if (cash >= upgradeClickCost) {
         cash -= upgradeClickCost;
         cashPerClick += 0.25;
-        upgradeClickCost *= 1.5;
+        upgradeClickCost *= 1.15; // Increase cost by 15% instead of 50%
         updateDisplay();
     }
 });
@@ -70,7 +72,7 @@ upgradeAutomaticButton.addEventListener('click', () => {
     if (cash >= upgradeAutomaticCost) {
         cash -= upgradeAutomaticCost;
         cashPerSecond += 0.10;
-        upgradeAutomaticCost *= 1.5;
+        upgradeAutomaticCost *= 1.15; // Increase cost by 15% instead of 50%
         updateDisplay();
     }
 });
@@ -81,6 +83,16 @@ setInterval(() => {
     if (cash > highestCash) highestCash = cash;
     updateDisplay();
 }, 1000);
+
+// Show settings overlay when the Settings button is clicked
+settingsButton.addEventListener('click', () => {
+    settingsOverlay.style.display = 'flex'; // Show the overlay as flex to center content
+});
+
+// Show stats overlay when the Stats button is clicked
+statsButton.addEventListener('click', () => {
+    statsOverlay.style.display = 'flex'; // Show the overlay as flex to center content
+});
 
 // Event listeners for overlays
 closeSettings.addEventListener('click', () => settingsOverlay.style.display = 'none');
@@ -130,52 +142,3 @@ registerButton.addEventListener('click', async () => {
 
 // Initial display update
 updateDisplay();
-
-// Function to handle user login
-loginButton.addEventListener('click', async () => {
-    const email = emailInput.value;
-    const password = passwordInput.value;
-
-    try {
-        const response = await fetch('/api/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password }),
-        });
-        
-        const result = await response.json();
-        if (response.ok) {
-            alert(result.message);
-            loginRegisterOverlay.style.display = 'none';
-        } else {
-            alert(result.error);
-        }
-    } catch (error) {
-        console.error('Login error:', error);
-    }
-});
-
-// Function to handle user registration
-registerButton.addEventListener('click', async () => {
-    const email = emailInput.value;
-    const password = passwordInput.value;
-    const username = document.getElementById('username').value;
-
-    try {
-        const response = await fetch('/api/auth/register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password, username }),
-        });
-        
-        const result = await response.json();
-        if (response.ok) {
-            alert(result.message);
-            loginRegisterOverlay.style.display = 'none';
-        } else {
-            alert(result.error);
-        }
-    } catch (error) {
-        console.error('Registration error:', error);
-    }
-});
