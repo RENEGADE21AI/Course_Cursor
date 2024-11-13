@@ -1,3 +1,5 @@
+import supabase from './supabase.js';
+
 // Game state variables
 let cash = 0;
 let cashPerClick = 0.50;
