@@ -1,5 +1,4 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
 const { createClient } = require('@supabase/supabase-js');
 const dotenv = require('dotenv');
 
@@ -23,32 +22,56 @@ app.get('/', (req, res) => {
 // User registration route
 app.post('/api/auth/register', async (req, res) => {
     const { email, password, username } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
 
-    const { data, error } = await supabase
-        .from('users')
-        .insert([{ email, password: hashedPassword, username }]);
+    try {
+        // Create a new user in Supabase Auth
+        const { user, error: authError } = await supabase.auth.signUp({ email, password });
 
-    if (error) {
-        res.status(400).json({ error: error.message });
-    } else {
-        res.json({ message: 'User registered successfully!' });
+        if (authError) {
+            return res.status(400).json({ error: authError.message });
+        }
+
+        // Insert user details into the 'users' table
+        const { data, error } = await supabase
+            .from('users')
+            .insert([{ email, username, user_id: user.id }]);
+
+        if (error) {
+            return res.status(400).json({ error: error.message });
+        }
+
+        return res.json({ message: 'User registered successfully!' });
+    } catch (error) {
+        res.status(500).json({ error: 'Server error during registration', message: error.message });
     }
 });
 
 // User login route
 app.post('/api/auth/login', async (req, res) => {
     const { email, password } = req.body;
-    const { data, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('email', email)
-        .single();
 
-    if (error || !data || !(await bcrypt.compare(password, data.password))) {
-        res.status(401).json({ error: 'Invalid credentials' });
-    } else {
-        res.json({ message: 'Logged in successfully!', user_id: data.id });
+    try {
+        // Sign in the user with Supabase Auth
+        const { user, error: authError } = await supabase.auth.signInWithPassword({ email, password });
+
+        if (authError || !user) {
+            return res.status(401).json({ error: 'Invalid credentials' });
+        }
+
+        // Get user data from the 'users' table
+        const { data, error: dbError } = await supabase
+            .from('users')
+            .select('*')
+            .eq('user_id', user.id)
+            .single();
+
+        if (dbError || !data) {
+            return res.status(400).json({ error: 'User data not found' });
+        }
+
+        return res.json({ message: 'Logged in successfully!', user_id: user.id, user_data: data });
+    } catch (error) {
+        return res.status(500).json({ error: 'Server error during login', message: error.message });
     }
 });
 
