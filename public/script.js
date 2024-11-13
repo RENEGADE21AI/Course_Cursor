@@ -33,6 +33,7 @@ const hoursPlayedDisplay = document.getElementById('hoursPlayed');
 // Login/Register modal elements
 const loginRegisterOverlay = document.getElementById('loginRegisterOverlay');
 const closeLoginRegister = document.getElementById('closeLoginRegister');
+const loginRegisterButton = document.getElementById('loginRegisterButton'); // From Settings
 const loginButton = document.getElementById('loginButton');
 const registerButton = document.getElementById('registerButton');
 const emailInput = document.getElementById('emailInput');
@@ -92,6 +93,12 @@ settingsButton.addEventListener('click', () => {
 // Show stats overlay when the Stats button is clicked
 statsButton.addEventListener('click', () => {
     statsOverlay.style.display = 'flex'; // Show the overlay as flex to center content
+});
+
+// Event listener for Login/Register button in Settings overlay
+loginRegisterButton.addEventListener('click', () => {
+    settingsOverlay.style.display = 'none';          // Close the Settings overlay
+    loginRegisterOverlay.style.display = 'flex';     // Show the Login/Register overlay
 });
 
 // Event listeners for overlays
