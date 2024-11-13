@@ -53,8 +53,10 @@ function updateDisplay() {
 
 // Click event to add cash based on cashPerClick
 clickCash.addEventListener('click', () => {
+    const previousCash = cash;
     cash += cashPerClick;
     if (cash > highestCash) highestCash = cash;
+    if (cash > previousCash) netCash += (cash - previousCash); // Increase netCash by the amount cash increased
     updateDisplay();
 });
 
@@ -80,8 +82,10 @@ upgradeAutomaticButton.addEventListener('click', () => {
 
 // Automatic cash generation based on cashPerSecond
 setInterval(() => {
+    const previousCash = cash;
     cash += cashPerSecond;
     if (cash > highestCash) highestCash = cash;
+    if (cash > previousCash) netCash += (cash - previousCash); // Increase netCash by the amount cash increased
     updateDisplay();
 }, 1000);
 
