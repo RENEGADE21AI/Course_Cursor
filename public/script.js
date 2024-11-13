@@ -39,6 +39,8 @@ const emailInput = document.getElementById('emailInput');
 const passwordInput = document.getElementById('passwordInput');
 const usernameInput = document.getElementById('usernameInput');
 
+let currentUser = null; // to track the logged-in user
+
 function updateDisplay() {
     scoreDisplay.textContent = `Cash: $${cash.toFixed(2)}`;
     clickInfo.textContent = `Current Cash Per Click: $${cashPerClick.toFixed(2)}`;
@@ -117,61 +119,86 @@ confirmResetButton.addEventListener('click', () => {
     resetConfirmationOverlay.style.display = 'none';
 });
 
+// Login function
 async function handleLogin() {
     const email = emailInput.value;
     const password = passwordInput.value;
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (data?.user) {
-        loadGameData(data.user);
+    const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+    });
+    const result = await response.json();
+    if (result.success) {
+        currentUser = result.user;
+        loadGameData(result.user);
         loginRegisterOverlay.style.display = 'none';
+    } else {
+        alert(result.message);
     }
 }
 
+// Register function
 async function handleRegister() {
     const email = emailInput.value;
     const password = passwordInput.value;
-    const { data, error } = await supabase.auth.signUp({ email, password });
-    if (data?.user) {
+    const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+    });
+    const result = await response.json();
+    if (result.success) {
+        currentUser = result.user;
         saveGameData();
         loginRegisterOverlay.style.display = 'none';
+    } else {
+        alert(result.message);
     }
 }
 
 loginButton.addEventListener('click', handleLogin);
 registerButton.addEventListener('click', handleRegister);
 
+// Save game data to the server
 async function saveGameData() {
-    const user = supabase.auth.user();
-    if (user) {
-        const { data, error } = await supabase.from('game_data').upsert([
-            {
-                user_id: user.id,
+    if (currentUser) {
+        const response = await fetch('/api/saveGameData', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                user_id: currentUser.id,
                 cash,
-                cash_per_click: cashPerClick,
-                cash_per_second: cashPerSecond,
-                highest_cash: highestCash,
-                net_cash: netCash,
-                total_hours_played: totalHoursPlayed
-            }
-        ]);
+                cashPerClick,
+                cashPerSecond,
+                highestCash,
+                netCash,
+                totalHoursPlayed
+            })
+        });
+        const result = await response.json();
+        if (!result.success) {
+            alert(result.message);
+        }
     }
 }
 
+// Load game data from the server
 async function loadGameData(user) {
-    const { data: gameData, error } = await supabase
-        .from("game_data")
-        .select("*")
-        .eq("user_id", user.id)
-        .single();
-    if (gameData) {
-        cash = gameData.cash;
-        cashPerClick = gameData.cash_per_click;
-        cashPerSecond = gameData.cash_per_second;
-        highestCash = gameData.highest_cash;
-        netCash = gameData.net_cash;
-        totalHoursPlayed = gameData.total_hours_played;
+    const response = await fetch(`/api/loadGameData?user_id=${user.id}`);
+    const result = await response.json();
+    if (result.success && result.data) {
+        cash = result.data.cash;
+        cashPerClick = result.data.cash_per_click;
+        cashPerSecond = result.data.cash_per_second;
+        highestCash = result.data.highest_cash;
+        netCash = result.data.net_cash;
+        totalHoursPlayed = result.data.total_hours_played;
         updateDisplay();
+    } else {
+        alert(result.message);
     }
 }
 
+// Periodically save game data
 setInterval(saveGameData, 60000);
