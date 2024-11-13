@@ -146,6 +146,20 @@ async function handleRegister() {
                 last_active: new Date()
             }
         ]);
+
+        // Insert initial game data for new user
+        await supabase.from("game_data").insert([
+            {
+                user_id: user.id,
+                cash: 0,
+                cash_per_click: 0.50,
+                cash_per_second: 0.25,
+                highest_cash: 0,
+                net_cash: 0,
+                total_hours_played: 0
+            }
+        ]);
+
         alert("Registration successful! Please log in.");
     } catch (error) {
         alert("Error registering: " + error.message);
@@ -186,6 +200,28 @@ function loadGameData(gameData) {
 
     updateDisplay();
 }
+
+// Update game data in Supabase
+async function updateGameData() {
+    const { user } = supabase.auth.session();
+
+    if (user) {
+        await supabase
+            .from("game_data")
+            .upsert([{
+                user_id: user.id,
+                cash,
+                cash_per_click,
+                cash_per_second,
+                highest_cash,
+                net_cash,
+                total_hours_played
+            }]);
+    }
+}
+
+// Call `updateGameData` periodically to save the game state
+setInterval(updateGameData, 60000); // Save every minute (you can adjust this interval as needed)
 
 // Attach event listeners to login and register buttons
 loginButton.addEventListener("click", handleLogin);
