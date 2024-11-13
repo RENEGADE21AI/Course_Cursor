@@ -130,3 +130,52 @@ registerButton.addEventListener('click', async () => {
 
 // Initial display update
 updateDisplay();
+
+// Function to handle user login
+loginButton.addEventListener('click', async () => {
+    const email = emailInput.value;
+    const password = passwordInput.value;
+
+    try {
+        const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+        });
+        
+        const result = await response.json();
+        if (response.ok) {
+            alert(result.message);
+            loginRegisterOverlay.style.display = 'none';
+        } else {
+            alert(result.error);
+        }
+    } catch (error) {
+        console.error('Login error:', error);
+    }
+});
+
+// Function to handle user registration
+registerButton.addEventListener('click', async () => {
+    const email = emailInput.value;
+    const password = passwordInput.value;
+    const username = document.getElementById('username').value;
+
+    try {
+        const response = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password, username }),
+        });
+        
+        const result = await response.json();
+        if (response.ok) {
+            alert(result.message);
+            loginRegisterOverlay.style.display = 'none';
+        } else {
+            alert(result.error);
+        }
+    } catch (error) {
+        console.error('Registration error:', error);
+    }
+});
