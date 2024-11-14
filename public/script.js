@@ -1,3 +1,5 @@
+console.log("script.js loaded!");
+
 import supabase from './supabase.js';
 
 let cash = 0;
