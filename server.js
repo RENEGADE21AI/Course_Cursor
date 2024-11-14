@@ -9,6 +9,10 @@ const app = express();
 app.use(express.json());
 
 // Ensure SUPABASE_URL and SUPABASE_ANON_KEY are loaded
+console.log("Supabase URL:", process.env.SUPABASE_URL);
+console.log("Supabase Key:", process.env.SUPABASE_ANON_KEY ? "Key loaded" : "No key loaded");
+
+// Check if the necessary environment variables are set
 if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
     console.error("Missing SUPABASE_URL or SUPABASE_ANON_KEY. Exiting...");
     process.exit(1);
@@ -17,7 +21,7 @@ if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
 // Initialize Supabase client
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
-// Register route
+// Register a new user
 app.post('/api/register', async (req, res) => {
     const { email, password } = req.body;
     const { data, error } = await supabase.auth.signUp({ email, password });
@@ -27,19 +31,27 @@ app.post('/api/register', async (req, res) => {
     res.json({ success: true, user: data.user });
 });
 
-// Login route
+// Login an existing user
 app.post('/api/login', async (req, res) => {
     const { email, password } = req.body;
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
         return res.json({ success: false, message: error.message });
     }
-    res.json({ success: true, user: data.user, session: data.session }); // Send back session token
+    res.json({ success: true, user: data.user });
 });
 
-// Save game data
+// Save game data to the database
 app.post('/api/saveGameData', async (req, res) => {
     const { user_id, cash, cashPerClick, cashPerSecond, highestCash, netCash, totalHoursPlayed } = req.body;
+
+    // Ensure the user is authenticated before saving data
+    const { data: userSession, error: sessionError } = await supabase.auth.getSession();
+    if (sessionError || !userSession) {
+        return res.json({ success: false, message: 'User not authenticated. Please login.' });
+    }
+
+    // Save the game data to the database
     const { error } = await supabase.from('game_data').upsert([
         { user_id, cash, cash_per_click: cashPerClick, cash_per_second: cashPerSecond, highest_cash: highestCash, net_cash: netCash, total_hours_played: totalHoursPlayed }
     ]);
@@ -49,9 +61,17 @@ app.post('/api/saveGameData', async (req, res) => {
     res.json({ success: true });
 });
 
-// Load game data
+// Load game data from the database
 app.get('/api/loadGameData', async (req, res) => {
     const { user_id } = req.query;
+
+    // Ensure the user is authenticated before loading data
+    const { data: userSession, error: sessionError } = await supabase.auth.getSession();
+    if (sessionError || !userSession) {
+        return res.json({ success: false, message: 'User not authenticated. Please login.' });
+    }
+
+    // Fetch the user's game data
     const { data, error } = await supabase.from('game_data').select('*').eq('user_id', user_id).single();
     if (error) {
         return res.json({ success: false, message: error.message });
