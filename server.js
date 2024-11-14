@@ -9,10 +9,6 @@ const app = express();
 app.use(express.json());
 
 // Ensure SUPABASE_URL and SUPABASE_ANON_KEY are loaded
-console.log("Supabase URL:", process.env.SUPABASE_URL);
-console.log("Supabase Key:", process.env.SUPABASE_ANON_KEY ? "Key loaded" : "No key loaded");
-
-// Check if the necessary environment variables are set
 if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
     console.error("Missing SUPABASE_URL or SUPABASE_ANON_KEY. Exiting...");
     process.exit(1);
@@ -21,6 +17,7 @@ if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
 // Initialize Supabase client
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
+// Register route
 app.post('/api/register', async (req, res) => {
     const { email, password } = req.body;
     const { data, error } = await supabase.auth.signUp({ email, password });
@@ -30,15 +27,17 @@ app.post('/api/register', async (req, res) => {
     res.json({ success: true, user: data.user });
 });
 
+// Login route
 app.post('/api/login', async (req, res) => {
     const { email, password } = req.body;
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
         return res.json({ success: false, message: error.message });
     }
-    res.json({ success: true, user: data.user });
+    res.json({ success: true, user: data.user, session: data.session }); // Send back session token
 });
 
+// Save game data
 app.post('/api/saveGameData', async (req, res) => {
     const { user_id, cash, cashPerClick, cashPerSecond, highestCash, netCash, totalHoursPlayed } = req.body;
     const { error } = await supabase.from('game_data').upsert([
@@ -50,6 +49,7 @@ app.post('/api/saveGameData', async (req, res) => {
     res.json({ success: true });
 });
 
+// Load game data
 app.get('/api/loadGameData', async (req, res) => {
     const { user_id } = req.query;
     const { data, error } = await supabase.from('game_data').select('*').eq('user_id', user_id).single();
