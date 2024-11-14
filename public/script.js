@@ -125,7 +125,7 @@ confirmResetButton.addEventListener('click', () => {
 async function handleLogin() {
     const email = emailInput.value;
     const password = passwordInput.value;
-    const response = await fetch('/api/login', {
+    const response = await fetch('https://course-cursor.onrender.com/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -144,7 +144,7 @@ async function handleLogin() {
 async function handleRegister() {
     const email = emailInput.value;
     const password = passwordInput.value;
-    const response = await fetch('/api/register', {
+    const response = await fetch('https://course-cursor.onrender.com/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -165,7 +165,7 @@ registerButton.addEventListener('click', handleRegister);
 // Save game data to the server
 async function saveGameData() {
     if (currentUser) {
-        const response = await fetch('/api/saveGameData', {
+        const response = await fetch('https://course-cursor.onrender.com/api/saveGameData', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -187,7 +187,7 @@ async function saveGameData() {
 
 // Load game data from the server
 async function loadGameData(user) {
-    const response = await fetch(`/api/loadGameData?user_id=${user.id}`);
+    const response = await fetch(`https://course-cursor.onrender.com/api/loadGameData?user_id=${user.id}`);
     const result = await response.json();
     if (result.success && result.data) {
         cash = result.data.cash;
