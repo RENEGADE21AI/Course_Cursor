@@ -22,7 +22,7 @@ if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
 // Initialize Supabase client
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
-// Serve static files (HTML, JS, CSS)
+// Serve static files (HTML, JS, CSS, images) from the 'public' folder
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Route to serve index.html at the root
