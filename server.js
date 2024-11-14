@@ -12,6 +12,12 @@ app.use(express.json());
 console.log("Supabase URL:", process.env.SUPABASE_URL);
 console.log("Supabase Key:", process.env.SUPABASE_ANON_KEY ? "Key loaded" : "No key loaded");
 
+// Check if the necessary environment variables are set
+if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
+    console.error("Missing SUPABASE_URL or SUPABASE_ANON_KEY. Exiting...");
+    process.exit(1);
+}
+
 // Initialize Supabase client
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
