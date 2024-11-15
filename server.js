@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import crypto from 'crypto';  // For generating unique device IDs
 
 // Load environment variables from .env file
 dotenv.config();
@@ -31,11 +32,6 @@ if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
     process.exit(1);
 }
 
-if (process.env.NODE_ENV === 'development') {
-    console.log('Supabase URL:', process.env.SUPABASE_URL);
-    console.log('Supabase Key:', process.env.SUPABASE_ANON_KEY ? 'Key loaded' : 'No key loaded');
-}
-
 // Initialize Supabase client
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
@@ -45,6 +41,39 @@ const __dirname = path.dirname(__filename);
 
 // Serve static files (HTML, JS, CSS, images) from the 'public' folder
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Helper functions for checking account creation limits
+async function checkDeviceAccountLimit(deviceId) {
+    const { data, error } = await supabase
+        .from('user_creation_logs')
+        .select('*')
+        .eq('device_id', deviceId);
+
+    return error ? false : data.length >= 3;
+}
+
+async function checkIpAccountLimit(ipAddress) {
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+
+    const { data, error } = await supabase
+        .from('user_creation_logs')
+        .select('*')
+        .eq('ip_address', ipAddress)
+        .gt('created_at', oneMonthAgo.toISOString());
+
+    return error ? false : data.length >= 10;
+}
+
+// Generate a unique device ID (stored in a cookie)
+function getDeviceId(req, res) {
+    let deviceId = req.cookies.device_id;
+    if (!deviceId) {
+        deviceId = crypto.randomBytes(16).toString('hex');
+        res.cookie('device_id', deviceId, { maxAge: 1000 * 60 * 60 * 24 * 365 }); // 1 year cookie
+    }
+    return deviceId;
+}
 
 // Middleware to verify Supabase JWT
 async function verifyToken(req, res, next) {
@@ -77,9 +106,29 @@ app.get('/', (req, res) => {
 // API endpoints
 app.post('/api/register', async (req, res) => {
     const { email, password } = req.body;
+    const ipAddress = req.ip;
+    const deviceId = getDeviceId(req, res); // Get or create a device ID from cookie
+
+    // Check if the user has exceeded the account limit for the device
+    if (await checkDeviceAccountLimit(deviceId)) {
+        return res.json({ success: false, message: 'You can only create 3 accounts per device.' });
+    }
+
+    // Check if the user has exceeded the account limit for the IP address
+    if (await checkIpAccountLimit(ipAddress)) {
+        return res.json({ success: false, message: 'You can only create 10 accounts per month per IP address.' });
+    }
+
     try {
         const { data, error } = await supabase.auth.signUp({ email, password });
         if (error) throw error;
+
+        // Log the account creation (for tracking purposes)
+        await supabase.from('user_creation_logs').insert({
+            ip_address: ipAddress,
+            device_id: deviceId,
+        });
+
         res.json({ success: true, user: data.user });
     } catch (err) {
         res.status(400).json({ success: false, message: err.message });
