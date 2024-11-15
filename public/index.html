@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Course Cursor</title>
   <link rel="icon" href="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/CursorCoin.png?raw=true" type="image/png">
-  <link rel="stylesheet" href="styles.css"> <!-- Link to external CSS -->
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -32,16 +32,16 @@
   <div class="popup">
     <div class="close-button" id="closeLoginRegister">X</div>
     <h2>Login/Register</h2>
-      <input type="text" id="username" placeholder="Username">
-      <input type="password" id="passwordInput" placeholder="Password">
-      <input type="email" id="emailInput" placeholder="Email">
+    <input type="text" id="usernameInput" placeholder="Username">
+    <input type="password" id="passwordInput" placeholder="Password">
+    <input type="email" id="emailInput" placeholder="Email">
     <div>
       <button class="login-popup-button" id="loginButton">Login</button>
       <button class="register-popup-button" id="registerButton">Register</button>
     </div>
   </div>
 </div>
-  
+
 <div class="overlay" id="settingsOverlay">
   <div class="popup">
     <div class="close-button" id="closeSettings">X</div>
@@ -74,6 +74,7 @@
   </div>
 </div>
 
-<script src="script.js" defer></script> <!-- Link to external JavaScript -->
+<script src="script.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/umd/supabase.min.js"></script>
 </body>
 </html>
