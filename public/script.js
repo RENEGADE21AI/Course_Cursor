@@ -204,3 +204,23 @@ async function loadGameData(user) {
 
 // Periodically save game data
 setInterval(saveGameData, 60000);
+
+// Save data before user leaves or logs out
+window.addEventListener('beforeunload', async (event) => {
+    if (currentUser) {
+        await saveGameData();
+    }
+});
+
+// Logout function with manual save
+async function handleLogout() {
+    if (currentUser) {
+        await saveGameData();  // Save data when logging out
+    }
+    currentUser = null;
+    loginRegisterOverlay.style.display = 'flex'; // Show login/register overlay (or redirect as needed)
+}
+
+// Example logout button event
+const logoutButton = document.getElementById('logoutButton');  // Make sure you have a logout button
+logoutButton.addEventListener('click', handleLogout);
