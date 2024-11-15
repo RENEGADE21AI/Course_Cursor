@@ -1,6 +1,6 @@
 console.log("script.js loaded!");
 
-import supabase from './supabase.js';
+const supabase = window.supabase;
 
 let cash = 0;
 let cashPerClick = 0.50;
