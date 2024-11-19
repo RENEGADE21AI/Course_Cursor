@@ -32,7 +32,6 @@ const allowedOrigins = [
     'http://localhost:3000',
     'https://course-cursor.onrender.com',
 ];
-
 app.use(
     cors({
         origin: allowedOrigins,
@@ -42,11 +41,7 @@ app.use(
 );
 
 // Logging middleware
-if (process.env.NODE_ENV !== 'production') {
-    app.use(morgan('dev'));
-} else {
-    app.use(morgan('combined'));
-}
+app.use(morgan(process.env.NODE_ENV !== 'production' ? 'dev' : 'combined'));
 
 // Rate limiting middleware
 const accountLimiter = rateLimit({
@@ -56,7 +51,7 @@ const accountLimiter = rateLimit({
 });
 app.use('/api/', accountLimiter);
 
-// Get the directory name (replaces __dirname in ES modules)
+// Get the directory name
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -73,65 +68,15 @@ async function supabaseQuery(queryFn) {
     return data;
 }
 
-// Account limits and device ID functions
-async function checkDeviceAccountLimit(deviceId) {
-    const data = await supabaseQuery(() =>
-        supabase.from('user_creation_logs').select('*').eq('device_id', deviceId)
-    );
-    return data.length >= 3;
-}
-
-async function checkIpAccountLimit(ipAddress) {
-    const oneMonthAgo = new Date();
-    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
-
-    const data = await supabaseQuery(() =>
-        supabase
-            .from('user_creation_logs')
-            .select('*')
-            .eq('ip_address', ipAddress)
-            .gt('created_at', oneMonthAgo.toISOString())
-    );
-    return data.length >= 10;
-}
-
-function getDeviceId(req, res) {
-    let deviceId = req.cookies?.device_id;
-    if (!deviceId) {
-        deviceId = crypto.randomBytes(16).toString('hex');
-        res.cookie('device_id', deviceId, {
-            maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'Strict',
-        });
-    }
-    return deviceId;
-}
-
-// Middleware for verifying Supabase JWT
-async function verifyToken(req, res, next) {
-    const token = req.headers.authorization?.split(' ')[1]; // Expecting 'Bearer <token>'
-    if (!token) {
-        return res.status(401).json({ success: false, message: 'Unauthorized: No token provided.' });
-    }
-
-    try {
-        const { data: user, error } = await supabase.auth.getUser(token);
-        if (error || !user) {
-            throw new Error('Invalid or expired token.');
-        }
-        req.user = user; // Attach user data to the request
-        next();
-    } catch (err) {
-        res.status(401).json({ success: false, message: 'Unauthorized: ' + err.message });
-    }
-}
-
 // Validation schemas
 const registerSchema = Joi.object({
-    email: Joi.string().email().required(),
+    username: Joi.string().alphanum().min(3).max(20).required(),
     password: Joi.string().min(8).required(),
+});
+
+const loginSchema = Joi.object({
+    username: Joi.string().required(),
+    password: Joi.string().required(),
 });
 
 const gameDataSchema = Joi.object({
@@ -154,54 +99,43 @@ app.get('/', (req, res) => {
 
 app.post('/api/register', async (req, res) => {
     const { error } = registerSchema.validate(req.body);
-    if (error) {
-        return res.status(400).json({ success: false, message: error.details[0].message });
-    }
+    if (error) return res.status(400).json({ success: false, message: error.details[0].message });
 
-    const { email, password } = req.body;
-    const ipAddress = req.ip;
-    const deviceId = getDeviceId(req, res);
-
+    const { username, password } = req.body;
     try {
-        if (await checkDeviceAccountLimit(deviceId)) {
-            return res.status(400).json({ success: false, message: 'Device limit reached.' });
-        }
+        const existingUser = await supabaseQuery(() =>
+            supabase.from('users').select('*').eq('username', username).single()
+        );
+        if (existingUser) return res.status(400).json({ success: false, message: 'Username already taken.' });
 
-        if (await checkIpAccountLimit(ipAddress)) {
-            return res.status(400).json({ success: false, message: 'IP address limit reached.' });
-        }
-
-        const { data, error } = await supabase.auth.signUp({ email, password });
+        const { data, error } = await supabase.auth.signUp({ username, password });
         if (error) throw error;
 
-        await supabaseQuery(() =>
-            supabase.from('user_creation_logs').insert({ ip_address: ipAddress, device_id: deviceId })
-        );
-
-        res.json({ success: true, user: { id: data.user.id, email: data.user.email } });
+        res.json({ success: true, user: { id: data.user.id, username: data.user.username } });
     } catch (err) {
         res.status(500).json({ success: false, message: err.message });
     }
 });
 
 app.post('/api/login', async (req, res) => {
-    const { email, password } = req.body;
+    const { error } = loginSchema.validate(req.body);
+    if (error) return res.status(400).json({ success: false, message: error.details[0].message });
+
+    const { username, password } = req.body;
     try {
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        const { data, error } = await supabase.auth.signInWithPassword({ username, password });
         if (error) throw error;
-        res.json({ success: true, user: { id: data.user.id, email: data.user.email } });
+        res.json({ success: true, user: { id: data.user.id, username: data.user.username } });
     } catch (err) {
         res.status(400).json({ success: false, message: err.message });
     }
 });
 
-app.post('/api/saveGameData', verifyToken, async (req, res) => {
+app.post('/api/saveGameData', async (req, res) => {
     const { error } = gameDataSchema.validate(req.body);
-    if (error) {
-        return res.status(400).json({ success: false, message: error.details[0].message });
-    }
+    if (error) return res.status(400).json({ success: false, message: error.details[0].message });
 
-    const { id: user_id } = req.user;
+    const { id: user_id } = req.body;
     const { cash, cashPerClick, cashPerSecond, highestCash, netCash, totalHoursPlayed } = req.body;
 
     try {
@@ -222,8 +156,8 @@ app.post('/api/saveGameData', verifyToken, async (req, res) => {
     }
 });
 
-app.get('/api/loadGameData', verifyToken, async (req, res) => {
-    const { id: user_id } = req.user;
+app.get('/api/loadGameData', async (req, res) => {
+    const { id: user_id } = req.body;
 
     try {
         const data = await supabaseQuery(() =>
