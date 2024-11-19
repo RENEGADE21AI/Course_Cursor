@@ -37,11 +37,12 @@ const closeLoginRegister = document.getElementById('closeLoginRegister');
 const loginRegisterButton = document.getElementById('loginRegisterButton');
 const loginButton = document.getElementById('loginButton');
 const registerButton = document.getElementById('registerButton');
-const emailInput = document.getElementById('emailInput');
-const passwordInput = document.getElementById('passwordInput');
 const usernameInput = document.getElementById('usernameInput');
+const passwordInput = document.getElementById('passwordInput');
 
-let currentUser = null; // to track the logged-in user
+const logoutButton = document.getElementById('logoutButton');
+
+let currentUser = null;
 
 function updateDisplay() {
     scoreDisplay.textContent = `Cash: $${cash.toFixed(2)}`;
@@ -88,26 +89,14 @@ setInterval(() => {
     updateDisplay();
 }, 1000);
 
-settingsButton.addEventListener('click', () => {
-    settingsOverlay.style.display = 'flex';
-});
-
-statsButton.addEventListener('click', () => {
-    statsOverlay.style.display = 'flex';
-});
-
-loginRegisterButton.addEventListener('click', () => {
-    settingsOverlay.style.display = 'none';
-    loginRegisterOverlay.style.display = 'flex';
-});
-
+settingsButton.addEventListener('click', () => settingsOverlay.style.display = 'flex');
+statsButton.addEventListener('click', () => statsOverlay.style.display = 'flex');
 closeSettings.addEventListener('click', () => settingsOverlay.style.display = 'none');
 closeStats.addEventListener('click', () => statsOverlay.style.display = 'none');
 resetProgressButton.addEventListener('click', () => resetConfirmationOverlay.style.display = 'flex');
 closeResetConfirmation.addEventListener('click', () => resetConfirmationOverlay.style.display = 'none');
 cancelResetButton.addEventListener('click', () => resetConfirmationOverlay.style.display = 'none');
 closeLoginRegister.addEventListener('click', () => loginRegisterOverlay.style.display = 'none');
-
 confirmResetButton.addEventListener('click', () => {
     cash = 0;
     cashPerClick = 0.50;
@@ -121,15 +110,16 @@ confirmResetButton.addEventListener('click', () => {
     resetConfirmationOverlay.style.display = 'none';
 });
 
-// Login function
 async function handleLogin() {
-    const email = emailInput.value;
+    const username = usernameInput.value;
     const password = passwordInput.value;
+
     const response = await fetch('https://course-cursor.onrender.com/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ username, password })
     });
+
     const result = await response.json();
     if (result.success) {
         currentUser = result.user;
@@ -140,15 +130,16 @@ async function handleLogin() {
     }
 }
 
-// Register function
 async function handleRegister() {
-    const email = emailInput.value;
+    const username = usernameInput.value;
     const password = passwordInput.value;
+
     const response = await fetch('https://course-cursor.onrender.com/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ username, password })
     });
+
     const result = await response.json();
     if (result.success) {
         currentUser = result.user;
@@ -159,10 +150,6 @@ async function handleRegister() {
     }
 }
 
-loginButton.addEventListener('click', handleLogin);
-registerButton.addEventListener('click', handleRegister);
-
-// Save game data to the server
 async function saveGameData() {
     if (currentUser) {
         const response = await fetch('https://course-cursor.onrender.com/api/saveGameData', {
@@ -178,6 +165,7 @@ async function saveGameData() {
                 totalHoursPlayed
             })
         });
+
         const result = await response.json();
         if (!result.success) {
             alert(result.message);
@@ -185,10 +173,10 @@ async function saveGameData() {
     }
 }
 
-// Load game data from the server
 async function loadGameData(user) {
     const response = await fetch(`https://course-cursor.onrender.com/api/loadGameData?user_id=${user.id}`);
     const result = await response.json();
+
     if (result.success && result.data) {
         cash = result.data.cash;
         cashPerClick = result.data.cash_per_click;
@@ -202,25 +190,19 @@ async function loadGameData(user) {
     }
 }
 
-// Periodically save game data
-setInterval(saveGameData, 60000);
+loginButton.addEventListener('click', handleLogin);
+registerButton.addEventListener('click', handleRegister);
 
-// Save data before user leaves or logs out
-window.addEventListener('beforeunload', async (event) => {
+logoutButton.addEventListener('click', async () => {
     if (currentUser) {
         await saveGameData();
+        currentUser = null;
+        loginRegisterOverlay.style.display = 'flex';
     }
 });
 
-// Logout function with manual save
-async function handleLogout() {
-    if (currentUser) {
-        await saveGameData();  // Save data when logging out
-    }
-    currentUser = null;
-    loginRegisterOverlay.style.display = 'flex'; // Show login/register overlay (or redirect as needed)
-}
+setInterval(saveGameData, 60000);
 
-// Example logout button event
-const logoutButton = document.getElementById('logoutButton');  // Make sure you have a logout button
-logoutButton.addEventListener('click', handleLogout);
+window.addEventListener('beforeunload', async () => {
+    if (currentUser) await saveGameData();
+});
