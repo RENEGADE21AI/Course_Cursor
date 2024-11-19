@@ -5,29 +5,32 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import crypto from 'crypto';
+import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
 import Joi from 'joi';
 
-// Load environment variables from .env file
+// Load environment variables
 dotenv.config();
 
-// Check environment variables
-if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+// Ensure required environment variables are present
+if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY || !process.env.JWT_SECRET) {
     console.error('Missing required environment variables. Exiting...');
     process.exit(1);
 }
 
-// Initialize Supabase client with service role key
+// Initialize Supabase client
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 
+// Initialize Express app
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 
 // CORS configuration
 const allowedOrigins = [
-    'http://localhost:3000', // Development origin
-    'https://course-cursor.onrender.com', // Production frontend domain
+    'http://localhost:3000',
+    'https://course-cursor.onrender.com',
 ];
 
 app.use(
@@ -57,10 +60,10 @@ app.use('/api/', accountLimiter);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Serve static files (HTML, JS, CSS, images) from the 'public' folder
+// Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Helper functions for backend queries
+// Helper function for Supabase queries
 async function supabaseQuery(queryFn) {
     const { data, error } = await queryFn();
     if (error) {
@@ -70,6 +73,7 @@ async function supabaseQuery(queryFn) {
     return data;
 }
 
+// Account limits and device ID functions
 async function checkDeviceAccountLimit(deviceId) {
     const data = await supabaseQuery(() =>
         supabase.from('user_creation_logs').select('*').eq('device_id', deviceId)
@@ -105,7 +109,7 @@ function getDeviceId(req, res) {
     return deviceId;
 }
 
-// Middleware to verify Supabase JWT
+// Middleware for verifying Supabase JWT
 async function verifyToken(req, res, next) {
     const token = req.headers.authorization?.split(' ')[1]; // Expecting 'Bearer <token>'
     if (!token) {
