@@ -1,3 +1,5 @@
+console.log('Starting server...');
+
 import express from 'express';
 import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
