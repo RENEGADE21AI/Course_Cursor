@@ -97,40 +97,66 @@ app.get('/', (req, res) => {
     });
 });
 
+// Register route - Username-based sign-up
 app.post('/api/register', async (req, res) => {
     const { error } = registerSchema.validate(req.body);
     if (error) return res.status(400).json({ success: false, message: error.details[0].message });
 
     const { username, password } = req.body;
     try {
+        // Check if the username already exists
         const existingUser = await supabaseQuery(() =>
             supabase.from('users').select('*').eq('username', username).single()
         );
         if (existingUser) return res.status(400).json({ success: false, message: 'Username already taken.' });
 
-        const { data, error } = await supabase.auth.signUp({ username, password });
-        if (error) throw error;
+        // Create a new user in Supabase Auth (use a dummy email format)
+        const { data, error: signUpError } = await supabase.auth.signUp({
+            email: `${username}@example.com`, // Using the username as part of the email address
+            password,
+        });
+        if (signUpError) throw signUpError;
 
-        res.json({ success: true, user: { id: data.user.id, username: data.user.username } });
+        // Insert the username into your custom users table
+        const { error: insertError } = await supabase.from('users').upsert({
+            id: data.user.id,
+            username,
+        });
+        if (insertError) throw insertError;
+
+        res.json({ success: true, user: { id: data.user.id, username } });
     } catch (err) {
         res.status(500).json({ success: false, message: err.message });
     }
 });
 
+// Login route - Username-based login
 app.post('/api/login', async (req, res) => {
     const { error } = loginSchema.validate(req.body);
     if (error) return res.status(400).json({ success: false, message: error.details[0].message });
 
     const { username, password } = req.body;
     try {
-        const { data, error } = await supabase.auth.signInWithPassword({ username, password });
-        if (error) throw error;
-        res.json({ success: true, user: { id: data.user.id, username: data.user.username } });
+        // Get the user's email based on their username
+        const { data: user } = await supabaseQuery(() =>
+            supabase.from('users').select('id, username').eq('username', username).single()
+        );
+        if (!user) return res.status(400).json({ success: false, message: 'Username not found.' });
+
+        // Sign in using the dummy email format
+        const { data, error: signInError } = await supabase.auth.signInWithPassword({
+            email: `${username}@example.com`, // Use the username as part of the email address
+            password,
+        });
+        if (signInError) throw signInError;
+
+        res.json({ success: true, user: { id: data.user.id, username: user.username } });
     } catch (err) {
         res.status(400).json({ success: false, message: err.message });
     }
 });
 
+// Save game data
 app.post('/api/saveGameData', async (req, res) => {
     const { error } = gameDataSchema.validate(req.body);
     if (error) return res.status(400).json({ success: false, message: error.details[0].message });
@@ -156,8 +182,13 @@ app.post('/api/saveGameData', async (req, res) => {
     }
 });
 
+// Load game data
 app.get('/api/loadGameData', async (req, res) => {
-    const { id: user_id } = req.body;
+    const { user_id } = req.query; // Get the user_id from query parameters
+
+    if (!user_id) {
+        return res.status(400).json({ success: false, message: 'User ID is required' });
+    }
 
     try {
         const data = await supabaseQuery(() =>
