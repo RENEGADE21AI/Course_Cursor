@@ -6,7 +6,6 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import crypto from 'crypto';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
@@ -29,6 +28,10 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
+// Get the directory name
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // CORS configuration
 const allowedOrigins = [
     'http://localhost:3000',
@@ -46,19 +49,24 @@ app.use(
 app.use(morgan(process.env.NODE_ENV !== 'production' ? 'dev' : 'combined'));
 
 // Rate limiting middleware
-const accountLimiter = rateLimit({
+const strictLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // Limit each IP to 100 requests per window
+    max: 10, // Limit to 10 attempts per window
+    message: { success: false, message: 'Too many attempts. Please try again later.' },
+});
+const generalLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100, // General API limit
     message: { success: false, message: 'Too many requests. Please try again later.' },
 });
-app.use('/api/', accountLimiter);
-
-// Get the directory name
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+app.use('/api/register', strictLimiter);
+app.use('/api/login', strictLimiter);
+app.use('/api/', generalLimiter);
 
 // Serve static files
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), {
+    maxAge: '1d', // Cache static files for one day
+}));
 
 // Helper function for Supabase queries
 async function supabaseQuery(queryFn) {
@@ -73,7 +81,12 @@ async function supabaseQuery(queryFn) {
 // Validation schemas
 const registerSchema = Joi.object({
     username: Joi.string().alphanum().min(3).max(20).required(),
-    password: Joi.string().min(8).required(),
+    password: Joi.string()
+        .pattern(new RegExp('^(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*]).{8,}$'))
+        .required()
+        .messages({
+            'string.pattern.base': 'Password must include an uppercase letter, a number, and a special character.',
+        }),
 });
 
 const loginSchema = Joi.object({
@@ -99,27 +112,24 @@ app.get('/', (req, res) => {
     });
 });
 
-// Register route - Username-based sign-up
+// Register route
 app.post('/api/register', async (req, res) => {
     const { error } = registerSchema.validate(req.body);
     if (error) return res.status(400).json({ success: false, message: error.details[0].message });
 
     const { username, password } = req.body;
     try {
-        // Check if the username already exists
         const existingUser = await supabaseQuery(() =>
             supabase.from('users').select('*').eq('username', username).single()
         );
         if (existingUser) return res.status(400).json({ success: false, message: 'Username already taken.' });
 
-        // Create a new user in Supabase Auth (use a dummy email format)
         const { data, error: signUpError } = await supabase.auth.signUp({
-            email: `${username}@example.com`, // Using the username as part of the email address
+            email: `${username}@example.com`,
             password,
         });
         if (signUpError) throw signUpError;
 
-        // Insert the username into your custom users table
         const { error: insertError } = await supabase.from('users').upsert({
             id: data.user.id,
             username,
@@ -132,22 +142,20 @@ app.post('/api/register', async (req, res) => {
     }
 });
 
-// Login route - Username-based login
+// Login route
 app.post('/api/login', async (req, res) => {
     const { error } = loginSchema.validate(req.body);
     if (error) return res.status(400).json({ success: false, message: error.details[0].message });
 
     const { username, password } = req.body;
     try {
-        // Get the user's email based on their username
         const { data: user } = await supabaseQuery(() =>
             supabase.from('users').select('id, username').eq('username', username).single()
         );
         if (!user) return res.status(400).json({ success: false, message: 'Username not found.' });
 
-        // Sign in using the dummy email format
         const { data, error: signInError } = await supabase.auth.signInWithPassword({
-            email: `${username}@example.com`, // Use the username as part of the email address
+            email: `${username}@example.com`,
             password,
         });
         if (signInError) throw signInError;
@@ -163,8 +171,7 @@ app.post('/api/saveGameData', async (req, res) => {
     const { error } = gameDataSchema.validate(req.body);
     if (error) return res.status(400).json({ success: false, message: error.details[0].message });
 
-    const { id: user_id } = req.body;
-    const { cash, cashPerClick, cashPerSecond, highestCash, netCash, totalHoursPlayed } = req.body;
+    const { id: user_id, cash, cashPerClick, cashPerSecond, highestCash, netCash, totalHoursPlayed } = req.body;
 
     try {
         await supabaseQuery(() =>
@@ -186,7 +193,7 @@ app.post('/api/saveGameData', async (req, res) => {
 
 // Load game data
 app.get('/api/loadGameData', async (req, res) => {
-    const { user_id } = req.query; // Get the user_id from query parameters
+    const { user_id } = req.query;
 
     if (!user_id) {
         return res.status(400).json({ success: false, message: 'User ID is required' });
@@ -200,6 +207,12 @@ app.get('/api/loadGameData', async (req, res) => {
     } catch (err) {
         res.status(500).json({ success: false, message: err.message });
     }
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error('Unhandled Error:', err.stack);
+    res.status(500).json({ success: false, message: 'Internal server error' });
 });
 
 // Start server
