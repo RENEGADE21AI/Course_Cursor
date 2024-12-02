@@ -27,7 +27,6 @@ const registerButton = document.getElementById('registerButton');
 
 let currentUser = null;
 let upgradeData = []; // Dynamically loaded upgrade definitions
-let lastSaveTime = Date.now(); // Track last save time
 
 // Function to update displayed stats
 function updateDisplay() {
@@ -70,18 +69,15 @@ function saveLocalGameData() {
 async function saveGameData() {
     if (!currentUser) return;
     try {
-        if (Date.now() - lastSaveTime >= 60000) { // Save only if 60 seconds have passed
-            await supabase.from('game_data').upsert({
-                user_id: currentUser.id,
-                cash,
-                cash_per_click: cashPerClick,
-                cash_per_second: cashPerSecond,
-                highest_cash: highestCash,
-                net_cash: netCash,
-                total_hours_played: totalHoursPlayed,
-            });
-            lastSaveTime = Date.now(); // Update last save time
-        }
+        await supabase.from('game_data').upsert({
+            user_id: currentUser.id,
+            cash,
+            cash_per_click: cashPerClick,
+            cash_per_second: cashPerSecond,
+            highest_cash: highestCash,
+            net_cash: netCash,
+            total_hours_played: totalHoursPlayed,
+        });
     } catch (error) {
         console.error("Error saving game data:", error);
     }
@@ -193,6 +189,20 @@ setInterval(() => {
     if (!currentUser) saveLocalGameData();
 }, 1000);
 
+// Save game data at the next minute mark and every subsequent minute
+function scheduleNextSave() {
+    const now = new Date();
+    const millisecondsUntilNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
+    setTimeout(() => {
+        if (currentUser) {
+            saveGameData();
+        } else {
+            saveLocalGameData();
+        }
+        scheduleNextSave(); // Schedule the next save
+    }, millisecondsUntilNextMinute);
+}
+
 // Logout and save game data
 logoutButton.addEventListener('click', async () => {
     if (currentUser) {
@@ -217,6 +227,9 @@ if (!currentUser) {
 
 // Fetch upgrades on page load
 loadUpgrades();
+
+// Schedule the first save
+scheduleNextSave();
 
 // Save game data before unloading the page
 window.addEventListener('beforeunload', () => {
