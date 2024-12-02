@@ -1,7 +1,9 @@
 console.log("script.js loaded!");
 
+// Supabase initialization (already in your project setup)
 const supabase = window.supabase;
 
+// Variables to manage game state
 let cash = 0;
 let cashPerClick = 0.50;
 let cashPerSecond = 0.25;
@@ -11,198 +13,169 @@ let highestCash = 0;
 let netCash = 0;
 let totalHoursPlayed = 0;
 
+// DOM element references
 const clickCash = document.getElementById('clickCash');
 const scoreDisplay = document.getElementById('scoreDisplay');
-const upgradeClickButton = document.getElementById('upgradeClickButton');
-const upgradeAutomaticButton = document.getElementById('upgradeAutomaticButton');
-const clickInfo = document.getElementById('clickInfo');
-const automaticInfo = document.getElementById('automaticInfo');
-const settingsOverlay = document.getElementById('settingsOverlay');
-const statsOverlay = document.getElementById('statsOverlay');
-const settingsButton = document.getElementById('settingsButton');
-const statsButton = document.getElementById('statsButton');
-const closeSettings = document.getElementById('closeSettings');
-const closeStats = document.getElementById('closeStats');
-const resetProgressButton = document.getElementById('resetProgressButton');
-const resetConfirmationOverlay = document.getElementById('resetConfirmationOverlay');
-const closeResetConfirmation = document.getElementById('closeResetConfirmation');
-const confirmResetButton = document.getElementById('confirmResetButton');
-const cancelResetButton = document.getElementById('cancelResetButton');
-const highestCashDisplay = document.getElementById('highestCash');
-const netCashDisplay = document.getElementById('netCash');
-const hoursPlayedDisplay = document.getElementById('hoursPlayed');
-
+const upgradeClick = document.getElementById('upgradeClick');
+const upgradeAutomatic = document.getElementById('upgradeAutomatic');
 const loginRegisterOverlay = document.getElementById('loginRegisterOverlay');
-const closeLoginRegister = document.getElementById('closeLoginRegister');
-const loginRegisterButton = document.getElementById('loginRegisterButton');
-const loginButton = document.getElementById('loginButton');
-const registerButton = document.getElementById('registerButton');
-const usernameInput = document.getElementById('usernameInput');
-const passwordInput = document.getElementById('passwordInput');
-
 const logoutButton = document.getElementById('logoutButton');
 
 let currentUser = null;
 
+// Function to update displayed stats
 function updateDisplay() {
     scoreDisplay.textContent = `Cash: $${cash.toFixed(2)}`;
-    clickInfo.textContent = `Current Cash Per Click: $${cashPerClick.toFixed(2)}`;
-    automaticInfo.textContent = `Current Cash Per Second: $${cashPerSecond.toFixed(2)}`;
-    upgradeClickButton.textContent = `Buy More Cash Per Click (Cost: $${upgradeClickCost.toFixed(2)})`;
-    upgradeAutomaticButton.textContent = `Buy More Cash Per Second (Cost: $${upgradeAutomaticCost.toFixed(2)})`;
-    highestCashDisplay.textContent = highestCash.toFixed(2);
-    netCashDisplay.textContent = netCash.toFixed(2);
-    hoursPlayedDisplay.textContent = totalHoursPlayed.toFixed(2);
+    // Update other UI elements here, e.g., upgrade costs, stats overlays, etc.
 }
 
+// Load game data from local storage for unauthenticated users
+function loadLocalGameData() {
+    const savedData = JSON.parse(localStorage.getItem('gameData'));
+    if (savedData) {
+        cash = savedData.cash || 0;
+        cashPerClick = savedData.cashPerClick || 0.50;
+        cashPerSecond = savedData.cashPerSecond || 0.25;
+        upgradeClickCost = savedData.upgradeClickCost || 10.00;
+        upgradeAutomaticCost = savedData.upgradeAutomaticCost || 10.00;
+        highestCash = savedData.highestCash || 0;
+        netCash = savedData.netCash || 0;
+        totalHoursPlayed = savedData.totalHoursPlayed || 0;
+        updateDisplay();
+    }
+}
+
+// Save game data to local storage for unauthenticated users
+function saveLocalGameData() {
+    const gameData = {
+        cash,
+        cashPerClick,
+        cashPerSecond,
+        upgradeClickCost,
+        upgradeAutomaticCost,
+        highestCash,
+        netCash,
+        totalHoursPlayed
+    };
+    localStorage.setItem('gameData', JSON.stringify(gameData));
+}
+
+// Save game data to Supabase for authenticated users
+async function saveGameData() {
+    if (!currentUser) return;
+    try {
+        await supabase.from('game_data').upsert({
+            user_id: currentUser.id,
+            cash,
+            cash_per_click: cashPerClick,
+            cash_per_second: cashPerSecond,
+            highest_cash: highestCash,
+            net_cash: netCash,
+            total_hours_played: totalHoursPlayed
+        });
+    } catch (error) {
+        console.error("Error saving game data:", error);
+    }
+}
+
+// Load game data from Supabase for authenticated users
+async function loadGameData() {
+    if (!currentUser) return;
+    try {
+        const { data, error } = await supabase
+            .from('game_data')
+            .select('*')
+            .eq('user_id', currentUser.id)
+            .single();
+        if (error) throw error;
+        if (data) {
+            cash = data.cash;
+            cashPerClick = data.cash_per_click;
+            cashPerSecond = data.cash_per_second;
+            highestCash = data.highest_cash;
+            netCash = data.net_cash;
+            totalHoursPlayed = data.total_hours_played;
+            updateDisplay();
+        }
+    } catch (error) {
+        console.error("Error loading game data:", error);
+    }
+}
+
+// Increment cash on click
 clickCash.addEventListener('click', () => {
-    const previousCash = cash;
     cash += cashPerClick;
     if (cash > highestCash) highestCash = cash;
-    if (cash > previousCash) netCash += (cash - previousCash);
+    netCash += cashPerClick;
     updateDisplay();
+    if (!currentUser) saveLocalGameData();
 });
 
-upgradeClickButton.addEventListener('click', () => {
-    if (cash >= upgradeClickCost) {
-        cash -= upgradeClickCost;
-        cashPerClick += 0.25;
-        upgradeClickCost *= 1.15;
-        updateDisplay();
-    }
-});
-
-upgradeAutomaticButton.addEventListener('click', () => {
-    if (cash >= upgradeAutomaticCost) {
-        cash -= upgradeAutomaticCost;
-        cashPerSecond += 0.10;
-        upgradeAutomaticCost *= 1.15;
-        updateDisplay();
-    }
-});
-
+// Automatically increment cash per second
 setInterval(() => {
-    const previousCash = cash;
     cash += cashPerSecond;
     if (cash > highestCash) highestCash = cash;
-    if (cash > previousCash) netCash += (cash - previousCash);
+    netCash += cashPerSecond;
     updateDisplay();
+    if (!currentUser) saveLocalGameData();
 }, 1000);
 
-settingsButton.addEventListener('click', () => settingsOverlay.style.display = 'flex');
-statsButton.addEventListener('click', () => statsOverlay.style.display = 'flex');
-closeSettings.addEventListener('click', () => settingsOverlay.style.display = 'none');
-closeStats.addEventListener('click', () => statsOverlay.style.display = 'none');
-resetProgressButton.addEventListener('click', () => resetConfirmationOverlay.style.display = 'flex');
-closeResetConfirmation.addEventListener('click', () => resetConfirmationOverlay.style.display = 'none');
-cancelResetButton.addEventListener('click', () => resetConfirmationOverlay.style.display = 'none');
-closeLoginRegister.addEventListener('click', () => loginRegisterOverlay.style.display = 'none');
-confirmResetButton.addEventListener('click', () => {
-    cash = 0;
-    cashPerClick = 0.50;
-    cashPerSecond = 0.25;
-    upgradeClickCost = 10.00;
-    upgradeAutomaticCost = 10.00;
-    highestCash = 0;
-    netCash = 0;
-    totalHoursPlayed = 0;
-    updateDisplay();
-    resetConfirmationOverlay.style.display = 'none';
+// Upgrade click value
+upgradeClick.addEventListener('click', () => {
+    if (cash >= upgradeClickCost) {
+        cash -= upgradeClickCost;
+        cashPerClick += 0.10;
+        upgradeClickCost *= 1.2;
+        updateDisplay();
+        if (!currentUser) saveLocalGameData();
+    }
 });
 
-async function handleLogin() {
-    const username = usernameInput.value;
-    const password = passwordInput.value;
-
-    const response = await fetch('https://course-cursor.onrender.com/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-    });
-
-    const result = await response.json();
-    if (result.success) {
-        currentUser = result.user;
-        loadGameData(result.user);
-        loginRegisterOverlay.style.display = 'none';
-    } else {
-        alert(result.message);
-    }
-}
-
-async function handleRegister() {
-    const username = usernameInput.value;
-    const password = passwordInput.value;
-
-    const response = await fetch('https://course-cursor.onrender.com/api/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-    });
-
-    const result = await response.json();
-    if (result.success) {
-        currentUser = result.user;
-        saveGameData();
-        loginRegisterOverlay.style.display = 'none';
-    } else {
-        alert(result.message);
-    }
-}
-
-async function saveGameData() {
-    if (currentUser) {
-        const response = await fetch('https://course-cursor.onrender.com/api/saveGameData', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                user_id: currentUser.id,
-                cash,
-                cashPerClick,
-                cashPerSecond,
-                highestCash,
-                netCash,
-                totalHoursPlayed
-            })
-        });
-
-        const result = await response.json();
-        if (!result.success) {
-            alert(result.message);
-        }
-    }
-}
-
-async function loadGameData(user) {
-    const response = await fetch(`https://course-cursor.onrender.com/api/loadGameData?user_id=${user.id}`);
-    const result = await response.json();
-
-    if (result.success && result.data) {
-        cash = result.data.cash;
-        cashPerClick = result.data.cash_per_click;
-        cashPerSecond = result.data.cash_per_second;
-        highestCash = result.data.highest_cash;
-        netCash = result.data.net_cash;
-        totalHoursPlayed = result.data.total_hours_played;
+// Upgrade automatic income
+upgradeAutomatic.addEventListener('click', () => {
+    if (cash >= upgradeAutomaticCost) {
+        cash -= upgradeAutomaticCost;
+        cashPerSecond += 0.05;
+        upgradeAutomaticCost *= 1.2;
         updateDisplay();
-    } else {
-        alert(result.message);
+        if (!currentUser) saveLocalGameData();
     }
-}
+});
 
-loginButton.addEventListener('click', handleLogin);
-registerButton.addEventListener('click', handleRegister);
-
+// Logout and save game data
 logoutButton.addEventListener('click', async () => {
     if (currentUser) {
         await saveGameData();
         currentUser = null;
-        loginRegisterOverlay.style.display = 'flex';
+    } else {
+        saveLocalGameData();
+    }
+    loginRegisterOverlay.style.display = 'flex';
+});
+
+// Load game data on page load
+if (!currentUser) {
+    loadLocalGameData();
+} else {
+    loadGameData();
+}
+
+// Save game data every minute
+setInterval(() => {
+    if (currentUser) {
+        saveGameData();
+    } else {
+        saveLocalGameData();
+    }
+}, 60000);
+
+// Save game data before unloading the page
+window.addEventListener('beforeunload', () => {
+    if (currentUser) {
+        saveGameData();
+    } else {
+        saveLocalGameData();
     }
 });
 
-setInterval(saveGameData, 60000);
-
-window.addEventListener('beforeunload', async () => {
-    if (currentUser) await saveGameData();
-});
+console.log("Game script initialized!");
