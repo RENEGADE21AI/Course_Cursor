@@ -1,79 +1,221 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Course Cursor</title>
-  <link rel="icon" href="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/CursorCoin.png?raw=true" type="image/png">
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  background-color: #f0f0f0; /* Light gray background */
+}
 
-<div class="top-bar">
-  <div class="score" id="scoreDisplay">Cash: $0.00</div>
-  <div class="upgrades">
-    <div>
-      <button class="upgrade-button" id="upgradeClickButton">Buy More Cash Per Click (Cost: $10.00)</button>
-      <div class="upgrade-info" id="clickInfo">Current Cash Per Click: $0.50</div>
-    </div>
-    <div>
-      <button class="upgrade-button" id="upgradeAutomaticButton">Buy More Cash Per Second (Cost: $10.00)</button>
-      <div class="upgrade-info" id="automaticInfo">Current Cash Per Second: $0.25</div>
-    </div>
-  </div>
-  <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/VGstats.png?raw=true" class="stats-button" id="statsButton" alt="Stats Icon">
-  <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/JellySettingsButton.png?raw=true" class="setting-button" id="settingsButton" alt="Settings Icon">
-</div>
+.top-bar {
+  width: 100%;
+  height: 20vh;
+  background-color: #b0c4de; /* Light blue top bar */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1em;
+  box-sizing: border-box;
+}
 
-<img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/ClickCursorCash.png?raw=true" class="click-cash" id="clickCash" alt="Cash Icon">
+.score {
+  color: white;
+  font-size: 2.5em; /* Larger font size for Cash display */
+}
 
-<!-- Login/Register Pop-Up -->
-<div class="overlay" id="loginRegisterOverlay">
-  <div class="popup">
-    <div class="close-button" id="closeLoginRegister">X</div>
-    <h2>Login/Register</h2>
-    <input type="text" id="usernameInput" placeholder="Username">
-    <input type="password" id="passwordInput" placeholder="Password">
-    <div>
-      <button class="login-popup-button" id="loginButton">Login</button>
-      <button class="register-popup-button" id="registerButton">Register</button>
-    </div>
-  </div>
-</div>
+.upgrades {
+  display: flex;
+  gap: 1em;
+}
 
-<div class="overlay" id="settingsOverlay">
-  <div class="popup">
-    <div class="close-button" id="closeSettings">X</div>
-    <h2>Settings</h2>
-    <button class="settings-button login-button" id="loginRegisterButton">Login/Register</button>
-    <button class="settings-button level-design-button" id="levelDesignButton">Level Design</button>
-    <button class="settings-button reset-button" id="resetProgressButton">Reset Progress</button>
-  </div>
-</div>
+.upgrade-button {
+  padding: 10px 20px;
+  font-size: 1em;
+  color: black;
+  background-color: #d1ffd1; /* Light green for upgrade buttons */
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: transform 0.1s;
+}
 
-<div class="overlay" id="statsOverlay">
-  <div class="popup scrollable-popup">
-    <div class="close-button" id="closeStats">X</div>
-    <h2>Stats</h2>
-    <div class="stat-box">Your Highest Amount of Cash Saved Up: $<span id="highestCash">0.00</span></div>
-    <div class="stat-box">Your Net Cash: $<span id="netCash">0.00</span></div>
-    <div class="stat-box">Your Hours Played: <span id="hoursPlayed">0.00</span> hours</div>
-  </div>
-</div>
+.upgrade-button:active {
+  transform: scale(0.95);
+}
 
-<div class="overlay" id="resetConfirmationOverlay">
-  <div class="popup">
-    <div class="close-button" id="closeResetConfirmation">X</div>
-    <h2>Do You Really Want to Reset Your Progress?</h2>
-    <p>This action is irreversible! Your progress will be lost permanently.</p>
-    <div>
-      <button class="settings-button login-button" id="confirmResetButton">Yes</button>
-      <button class="settings-button reset-button" id="cancelResetButton">Back</button>
-    </div>
-  </div>
-</div>
+.click-cash {
+  width: 120px;
+  height: auto;
+  position: absolute;
+  bottom: 25%;
+  right: 2%;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
 
-<script src="script.js" type="module" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/umd/supabase.min.js"></script>
-</body>
-</html>
+.click-cash:hover {
+  transform: scale(1.2);
+}
+
+.setting-button, .stats-button {
+  width: 60px; /* Icon width */
+  height: 60px; /* Icon height */
+  cursor: pointer;
+}
+
+.upgrade-info {
+  font-size: 0.9em;
+  color: black;
+  text-align: center;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.popup {
+  background: #f2f2f2; /* Subtle background color effect for overlay */
+  width: 400px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.scrollable-popup {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 1.5em;
+}
+
+.stat-box {
+  width: 90%; /* Stat box width */
+  padding: 10px;
+  background-color: #d3d3d3; /* Light gray background */
+  color: black;
+  margin: 10px 0;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.settings-button {
+  width: 200px;
+  height: 50px;
+  color: white;
+  font-size: 1.2em;
+  border: none;
+  border-radius: 5px;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: background-color 0.3s, opacity 0.3s;
+}
+
+.login-button {
+  background: linear-gradient(to bottom, #218838, #4caf50); /* Green gradient */
+}
+
+.level-design-button {
+  background: linear-gradient(to bottom, #00bfff, #40e0d0); /* Turquoise gradient */
+}
+
+.reset-button {
+  background: linear-gradient(to bottom, #c82333, #dc3545); /* Red gradient */
+}
+
+input[type="text"], input[type="password"], input[type="email"] {
+  width: 80%;
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+
+.login-popup-button {
+  background: linear-gradient(to bottom, #007bff, #0056b3); /* Blue gradient for login */
+  color: white;
+  font-size: 1.2em;
+  width: 80%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, opacity 0.3s;
+}
+
+.register-popup-button {
+  background: linear-gradient(to bottom, #28a745, #218838); /* Green gradient for register */
+  color: white;
+  font-size: 1.2em;
+  width: 80%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, opacity 0.3s;
+}
+
+.settings-button:hover, .login-popup-button:hover, .register-popup-button:hover {
+  opacity: 0.8;
+}
+/* Style for login/register overlay */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    text-align: center;
+}
+
+.modal label, .modal input {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#loginRegisterMessage {
+    color: red;
+}
