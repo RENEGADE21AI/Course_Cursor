@@ -1,6 +1,6 @@
 console.log("script.js loaded!");
 
-// Supabase initialization (already in your project setup)
+// Supabase initialization
 const supabase = window.supabase;
 
 // Variables to manage game state
@@ -16,12 +16,17 @@ let totalHoursPlayed = 0;
 // DOM element references
 const clickCash = document.getElementById('clickCash');
 const scoreDisplay = document.getElementById('scoreDisplay');
-const upgradeClick = document.getElementById('upgradeClick');
-const upgradeAutomatic = document.getElementById('upgradeAutomatic');
+const upgradeContainer = document.getElementById('upgradeContainer');
 const loginRegisterOverlay = document.getElementById('loginRegisterOverlay');
 const logoutButton = document.getElementById('logoutButton');
+const loginForm = document.getElementById('loginForm');
+const usernameInput = document.getElementById('username');
+const passwordInput = document.getElementById('password');
+const loginButton = document.getElementById('loginButton');
+const registerButton = document.getElementById('registerButton');
 
 let currentUser = null;
+let upgradeData = []; // Dynamically loaded upgrade definitions
 
 // Function to update displayed stats
 function updateDisplay() {
@@ -102,6 +107,70 @@ async function loadGameData() {
     }
 }
 
+// Fetch and render upgrades
+async function loadUpgrades() {
+    try {
+        const response = await fetch('/api/upgrades');
+        upgradeData = await response.json();
+        renderUpgrades();
+    } catch (error) {
+        console.error("Error loading upgrades:", error);
+    }
+}
+
+// Render upgrades dynamically
+function renderUpgrades() {
+    upgradeContainer.innerHTML = '';
+    upgradeData.forEach(upgrade => {
+        const button = document.createElement('button');
+        button.textContent = `${upgrade.name} - Cost: $${upgrade.cost}`;
+        button.addEventListener('click', () => {
+            if (cash >= upgrade.cost) {
+                cash -= upgrade.cost;
+                cashPerClick += upgrade.increment.click || 0;
+                cashPerSecond += upgrade.increment.automatic || 0;
+                updateDisplay();
+                if (!currentUser) saveLocalGameData();
+            }
+        });
+        upgradeContainer.appendChild(button);
+    });
+}
+
+// Handle login
+async function handleLogin(event) {
+    event.preventDefault();
+    try {
+        const { data, error } = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: usernameInput.value, password: passwordInput.value })
+        }).then(res => res.json());
+        if (error) throw error;
+        currentUser = data.user;
+        await loadGameData();
+        loginRegisterOverlay.style.display = 'none';
+    } catch (error) {
+        console.error("Login error:", error);
+    }
+}
+
+// Handle registration
+async function handleRegister(event) {
+    event.preventDefault();
+    try {
+        const { data, error } = await fetch('/api/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: usernameInput.value, password: passwordInput.value })
+        }).then(res => res.json());
+        if (error) throw error;
+        alert("Registration successful! You can now log in.");
+    } catch (error) {
+        console.error("Registration error:", error);
+    }
+}
+
 // Increment cash on click
 clickCash.addEventListener('click', () => {
     cash += cashPerClick;
@@ -120,28 +189,6 @@ setInterval(() => {
     if (!currentUser) saveLocalGameData();
 }, 1000);
 
-// Upgrade click value
-upgradeClick.addEventListener('click', () => {
-    if (cash >= upgradeClickCost) {
-        cash -= upgradeClickCost;
-        cashPerClick += 0.10;
-        upgradeClickCost *= 1.2;
-        updateDisplay();
-        if (!currentUser) saveLocalGameData();
-    }
-});
-
-// Upgrade automatic income
-upgradeAutomatic.addEventListener('click', () => {
-    if (cash >= upgradeAutomaticCost) {
-        cash -= upgradeAutomaticCost;
-        cashPerSecond += 0.05;
-        upgradeAutomaticCost *= 1.2;
-        updateDisplay();
-        if (!currentUser) saveLocalGameData();
-    }
-});
-
 // Logout and save game data
 logoutButton.addEventListener('click', async () => {
     if (currentUser) {
@@ -153,12 +200,19 @@ logoutButton.addEventListener('click', async () => {
     loginRegisterOverlay.style.display = 'flex';
 });
 
+// Event listeners for login and registration
+loginButton.addEventListener('click', handleLogin);
+registerButton.addEventListener('click', handleRegister);
+
 // Load game data on page load
 if (!currentUser) {
     loadLocalGameData();
 } else {
     loadGameData();
 }
+
+// Fetch upgrades on page load
+loadUpgrades();
 
 // Save game data every minute
 setInterval(() => {
