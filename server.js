@@ -15,10 +15,13 @@ import Joi from 'joi';
 dotenv.config();
 
 // Ensure required environment variables are present
-if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY || !process.env.SUPABASE_JWT_SECRET) {
-    console.error('Missing required environment variables. Exiting...');
-    process.exit(1);
-}
+const requiredEnvVars = ['SUPABASE_URL', 'SUPABASE_SERVICE_ROLE_KEY', 'SUPABASE_JWT_SECRET'];
+requiredEnvVars.forEach((key) => {
+    if (!process.env[key]) {
+        console.error(`Missing required environment variable: ${key}`);
+        process.exit(1);
+    }
+});
 
 // Initialize Supabase client
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
@@ -33,30 +36,21 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // CORS configuration
-const allowedOrigins = [
-    'http://localhost:3000',
-    'https://course-cursor.onrender.com',
-];
-app.use(
-    cors({
-        origin: allowedOrigins,
-        methods: ['GET', 'POST'],
-        credentials: true,
-    })
-);
+const allowedOrigins = ['http://localhost:3000', 'https://course-cursor.onrender.com'];
+app.use(cors({ origin: allowedOrigins, methods: ['GET', 'POST'], credentials: true }));
 
 // Logging middleware
-app.use(morgan(process.env.NODE_ENV !== 'production' ? 'dev' : 'combined'));
+app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 
 // Rate limiting middleware
 const strictLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 10, // Limit to 10 attempts per window
+    windowMs: 15 * 60 * 1000,
+    max: 10,
     message: { success: false, message: 'Too many attempts. Please try again later.' },
 });
 const generalLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 100, // General API limit
+    max: 100,
     message: { success: false, message: 'Too many requests. Please try again later.' },
 });
 app.use('/api/register', strictLimiter);
@@ -64,9 +58,7 @@ app.use('/api/login', strictLimiter);
 app.use('/api/', generalLimiter);
 
 // Serve static files
-app.use(express.static(path.join(__dirname, 'public'), {
-    maxAge: '1d', // Cache static files for one day
-}));
+app.use(express.static(path.join(__dirname, 'public'), { maxAge: '1d' }));
 
 // Helper function for Supabase queries
 async function supabaseQuery(queryFn) {
@@ -79,42 +71,40 @@ async function supabaseQuery(queryFn) {
 }
 
 // Validation schemas
-const registerSchema = Joi.object({
-    username: Joi.string().alphanum().min(3).max(20).required(),
-    password: Joi.string()
-        .pattern(new RegExp('^(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*]).{8,}$'))
-        .required()
-        .messages({
-            'string.pattern.base': 'Password must include an uppercase letter, a number, and a special character.',
-        }),
-});
-
-const loginSchema = Joi.object({
-    username: Joi.string().required(),
-    password: Joi.string().required(),
-});
-
-const gameDataSchema = Joi.object({
-    cash: Joi.number().required(),
-    cashPerClick: Joi.number().required(),
-    cashPerSecond: Joi.number().required(),
-    highestCash: Joi.number().required(),
-    netCash: Joi.number().required(),
-    totalHoursPlayed: Joi.number().required(),
-});
+const schemas = {
+    register: Joi.object({
+        username: Joi.string().alphanum().min(3).max(20).required(),
+        password: Joi.string()
+            .pattern(new RegExp('^(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*]).{8,}$'))
+            .required()
+            .messages({
+                'string.pattern.base': 'Password must include an uppercase letter, a number, and a special character.',
+            }),
+    }),
+    login: Joi.object({
+        username: Joi.string().required(),
+        password: Joi.string().required(),
+    }),
+    gameData: Joi.object({
+        cash: Joi.number().required(),
+        cashPerClick: Joi.number().required(),
+        cashPerSecond: Joi.number().required(),
+        highestCash: Joi.number().required(),
+        netCash: Joi.number().required(),
+        totalHoursPlayed: Joi.number().required(),
+    }),
+};
 
 // Routes
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'), (err) => {
-        if (err) {
-            res.status(500).send('Error loading index.html');
-        }
+        if (err) res.status(500).send('Error loading index.html');
     });
 });
 
 // Register route
 app.post('/api/register', async (req, res) => {
-    const { error } = registerSchema.validate(req.body);
+    const { error } = schemas.register.validate(req.body);
     if (error) return res.status(400).json({ success: false, message: error.details[0].message });
 
     const { username, password } = req.body;
@@ -130,11 +120,12 @@ app.post('/api/register', async (req, res) => {
         });
         if (signUpError) throw signUpError;
 
-        const { error: insertError } = await supabase.from('users').upsert({
-            id: data.user.id,
-            username,
-        });
-        if (insertError) throw insertError;
+        await supabaseQuery(() =>
+            supabase.from('users').upsert({
+                id: data.user.id,
+                username,
+            })
+        );
 
         res.json({ success: true, user: { id: data.user.id, username } });
     } catch (err) {
@@ -144,12 +135,12 @@ app.post('/api/register', async (req, res) => {
 
 // Login route
 app.post('/api/login', async (req, res) => {
-    const { error } = loginSchema.validate(req.body);
+    const { error } = schemas.login.validate(req.body);
     if (error) return res.status(400).json({ success: false, message: error.details[0].message });
 
     const { username, password } = req.body;
     try {
-        const { data: user } = await supabaseQuery(() =>
+        const user = await supabaseQuery(() =>
             supabase.from('users').select('id, username').eq('username', username).single()
         );
         if (!user) return res.status(400).json({ success: false, message: 'Username not found.' });
@@ -168,22 +159,13 @@ app.post('/api/login', async (req, res) => {
 
 // Save game data
 app.post('/api/saveGameData', async (req, res) => {
-    const { error } = gameDataSchema.validate(req.body);
+    const { error } = schemas.gameData.validate(req.body);
     if (error) return res.status(400).json({ success: false, message: error.details[0].message });
 
-    const { id: user_id, cash, cashPerClick, cashPerSecond, highestCash, netCash, totalHoursPlayed } = req.body;
-
+    const { id: user_id, ...gameData } = req.body;
     try {
         await supabaseQuery(() =>
-            supabase.from('game_data').upsert({
-                user_id,
-                cash,
-                cash_per_click: cashPerClick,
-                cash_per_second: cashPerSecond,
-                highest_cash: highestCash,
-                net_cash: netCash,
-                total_hours_played: totalHoursPlayed,
-            })
+            supabase.from('game_data').upsert({ user_id, ...gameData })
         );
         res.json({ success: true });
     } catch (err) {
@@ -194,10 +176,7 @@ app.post('/api/saveGameData', async (req, res) => {
 // Load game data
 app.get('/api/loadGameData', async (req, res) => {
     const { user_id } = req.query;
-
-    if (!user_id) {
-        return res.status(400).json({ success: false, message: 'User ID is required' });
-    }
+    if (!user_id) return res.status(400).json({ success: false, message: 'User ID is required.' });
 
     try {
         const data = await supabaseQuery(() =>
@@ -217,6 +196,4 @@ app.use((err, req, res, next) => {
 
 // Start server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
