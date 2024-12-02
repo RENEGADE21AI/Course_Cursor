@@ -5,35 +5,31 @@
   box-sizing: border-box;
 }
 
-/* Set the font and background color for the page */
+/* Set the font for the page */
 body {
   font-family: Arial, sans-serif;
-  background-color: #f0f0f0; /* Light gray background */
+  background-color: #f4f4f4;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0;
 }
 
 /* Style for the top bar */
 .top-bar {
   width: 100%;
   height: 20vh;
-  background-color: #b0c4de; /* Light blue top bar */
+  background-color: #b0c4de; /* Light blue */
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   padding: 0 1em;
-  box-sizing: border-box;
-}
-
-/* Cash display */
-.score {
   color: white;
-  font-size: 2.5em; /* Larger font size for Cash display */
 }
 
-/* Upgrades section */
+.score {
+  font-size: 2.5rem; /* Larger font size for Cash display */
+}
+
 .upgrades {
   display: flex;
   gap: 1em;
@@ -43,7 +39,7 @@ body {
   padding: 10px 20px;
   font-size: 1em;
   color: black;
-  background-color: #d1ffd1; /* Light green for upgrade buttons */
+  background-color: #d1ffd1; /* Light green */
   border: none;
   cursor: pointer;
   border-radius: 5px;
@@ -60,7 +56,13 @@ body {
   text-align: center;
 }
 
-/* Cash icon */
+.stats-button, .setting-button {
+  width: 60px; /* Icon size */
+  height: 60px;
+  cursor: pointer;
+}
+
+/* Cash icon style */
 .click-cash {
   width: 120px;
   height: auto;
@@ -73,13 +75,6 @@ body {
 
 .click-cash:hover {
   transform: scale(1.2);
-}
-
-/* Stats and Settings button styles */
-.setting-button, .stats-button {
-  width: 60px;
-  height: 60px;
-  cursor: pointer;
 }
 
 /* Pop-up overlay styles */
@@ -122,18 +117,18 @@ body {
   font-size: 1.5em;
 }
 
-/* Stat Box Style */
+/* Stat box style */
 .stat-box {
-  width: 90%; /* Stat box width */
+  width: 90%;
   padding: 10px;
-  background-color: #d3d3d3; /* Light gray background */
+  background-color: #d3d3d3; /* Light gray */
   color: black;
   margin: 10px 0;
   text-align: center;
   border-radius: 5px;
 }
 
-/* Buttons with specific styles for login, level design, and reset */
+/* Button styles */
 .settings-button {
   width: 200px;
   height: 50px;
@@ -162,16 +157,16 @@ body {
   opacity: 0.8;
 }
 
-/* Add responsiveness */
+/* Responsive adjustments */
 @media (max-width: 768px) {
   .top-bar {
-    height: 15vh; /* Adjust for smaller screens */
+    height: 15vh;
     flex-direction: column;
     align-items: flex-start;
   }
 
   .upgrades {
-    flex-direction: row;
+    flex-direction: column;
     gap: 15px;
   }
 
@@ -180,12 +175,11 @@ body {
   }
 
   .stats-button, .setting-button {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
   }
 
   .click-cash {
     width: 80px;
-    height: 80px;
   }
 }
