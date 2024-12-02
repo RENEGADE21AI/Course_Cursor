@@ -109,17 +109,20 @@ app.post('/api/register', async (req, res) => {
 
     const { username, password } = req.body;
     try {
+        // Check if username already exists
         const existingUser = await supabaseQuery(() =>
             supabase.from('users').select('*').eq('username', username).single()
         );
         if (existingUser) return res.status(400).json({ success: false, message: 'Username already taken.' });
 
+        // Sign up with dummy email
         const { data, error: signUpError } = await supabase.auth.signUp({
-            email: `${username}@example.com`,
+            email: `${username}@example.com`, // Use a dummy email
             password,
         });
         if (signUpError) throw signUpError;
 
+        // Store user details in 'users' table
         await supabaseQuery(() =>
             supabase.from('users').upsert({
                 id: data.user.id,
@@ -140,13 +143,15 @@ app.post('/api/login', async (req, res) => {
 
     const { username, password } = req.body;
     try {
+        // Check if user exists by username
         const user = await supabaseQuery(() =>
             supabase.from('users').select('id, username').eq('username', username).single()
         );
         if (!user) return res.status(400).json({ success: false, message: 'Username not found.' });
 
+        // Sign in with dummy email
         const { data, error: signInError } = await supabase.auth.signInWithPassword({
-            email: `${username}@example.com`,
+            email: `${username}@example.com`, // Use a dummy email
             password,
         });
         if (signInError) throw signInError;
