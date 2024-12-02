@@ -27,6 +27,7 @@ const registerButton = document.getElementById('registerButton');
 
 let currentUser = null;
 let upgradeData = []; // Dynamically loaded upgrade definitions
+let lastSaveTime = Date.now(); // Track last save time
 
 // Function to update displayed stats
 function updateDisplay() {
@@ -60,7 +61,7 @@ function saveLocalGameData() {
         upgradeAutomaticCost,
         highestCash,
         netCash,
-        totalHoursPlayed
+        totalHoursPlayed,
     };
     localStorage.setItem('gameData', JSON.stringify(gameData));
 }
@@ -69,15 +70,18 @@ function saveLocalGameData() {
 async function saveGameData() {
     if (!currentUser) return;
     try {
-        await supabase.from('game_data').upsert({
-            user_id: currentUser.id,
-            cash,
-            cash_per_click: cashPerClick,
-            cash_per_second: cashPerSecond,
-            highest_cash: highestCash,
-            net_cash: netCash,
-            total_hours_played: totalHoursPlayed
-        });
+        if (Date.now() - lastSaveTime >= 60000) { // Save only if 60 seconds have passed
+            await supabase.from('game_data').upsert({
+                user_id: currentUser.id,
+                cash,
+                cash_per_click: cashPerClick,
+                cash_per_second: cashPerSecond,
+                highest_cash: highestCash,
+                net_cash: netCash,
+                total_hours_played: totalHoursPlayed,
+            });
+            lastSaveTime = Date.now(); // Update last save time
+        }
     } catch (error) {
         console.error("Error saving game data:", error);
     }
@@ -144,7 +148,7 @@ async function handleLogin(event) {
         const { data, error } = await fetch('/api/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: usernameInput.value, password: passwordInput.value })
+            body: JSON.stringify({ username: usernameInput.value, password: passwordInput.value }),
         }).then(res => res.json());
         if (error) throw error;
         currentUser = data.user;
@@ -162,7 +166,7 @@ async function handleRegister(event) {
         const { data, error } = await fetch('/api/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: usernameInput.value, password: passwordInput.value })
+            body: JSON.stringify({ username: usernameInput.value, password: passwordInput.value }),
         }).then(res => res.json());
         if (error) throw error;
         alert("Registration successful! You can now log in.");
@@ -213,15 +217,6 @@ if (!currentUser) {
 
 // Fetch upgrades on page load
 loadUpgrades();
-
-// Save game data every minute
-setInterval(() => {
-    if (currentUser) {
-        saveGameData();
-    } else {
-        saveLocalGameData();
-    }
-}, 60000);
 
 // Save game data before unloading the page
 window.addEventListener('beforeunload', () => {
