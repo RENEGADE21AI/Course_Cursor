@@ -1,23 +1,23 @@
-/* General Styles */
+/* Reset some default browser styles */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
 }
 
-/* Body and General Layout */
+/* Set the font for the page */
 body {
+  font-family: Arial, sans-serif;
   background-color: #f4f4f4;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
-  min-height: 100vh;
 }
 
+/* Style for the top bar */
 .top-bar {
   width: 100%;
+  height: 20vh; /* Adjust the height as needed */
   padding: 20px;
   background-color: #333;
   display: flex;
@@ -27,101 +27,120 @@ body {
 }
 
 .score {
-  font-size: 1.2em;
+  font-size: 1.5rem;
 }
 
 .upgrades {
   display: flex;
-  gap: 20px;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .upgrade-button {
-  background-color: #4CAF50;
+  background-color: #555;
   color: white;
-  padding: 10px;
   border: none;
+  padding: 10px 20px;
   cursor: pointer;
 }
 
 .upgrade-button:hover {
-  background-color: #45a049;
+  background-color: #777;
 }
 
 .upgrade-info {
-  margin-top: 5px;
-  font-size: 0.9em;
+  font-size: 1.2rem;
 }
 
 .stats-button, .setting-button {
   width: 40px;
   height: 40px;
   cursor: pointer;
-  margin-left: 10px;
 }
 
+/* Style for the cash icon */
 .click-cash {
-  margin-top: 20px;
-  width: 150px;
-  height: auto;
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   cursor: pointer;
 }
 
-/* Overlay and Popup Styling */
+/* Pop-up overlay styles */
 .overlay {
-  display: none;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
+  display: none;
   justify-content: center;
   align-items: center;
+  z-index: 100;
 }
 
 .popup {
   background-color: white;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 100%;
   text-align: center;
-  width: 300px;
   position: relative;
-}
-
-.popup h2 {
-  margin-bottom: 20px;
-}
-
-.popup input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.popup button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  margin-top: 10px;
-  border-radius: 5px;
-}
-
-.popup button:hover {
-  background-color: #45a049;
 }
 
 .close-button {
   position: absolute;
   top: 10px;
   right: 10px;
+  font-size: 1.5rem;
   cursor: pointer;
-  font-weight: bold;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+input {
+  margin: 10px 0;
+  padding: 10px;
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+button {
+  margin: 10px 0;
+  padding: 10px;
+  width: 100%;
+  border-radius: 5px;
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #555;
+}
+
+.settings-button {
+  background-color: #555;
+}
+
+.settings-button:hover {
+  background-color: #777;
+}
+
+.stat-box {
+  background-color: #f0f0f0;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
 }
 
 .scrollable-popup {
@@ -129,65 +148,26 @@ body {
   overflow-y: auto;
 }
 
-/* Button Styles */
-.settings-button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  margin-top: 10px;
-  border-radius: 5px;
-}
-
-.settings-button:hover {
-  background-color: #45a049;
-}
-
-/* Stat Box Styles */
-.stat-box {
-  background-color: #f1f1f1;
-  margin-bottom: 10px;
-  padding: 15px;
-  border-radius: 5px;
-  text-align: left;
-}
-
-.stat-box span {
-  font-weight: bold;
-}
-
-/* Overlay Visibility */
-.overlay:target {
-  display: flex;
-}
-
-/* Overlay for Reset Confirmation */
+/* Styling for the Reset Progress Overlay */
 #resetConfirmationOverlay .popup {
-  width: 350px;
-  text-align: left;
+  max-width: 400px;
 }
 
-/* Custom Overlay for Login/Register */
-#loginRegisterOverlay .popup {
-  width: 350px;
-}
-
-#loginRegisterOverlay .popup input {
-  margin-bottom: 15px;
-}
-
-/* Responsive Design */
-@media screen and (max-width: 768px) {
+/* Add responsiveness */
+@media (max-width: 768px) {
   .top-bar {
+    height: 15vh; /* Adjust for smaller screens */
     flex-direction: column;
     align-items: flex-start;
   }
 
   .upgrades {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    gap: 15px;
+  }
+
+  .score {
+    font-size: 1.2rem;
   }
 
   .stats-button, .setting-button {
@@ -196,14 +176,7 @@ body {
   }
 
   .click-cash {
-    width: 120px;
-  }
-
-  .popup {
-    width: 80%;
-  }
-
-  .overlay {
-    justify-content: flex-start;
+    width: 80px;
+    height: 80px;
   }
 }
