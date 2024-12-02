@@ -110,7 +110,7 @@ async function loadGameData() {
 // Fetch and render upgrades
 async function loadUpgrades() {
     try {
-        const response = await fetch('/api/upgrades');
+        const response = await fetch('https://course-cursor.onrender.com/api/upgrades');
         upgradeData = await response.json();
         renderUpgrades();
     } catch (error) {
@@ -141,7 +141,7 @@ function renderUpgrades() {
 async function handleLogin(event) {
     event.preventDefault();
     try {
-        const { data, error } = await fetch('/api/login', {
+        const { data, error } = await fetch('https://course-cursor.onrender.com/api/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username: usernameInput.value, password: passwordInput.value }),
@@ -159,7 +159,7 @@ async function handleLogin(event) {
 async function handleRegister(event) {
     event.preventDefault();
     try {
-        const { data, error } = await fetch('/api/register', {
+        const { data, error } = await fetch('https://course-cursor.onrender.com/api/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username: usernameInput.value, password: passwordInput.value }),
