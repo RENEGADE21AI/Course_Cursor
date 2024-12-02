@@ -15,7 +15,7 @@ import Joi from 'joi';
 dotenv.config();
 
 // Ensure required environment variables are present
-if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY || !process.env.JWT_SECRET) {
+if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY || !process.env.SUPABASE_JWT_SECRET) {
     console.error('Missing required environment variables. Exiting...');
     process.exit(1);
 }
