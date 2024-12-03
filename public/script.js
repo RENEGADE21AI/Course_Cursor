@@ -16,25 +16,92 @@ let totalHoursPlayed = 0;
 // DOM element references
 const clickCash = document.getElementById('clickCash');
 const scoreDisplay = document.getElementById('scoreDisplay');
-const upgradeContainer = document.getElementById('upgradeContainer');
+const upgradeClickButton = document.getElementById('upgradeClickButton');
+const upgradeAutomaticButton = document.getElementById('upgradeAutomaticButton');
+const clickInfo = document.getElementById('clickInfo');
+const automaticInfo = document.getElementById('automaticInfo');
+const statsOverlay = document.getElementById('statsOverlay');
+const settingsOverlay = document.getElementById('settingsOverlay');
 const loginRegisterOverlay = document.getElementById('loginRegisterOverlay');
-const logoutButton = document.getElementById('logoutButton');
-const loginForm = document.getElementById('loginForm');
-const usernameInput = document.getElementById('username');
-const passwordInput = document.getElementById('password');
+const resetConfirmationOverlay = document.getElementById('resetConfirmationOverlay');
+const usernameInput = document.getElementById('usernameInput');
+const passwordInput = document.getElementById('passwordInput');
 const loginButton = document.getElementById('loginButton');
 const registerButton = document.getElementById('registerButton');
+const confirmResetButton = document.getElementById('confirmResetButton');
+const cancelResetButton = document.getElementById('cancelResetButton');
+const highestCashDisplay = document.getElementById('highestCash');
+const netCashDisplay = document.getElementById('netCash');
+const hoursPlayedDisplay = document.getElementById('hoursPlayed');
 
+// Current user
 let currentUser = null;
-let upgradeData = []; // Dynamically loaded upgrade definitions
 
 // Function to update displayed stats
 function updateDisplay() {
-    scoreDisplay.textContent = Cash: $${cash.toFixed(2)};
-    // Update other UI elements here, e.g., upgrade costs, stats overlays, etc.
+    scoreDisplay.textContent = `Cash: $${cash.toFixed(2)}`;
+    clickInfo.textContent = `Current Cash Per Click: $${cashPerClick.toFixed(2)}`;
+    automaticInfo.textContent = `Current Cash Per Second: $${cashPerSecond.toFixed(2)}`;
+    highestCashDisplay.textContent = highestCash.toFixed(2);
+    netCashDisplay.textContent = netCash.toFixed(2);
+    hoursPlayedDisplay.textContent = (totalHoursPlayed / 3600).toFixed(2);
 }
 
-// Load game data from local storage for unauthenticated users
+// Handle upgrades
+upgradeClickButton.addEventListener('click', () => {
+    if (cash >= upgradeClickCost) {
+        cash -= upgradeClickCost;
+        cashPerClick += 0.50;
+        upgradeClickCost *= 1.25;
+        updateDisplay();
+        saveProgress();
+    }
+});
+
+upgradeAutomaticButton.addEventListener('click', () => {
+    if (cash >= upgradeAutomaticCost) {
+        cash -= upgradeAutomaticCost;
+        cashPerSecond += 0.25;
+        upgradeAutomaticCost *= 1.25;
+        updateDisplay();
+        saveProgress();
+    }
+});
+
+// Increment cash on click
+clickCash.addEventListener('click', () => {
+    cash += cashPerClick;
+    netCash += cashPerClick;
+    if (cash > highestCash) highestCash = cash;
+    updateDisplay();
+    saveProgress();
+});
+
+// Automatically increment cash per second
+setInterval(() => {
+    cash += cashPerSecond;
+    netCash += cashPerSecond;
+    if (cash > highestCash) highestCash = cash;
+    updateDisplay();
+    saveProgress();
+}, 1000);
+
+// Save game data locally
+function saveLocalGameData() {
+    const gameData = {
+        cash,
+        cashPerClick,
+        cashPerSecond,
+        upgradeClickCost,
+        upgradeAutomaticCost,
+        highestCash,
+        netCash,
+        totalHoursPlayed,
+    };
+    localStorage.setItem('gameData', JSON.stringify(gameData));
+}
+
+// Load game data locally
 function loadLocalGameData() {
     const savedData = JSON.parse(localStorage.getItem('gameData'));
     if (savedData) {
@@ -50,24 +117,12 @@ function loadLocalGameData() {
     }
 }
 
-// Save game data to local storage for unauthenticated users
-function saveLocalGameData() {
-    const gameData = {
-        cash,
-        cashPerClick,
-        cashPerSecond,
-        upgradeClickCost,
-        upgradeAutomaticCost,
-        highestCash,
-        netCash,
-        totalHoursPlayed,
-    };
-    localStorage.setItem('gameData', JSON.stringify(gameData));
-}
-
-// Save game data to Supabase for authenticated users
+// Save game data to Supabase
 async function saveGameData() {
-    if (!currentUser) return;
+    if (!currentUser) {
+        saveLocalGameData();
+        return;
+    }
     try {
         await supabase.from('game_data').upsert({
             user_id: currentUser.id,
@@ -83,7 +138,7 @@ async function saveGameData() {
     }
 }
 
-// Load game data from Supabase for authenticated users
+// Load game data from Supabase
 async function loadGameData() {
     if (!currentUser) return;
     try {
@@ -107,48 +162,26 @@ async function loadGameData() {
     }
 }
 
-// Fetch and render upgrades
-async function loadUpgrades() {
-    try {
-        const response = await fetch('https://course-cursor.onrender.com/api/upgrades');
-        upgradeData = await response.json();
-        renderUpgrades();
-    } catch (error) {
-        console.error("Error loading upgrades:", error);
+// Save progress (decides whether to save locally or to Supabase)
+function saveProgress() {
+    if (currentUser) {
+        saveGameData();
+    } else {
+        saveLocalGameData();
     }
 }
 
-// Render upgrades dynamically
-function renderUpgrades() {
-    upgradeContainer.innerHTML = '';
-    upgradeData.forEach(upgrade => {
-        const button = document.createElement('button');
-        button.textContent = ${upgrade.name} - Cost: $${upgrade.cost};
-        button.addEventListener('click', () => {
-            if (cash >= upgrade.cost) {
-                cash -= upgrade.cost;
-                cashPerClick += upgrade.increment.click || 0;
-                cashPerSecond += upgrade.increment.automatic || 0;
-                updateDisplay();
-                if (!currentUser) saveLocalGameData();
-            }
-        });
-        upgradeContainer.appendChild(button);
-    });
-}
-
 // Handle login
-async function handleLogin(event) {
-    event.preventDefault();
+async function handleLogin() {
     try {
-        const { data, error } = await fetch('https://course-cursor.onrender.com/api/login', {
+        const { user, error } = await fetch('/api/login', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username: usernameInput.value, password: passwordInput.value }),
+            headers: { 'Content-Type': 'application/json' },
         }).then(res => res.json());
         if (error) throw error;
-        currentUser = data.user;
-        await loadGameData();
+        currentUser = user;
+        loadGameData();
         loginRegisterOverlay.style.display = 'none';
     } catch (error) {
         console.error("Login error:", error);
@@ -156,88 +189,39 @@ async function handleLogin(event) {
 }
 
 // Handle registration
-async function handleRegister(event) {
-    event.preventDefault();
+async function handleRegister() {
     try {
-        const { data, error } = await fetch('https://course-cursor.onrender.com/api/register', {
+        const { error } = await fetch('/api/register', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username: usernameInput.value, password: passwordInput.value }),
+            headers: { 'Content-Type': 'application/json' },
         }).then(res => res.json());
         if (error) throw error;
-        alert("Registration successful! You can now log in.");
+        alert("Registration successful!");
     } catch (error) {
         console.error("Registration error:", error);
     }
 }
 
-// Increment cash on click
-clickCash.addEventListener('click', () => {
-    cash += cashPerClick;
-    if (cash > highestCash) highestCash = cash;
-    netCash += cashPerClick;
+// Reset confirmation
+confirmResetButton.addEventListener('click', () => {
+    localStorage.clear();
+    cash = 0;
+    cashPerClick = 0.50;
+    cashPerSecond = 0.25;
+    highestCash = 0;
+    netCash = 0;
+    totalHoursPlayed = 0;
     updateDisplay();
-    if (!currentUser) saveLocalGameData();
+    resetConfirmationOverlay.style.display = 'none';
 });
 
-// Automatically increment cash per second
-setInterval(() => {
-    cash += cashPerSecond;
-    if (cash > highestCash) highestCash = cash;
-    netCash += cashPerSecond;
-    updateDisplay();
-    if (!currentUser) saveLocalGameData();
-}, 1000);
-
-// Save game data at the next minute mark and every subsequent minute
-function scheduleNextSave() {
-    const now = new Date();
-    const millisecondsUntilNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
-    setTimeout(() => {
-        if (currentUser) {
-            saveGameData();
-        } else {
-            saveLocalGameData();
-        }
-        scheduleNextSave(); // Schedule the next save
-    }, millisecondsUntilNextMinute);
-}
-
-// Logout and save game data
-logoutButton.addEventListener('click', async () => {
-    if (currentUser) {
-        await saveGameData();
-        currentUser = null;
-    } else {
-        saveLocalGameData();
-    }
-    loginRegisterOverlay.style.display = 'flex';
+// Cancel reset
+cancelResetButton.addEventListener('click', () => {
+    resetConfirmationOverlay.style.display = 'none';
 });
 
-// Event listeners for login and registration
-loginButton.addEventListener('click', handleLogin);
-registerButton.addEventListener('click', handleRegister);
-
-// Load game data on page load
-if (!currentUser) {
-    loadLocalGameData();
-} else {
-    loadGameData();
-}
-
-// Fetch upgrades on page load
-loadUpgrades();
-
-// Schedule the first save
-scheduleNextSave();
-
-// Save game data before unloading the page
-window.addEventListener('beforeunload', () => {
-    if (currentUser) {
-        saveGameData();
-    } else {
-        saveLocalGameData();
-    }
-});
-
-console.log("Game script initialized!"); 
+// Initialize game
+loadLocalGameData();
+updateDisplay();
+console.log("Game script initialized!");
