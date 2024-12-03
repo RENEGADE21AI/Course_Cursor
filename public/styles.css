@@ -14,11 +14,11 @@ body {
   align-items: center;
 }
 
-/* Top bar styles */
+/* Style for the top bar */
 .top-bar {
   width: 100%;
   height: 20vh;
-  background-color: #5a9bd3; /* Medium blue */
+  background-color: #b0c4de; /* Light blue */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -28,7 +28,6 @@ body {
 
 .score {
   font-size: 2.5rem; /* Larger font size for Cash display */
-  font-weight: bold;
 }
 
 .upgrades {
@@ -41,14 +40,10 @@ body {
   font-size: 1em;
   color: black;
   background-color: #d1ffd1; /* Light green */
-  border: 2px solid #32cd32; /* Green border */
+  border: none;
   cursor: pointer;
   border-radius: 5px;
-  transition: transform 0.1s, background-color 0.3s;
-}
-
-.upgrade-button:hover {
-  background-color: #b2ffb2;
+  transition: transform 0.1s;
 }
 
 .upgrade-button:active {
@@ -61,18 +56,10 @@ body {
   text-align: center;
 }
 
-/* Icon button styles */
-.stats-button,
-.setting-button {
-  width: 60px;
+.stats-button, .setting-button {
+  width: 60px; /* Icon size */
   height: 60px;
   cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.stats-button:hover,
-.setting-button:hover {
-  transform: scale(1.1);
 }
 
 /* Cash icon style */
@@ -106,8 +93,7 @@ body {
 
 .popup {
   background: white;
-  width: 90%;
-  max-width: 400px;
+  width: 400px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -116,12 +102,11 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   padding: 20px;
   border-radius: 10px;
-  overflow-y: auto;
 }
 
-.popup h2 {
-  margin-bottom: 15px;
-  font-size: 1.5rem;
+.scrollable-popup {
+  max-height: 70vh;
+  overflow-y: auto;
 }
 
 .close-button {
@@ -141,11 +126,10 @@ body {
   margin: 10px 0;
   text-align: center;
   border-radius: 5px;
-  font-weight: bold;
 }
 
-/* Buttons in pop-ups */
-.popup-button {
+/* Button styles */
+.settings-button {
   width: 200px;
   height: 50px;
   color: white;
@@ -157,20 +141,20 @@ body {
   transition: background-color 0.3s, opacity 0.3s;
 }
 
-.popup-button:hover {
-  opacity: 0.8;
-}
-
 .login-button {
   background: linear-gradient(to bottom, #218838, #4caf50); /* Green gradient */
+}
+
+.level-design-button {
+  background: linear-gradient(to bottom, #00bfff, #40e0d0); /* Turquoise gradient */
 }
 
 .reset-button {
   background: linear-gradient(to bottom, #c82333, #dc3545); /* Red gradient */
 }
 
-.logout-button {
-  background: linear-gradient(to bottom, #ffbf00, #ffc107); /* Yellow gradient */
+.settings-button:hover {
+  opacity: 0.8;
 }
 
 /* Responsive adjustments */
@@ -187,11 +171,10 @@ body {
   }
 
   .score {
-    font-size: 1.8rem;
+    font-size: 1.2rem;
   }
 
-  .stats-button,
-  .setting-button {
+  .stats-button, .setting-button {
     width: 50px;
     height: 50px;
   }
@@ -199,9 +182,4 @@ body {
   .click-cash {
     width: 80px;
   }
-
-  .popup {
-    width: 95%;
-    max-width: 350px;
-  }
-}
+} 
