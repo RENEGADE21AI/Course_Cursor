@@ -27,14 +27,17 @@
 
 <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/ClickCursorCash.png?raw=true" class="click-cash" id="clickCash" alt="Cash Icon">
 
-<!-- Account Pop-Up -->
-<div class="overlay" id="accountPopup">
+<!-- Login/Register Pop-Up -->
+<div class="overlay" id="loginRegisterOverlay">
   <div class="popup">
-    <div class="close-button" id="closeAccountPopup">X</div>
-    <h2>Account</h2>
-    <p id="accountStatus">You are Not Logged in</p>
-    <button class="account-button" id="loginRegisterButton">Login/Register</button>
-    <button class="account-button hidden" id="logoutButton">Logout</button>
+    <div class="close-button" id="closeLoginRegister">X</div>
+    <h2>Login/Register</h2>
+    <input type="text" id="usernameInput" placeholder="Username">
+    <input type="password" id="passwordInput" placeholder="Password">
+    <div>
+      <button class="login-popup-button" id="loginButton">Login</button>
+      <button class="register-popup-button" id="registerButton">Register</button>
+    </div>
   </div>
 </div>
 
@@ -43,7 +46,7 @@
   <div class="popup">
     <div class="close-button" id="closeSettings">X</div>
     <h2>Settings</h2>
-    <button class="settings-button" id="accountButton">Account</button>
+    <button class="settings-button login-button" id="loginRegisterButton">Login/Register</button>
     <button class="settings-button level-design-button" id="levelDesignButton">Level Design</button>
     <button class="settings-button reset-button" id="resetProgressButton">Reset Progress</button>
   </div>
