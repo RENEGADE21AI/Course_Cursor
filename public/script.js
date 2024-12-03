@@ -17,9 +17,7 @@ let totalHoursPlayed = 0;
 const clickCash = document.getElementById('clickCash');
 const scoreDisplay = document.getElementById('scoreDisplay');
 const upgradeContainer = document.getElementById('upgradeContainer');
-const accountOverlay = document.getElementById('accountOverlay');
-const accountMessage = document.getElementById('accountMessage');
-const accountActionButton = document.getElementById('accountActionButton');
+const loginRegisterOverlay = document.getElementById('loginRegisterOverlay');
 const logoutButton = document.getElementById('logoutButton');
 const loginForm = document.getElementById('loginForm');
 const usernameInput = document.getElementById('username');
@@ -28,11 +26,12 @@ const loginButton = document.getElementById('loginButton');
 const registerButton = document.getElementById('registerButton');
 
 let currentUser = null;
-let upgradeData = [];
+let upgradeData = []; // Dynamically loaded upgrade definitions
 
 // Function to update displayed stats
 function updateDisplay() {
-    scoreDisplay.textContent = `Cash: $${cash.toFixed(2)}`;
+    scoreDisplay.textContent = Cash: $${cash.toFixed(2)};
+    // Update other UI elements here, e.g., upgrade costs, stats overlays, etc.
 }
 
 // Load game data from local storage for unauthenticated users
@@ -124,7 +123,7 @@ function renderUpgrades() {
     upgradeContainer.innerHTML = '';
     upgradeData.forEach(upgrade => {
         const button = document.createElement('button');
-        button.textContent = `${upgrade.name} - Cost: $${upgrade.cost}`;
+        button.textContent = ${upgrade.name} - Cost: $${upgrade.cost};
         button.addEventListener('click', () => {
             if (cash >= upgrade.cost) {
                 cash -= upgrade.cost;
@@ -136,40 +135,6 @@ function renderUpgrades() {
         });
         upgradeContainer.appendChild(button);
     });
-}
-
-// Increment cash on click
-clickCash.addEventListener('click', () => {
-    cash += cashPerClick;
-    if (cash > highestCash) highestCash = cash;
-    netCash += cashPerClick;
-    updateDisplay();
-    if (!currentUser) saveLocalGameData();
-});
-
-// Automatically increment cash per second
-setInterval(() => {
-    cash += cashPerSecond;
-    if (cash > highestCash) highestCash = cash;
-    netCash += cashPerSecond;
-    updateDisplay();
-    if (!currentUser) saveLocalGameData();
-}, 1000);
-
-// Handle account overlay display
-function updateAccountOverlay() {
-    if (currentUser) {
-        accountMessage.textContent = `You are Logged in as ${currentUser.username}`;
-        accountActionButton.textContent = 'Logout';
-        accountActionButton.onclick = handleLogout;
-    } else {
-        accountMessage.textContent = 'You are Not Logged in';
-        accountActionButton.textContent = 'Login/Register';
-        accountActionButton.onclick = () => {
-            accountOverlay.style.display = 'none';
-            loginForm.style.display = 'block';
-        };
-    }
 }
 
 // Handle login
@@ -184,8 +149,7 @@ async function handleLogin(event) {
         if (error) throw error;
         currentUser = data.user;
         await loadGameData();
-        loginForm.style.display = 'none';
-        updateAccountOverlay();
+        loginRegisterOverlay.style.display = 'none';
     } catch (error) {
         console.error("Login error:", error);
     }
@@ -207,38 +171,67 @@ async function handleRegister(event) {
     }
 }
 
-// Handle logout
-async function handleLogout() {
+// Increment cash on click
+clickCash.addEventListener('click', () => {
+    cash += cashPerClick;
+    if (cash > highestCash) highestCash = cash;
+    netCash += cashPerClick;
+    updateDisplay();
+    if (!currentUser) saveLocalGameData();
+});
+
+// Automatically increment cash per second
+setInterval(() => {
+    cash += cashPerSecond;
+    if (cash > highestCash) highestCash = cash;
+    netCash += cashPerSecond;
+    updateDisplay();
+    if (!currentUser) saveLocalGameData();
+}, 1000);
+
+// Save game data at the next minute mark and every subsequent minute
+function scheduleNextSave() {
+    const now = new Date();
+    const millisecondsUntilNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
+    setTimeout(() => {
+        if (currentUser) {
+            saveGameData();
+        } else {
+            saveLocalGameData();
+        }
+        scheduleNextSave(); // Schedule the next save
+    }, millisecondsUntilNextMinute);
+}
+
+// Logout and save game data
+logoutButton.addEventListener('click', async () => {
     if (currentUser) {
         await saveGameData();
         currentUser = null;
-        updateAccountOverlay();
-    }
-    saveLocalGameData();
-    accountOverlay.style.display = 'none';
-}
-
-// Initialize the game
-function initializeGame() {
-    if (!currentUser) {
-        loadLocalGameData();
-    } else {
-        loadGameData();
-    }
-    loadUpgrades();
-    updateAccountOverlay();
-}
-
-// Schedule periodic saves
-setInterval(() => {
-    if (currentUser) {
-        saveGameData();
     } else {
         saveLocalGameData();
     }
-}, 60000);
+    loginRegisterOverlay.style.display = 'flex';
+});
 
-// Save data on unload
+// Event listeners for login and registration
+loginButton.addEventListener('click', handleLogin);
+registerButton.addEventListener('click', handleRegister);
+
+// Load game data on page load
+if (!currentUser) {
+    loadLocalGameData();
+} else {
+    loadGameData();
+}
+
+// Fetch upgrades on page load
+loadUpgrades();
+
+// Schedule the first save
+scheduleNextSave();
+
+// Save game data before unloading the page
 window.addEventListener('beforeunload', () => {
     if (currentUser) {
         saveGameData();
@@ -247,7 +240,4 @@ window.addEventListener('beforeunload', () => {
     }
 });
 
-// Load game on startup
-initializeGame();
-
-console.log("Game script initialized!");
+console.log("Game script initialized!"); 
