@@ -22,18 +22,18 @@ const clickInfo = document.getElementById('clickInfo');
 const automaticInfo = document.getElementById('automaticInfo');
 const statsOverlay = document.getElementById('statsOverlay');
 const settingsOverlay = document.getElementById('settingsOverlay');
-const loginRegisterOverlay = document.getElementById('loginRegisterOverlay');
+const accountOverlay = document.getElementById('accountOverlay'); // Updated to Account Overlay
 const resetConfirmationOverlay = document.getElementById('resetConfirmationOverlay');
 const highestCashDisplay = document.getElementById('highestCash');
 const netCashDisplay = document.getElementById('netCash');
 const hoursPlayedDisplay = document.getElementById('hoursPlayed');
 const statsButton = document.getElementById('statsButton');
 const settingsButton = document.getElementById('settingsButton');
-const accountButton = document.getElementById('accountButton');
+const accountButton = document.getElementById('accountButton'); // Account button
 const resetProgressButton = document.getElementById('resetProgressButton');
 const closeStats = document.getElementById('closeStats');
 const closeSettings = document.getElementById('closeSettings');
-const closeLoginRegister = document.getElementById('closeLoginRegister');
+const closeAccount = document.getElementById('closeAccount'); // Close Account button
 const closeResetConfirmation = document.getElementById('closeResetConfirmation');
 const confirmResetButton = document.getElementById('confirmResetButton');
 const cancelResetButton = document.getElementById('cancelResetButton');
@@ -117,11 +117,12 @@ closeStats.addEventListener('click', () => {
 
 // Open Account pop-up
 accountButton.addEventListener('click', () => {
-    loginRegisterOverlay.style.display = 'flex';
+    accountOverlay.style.display = 'flex';
 });
 
-closeLoginRegister.addEventListener('click', () => {
-    loginRegisterOverlay.style.display = 'none';
+// Close Account pop-up
+closeAccount.addEventListener('click', () => {
+    accountOverlay.style.display = 'none';
 });
 
 // Open Reset Confirmation pop-up
@@ -145,7 +146,11 @@ confirmResetButton.addEventListener('click', () => {
     netCash = 0;
     totalHoursPlayed = 0;
 
-    localStorage.removeItem('gameData');
+    if (currentUser) {
+        resetGameDataOnServer();
+    } else {
+        localStorage.removeItem('gameData');
+    }
 
     updateDisplay();
     resetConfirmationOverlay.style.display = 'none';
@@ -156,10 +161,68 @@ cancelResetButton.addEventListener('click', () => {
     resetConfirmationOverlay.style.display = 'none';
 });
 
+// Save game data locally or to the server based on user authentication
+function saveProgress() {
+    if (currentUser) {
+        saveGameData();
+    } else {
+        saveLocalGameData();
+    }
+}
+
+// Save game data to the server
+async function saveGameData() {
+    const { data, error } = await supabase
+        .from('game_data')
+        .upsert({
+            user_id: currentUser.id,
+            cash,
+            cash_per_click: cashPerClick,
+            cash_per_second: cashPerSecond,
+            highest_cash: highestCash,
+            net_cash: netCash,
+            total_hours_played: totalHoursPlayed
+        });
+
+    if (error) {
+        console.error('Error saving game data:', error);
+    } else {
+        console.log('Game data saved successfully');
+    }
+}
+
 // Save game data locally
 function saveLocalGameData() {
     const gameData = { cash, cashPerClick, cashPerSecond, upgradeClickCost, upgradeAutomaticCost, highestCash, netCash, totalHoursPlayed };
     localStorage.setItem('gameData', JSON.stringify(gameData));
+}
+
+// Load game data locally or from the server based on user authentication
+async function loadGameData() {
+    if (currentUser) {
+        const { data, error } = await supabase
+            .from('game_data')
+            .select()
+            .eq('user_id', currentUser.id)
+            .single();
+
+        if (error) {
+            console.error('Error loading game data:', error);
+        } else if (data) {
+            cash = data.cash || 0;
+            cashPerClick = data.cash_per_click || 0.50;
+            cashPerSecond = data.cash_per_second || 0.25;
+            upgradeClickCost = data.upgrade_click_cost || 10.00;
+            upgradeAutomaticCost = data.upgrade_automatic_cost || 10.00;
+            highestCash = data.highest_cash || 0;
+            netCash = data.net_cash || 0;
+            totalHoursPlayed = data.total_hours_played || 0;
+        }
+    } else {
+        loadLocalGameData();
+    }
+
+    updateDisplay();
 }
 
 // Load game data locally
@@ -174,16 +237,9 @@ function loadLocalGameData() {
         highestCash = savedData.highestCash || 0;
         netCash = savedData.netCash || 0;
         totalHoursPlayed = savedData.totalHoursPlayed || 0;
-        updateDisplay();
     }
+    updateDisplay();
 }
 
-// Save progress (local or server)
-function saveProgress() {
-    currentUser ? saveGameData() : saveLocalGameData();
-}
-
-// Initialize game
-loadLocalGameData();
-updateDisplay();
-console.log("Game script initialized!");
+// Load the saved game data when the page loads
+loadGameData();
