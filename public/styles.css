@@ -140,12 +140,10 @@ body {
 /* Account pop-up layered above Settings */
 .account-popup {
   z-index: 30; /* Higher than other pop-ups */
-  position: fixed;
 }
 
 .settings-overlay {
   z-index: 20; /* Lower than account pop-up */
-  position: fixed;
 }
 
 /* Stat box style */
