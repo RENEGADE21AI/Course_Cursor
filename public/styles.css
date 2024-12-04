@@ -1,5 +1,3 @@
-/* Updated for Stats and Settings buttons and z-index for pop-ups */
-
 /* Reset some default browser styles */
 * {
   margin: 0;
@@ -66,9 +64,10 @@ body {
   text-align: center;
 }
 
+/* Stats and Settings button sizes updated to 10% height */
 .stats-button, .setting-button {
   width: auto;
-  height: 15vh; /* 15% of the screen's height */
+  height: 10vh; /* 10% of the screen's height */
   cursor: pointer;
   border: none;
   background: none;
@@ -138,9 +137,10 @@ body {
   font-size: 1.5em;
 }
 
-/* Account pop-up specific z-index to appear above the Settings pop-up */
+/* Account pop-up layered above Settings */
 .account-popup {
   z-index: 30; /* Higher than other pop-ups */
+  position: relative;
 }
 
 /* Stat box style */
@@ -231,7 +231,7 @@ body {
   }
 
   .stats-button, .setting-button {
-    height: 10vh; /* Adjust for smaller screens */
+    height: 8vh; /* Smaller buttons for small screens */
   }
 
   .click-cash {
