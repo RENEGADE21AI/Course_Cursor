@@ -201,7 +201,7 @@ body {
   color: #4caf50;
 }
 
-#loginRegisterButton {
+#accountButton {
   padding: 10px 20px;
   font-size: 1em;
   color: white;
@@ -212,7 +212,7 @@ body {
   transition: background-color 0.2s;
 }
 
-#loginRegisterButton:hover {
+#accountButton:hover {
   background-color: #45a049; /* Slightly darker green */
 }
 
