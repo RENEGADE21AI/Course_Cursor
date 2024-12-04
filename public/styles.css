@@ -143,6 +143,10 @@ body {
   position: relative;
 }
 
+.settings-overlay {
+  z-index: 20; /* Lower than account pop-up */
+}
+
 /* Stat box style */
 .stat-box {
   width: 90%;
