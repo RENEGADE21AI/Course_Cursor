@@ -29,8 +29,14 @@ const netCashDisplay = document.getElementById('netCash');
 const hoursPlayedDisplay = document.getElementById('hoursPlayed');
 const statsButton = document.getElementById('statsButton');
 const settingsButton = document.getElementById('settingsButton');
+const accountButton = document.getElementById('accountButton'); // Add reference for Account button
+const resetProgressButton = document.getElementById('resetProgressButton'); // Add reference for Reset Progress button
 const closeStats = document.getElementById('closeStats');
 const closeSettings = document.getElementById('closeSettings');
+const closeLoginRegister = document.getElementById('closeLoginRegister'); // Add close button for Account pop-up
+const closeResetConfirmation = document.getElementById('closeResetConfirmation');
+const confirmResetButton = document.getElementById('confirmResetButton');
+const cancelResetButton = document.getElementById('cancelResetButton');
 
 // Current user
 let currentUser = null;
@@ -107,6 +113,47 @@ statsButton.addEventListener('click', () => {
 
 closeStats.addEventListener('click', () => {
     statsOverlay.style.display = 'none';
+});
+
+// Open Account pop-up
+accountButton.addEventListener('click', () => {
+    loginRegisterOverlay.style.display = 'flex';
+});
+
+closeLoginRegister.addEventListener('click', () => {
+    loginRegisterOverlay.style.display = 'none';
+});
+
+// Open Reset Confirmation pop-up
+resetProgressButton.addEventListener('click', () => {
+    resetConfirmationOverlay.style.display = 'flex';
+});
+
+// Close Reset Confirmation pop-up
+closeResetConfirmation.addEventListener('click', () => {
+    resetConfirmationOverlay.style.display = 'none';
+});
+
+// Confirm Reset Progress
+confirmResetButton.addEventListener('click', () => {
+    cash = 0;
+    cashPerClick = 0.50;
+    cashPerSecond = 0.25;
+    upgradeClickCost = 10.00;
+    upgradeAutomaticCost = 10.00;
+    highestCash = 0;
+    netCash = 0;
+    totalHoursPlayed = 0;
+
+    localStorage.removeItem('gameData');
+
+    updateDisplay();
+    resetConfirmationOverlay.style.display = 'none';
+});
+
+// Cancel Reset Progress
+cancelResetButton.addEventListener('click', () => {
+    resetConfirmationOverlay.style.display = 'none';
 });
 
 // Save game data locally
