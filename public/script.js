@@ -1,7 +1,22 @@
 console.log("script.js loaded!");
 
-// Supabase initialization
-const supabase = window.supabase;
+// Fetch Supabase credentials dynamically from the backend
+async function fetchSupabaseCredentials() {
+    const response = await fetch('/api/supabase-credentials');
+    const data = await response.json();
+    return data;
+}
+
+// Function to initialize Supabase client
+async function initializeSupabase() {
+    const { supabaseUrl, supabaseAnonKey } = await fetchSupabaseCredentials();
+    const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm');
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
+    window.supabase = supabase;  // Make it globally accessible once initialized
+
+    // After initializing Supabase, load game data
+    loadGameData();
+}
 
 // Variables to manage game state
 let cash = 0;
@@ -239,5 +254,5 @@ function loadLocalGameData() {
     updateDisplay();
 }
 
-// Load the saved game data when the page loads
-loadGameData();
+// Call initializeSupabase to start the game
+initializeSupabase();
