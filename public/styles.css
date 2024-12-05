@@ -189,18 +189,20 @@ body {
 
 /* Account button styling */
 .account-button {
-  background: linear-gradient(to bottom, #6a5acd, #836fff); /* Purple gradient */
+  background: linear-gradient(to bottom, #34d058, #28a745); /* Green gradient */
   padding: 10px 20px;
   font-size: 1em;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: background-color 0.2s, transform 0.2s;
 }
 
 .account-button:hover {
-  background: linear-gradient(to bottom, #836fff, #6a5acd);
+  background: linear-gradient(to bottom, #28a745, #34d058);
 }
 
 .account-button:active {
