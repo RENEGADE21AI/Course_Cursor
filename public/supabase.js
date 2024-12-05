@@ -10,7 +10,7 @@ const port = process.env.PORT || 3000;
 app.use(express.static('public'));
 
 // Endpoint to provide the Supabase credentials securely
-app.get('/api/supabase-credentials', (req, res) => {
+app.get('https://course-cursor.onrender.com//api/supabase-credentials', (req, res) => {
     res.json({
         supabaseUrl: process.env.SUPABASE_URL,
         supabaseAnonKey: process.env.SUPABASE_ANON_KEY,
