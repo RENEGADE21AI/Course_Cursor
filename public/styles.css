@@ -11,6 +11,7 @@ body {
   background-color: #f4f4f4;
   display: flex;
   flex-direction: column;
+  align-items: center;
   height: 100vh;
   overflow: hidden;
 }
@@ -28,17 +29,14 @@ body {
 }
 
 .score {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: bold;
-  flex: 1;
-  text-align: left;
 }
 
 .upgrades {
   display: flex;
-  gap: 20px;
-  flex: 2;
-  justify-content: space-around;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .upgrade-button {
@@ -66,20 +64,14 @@ body {
   text-align: center;
 }
 
-.icons {
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
-.stats-button,
-.setting-button {
+/* Stats and Settings button sizes updated to 10% height */
+.stats-button, .setting-button {
   width: auto;
-  height: 8vh; /* Adjusted for better sizing */
+  height: 10vh; /* 10% of the screen's height */
   cursor: pointer;
-  background: none;
   border: none;
+  background: none;
+  outline: none;
 }
 
 /* Cash icon style */
@@ -101,116 +93,151 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #eef2f3; /* Light gray */
+  position: relative;
 }
 
-/* Overlay styles */
+/* Pop-up overlay styles */
 .overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.7);
   display: none;
   justify-content: center;
   align-items: center;
-  z-index: 100;
+  z-index: 10;
 }
 
-/* Popup styles */
 .popup {
-  background-color: #fff;
-  width: 90%;
-  max-width: 400px;
+  background: white;
+  width: 400px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  text-align: center;
+  z-index: 20; /* Ensure pop-ups appear in correct order */
 }
 
-.popup h2 {
-  margin-bottom: 1rem;
-  font-size: 1.5rem;
-}
-
-.popup p {
-  margin-bottom: 1rem;
-  font-size: 1rem;
+.scrollable-popup {
+  max-height: 70vh;
+  overflow-y: auto;
 }
 
 .close-button {
   position: absolute;
   top: 10px;
   right: 10px;
-  font-size: 1.5rem;
-  color: #444;
   cursor: pointer;
-  background: none;
-  border: none;
+  font-size: 1.5em;
 }
 
-/* Buttons inside popups */
-.settings-button {
-  padding: 10px 20px;
-  font-size: 1rem;
+/* Account pop-up layered above Settings */
+.account-popup {
+  z-index: 30; /* Higher than other pop-ups */
+}
+
+.settings-overlay {
+  z-index: 20; /* Lower than account pop-up */
+}
+
+/* Stat box style */
+.stat-box {
+  width: 90%;
+  padding: 10px;
+  background-color: #d3d3d3; /* Light gray */
+  color: black;
   margin: 10px 0;
-  background-color: #ffd1d1; /* Light red */
-  border: none;
-  cursor: pointer;
+  text-align: center;
   border-radius: 5px;
-  transition: transform 0.1s, background-color 0.2s;
 }
 
-.settings-button:hover {
-  background-color: #ff9f9f;
+/* Button styles */
+.settings-button {
+  width: 200px;
+  height: 50px;
+  color: white;
+  font-size: 1.2em;
+  border: none;
+  border-radius: 5px;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: background-color 0.3s, opacity 0.3s;
+}
+
+.login-button {
+  background: linear-gradient(to bottom, #218838, #4caf50); /* Green gradient */
+}
+
+.level-design-button {
+  background: linear-gradient(to bottom, #00bfff, #40e0d0); /* Turquoise gradient */
 }
 
 .reset-button {
-  background-color: #ff9999;
+  background: linear-gradient(to bottom, #c82333, #dc3545); /* Red gradient */
+}
+
+.settings-button:hover {
+  opacity: 0.8;
+}
+
+/* Account button styling */
+.account-button {
+  background: linear-gradient(to bottom, #6a5acd, #836fff); /* Purple gradient */
+}
+
+.account-button:hover {
+  background: linear-gradient(to bottom, #836fff, #6a5acd);
+}
+
+/* Account pop-up styling */
+.popup h2 {
+  margin-bottom: 20px;
+  color: #4caf50;
+}
+
+#accountButton {
+  padding: 10px 20px;
+  font-size: 1em;
   color: white;
+  background-color: #4caf50; /* Green */
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.2s;
 }
 
-.reset-button:hover {
-  background-color: #ff7f7f;
+#accountButton:hover {
+  background-color: #45a049; /* Slightly darker green */
 }
 
-/* Scrollable popup */
-.scrollable-popup {
-  max-height: 80vh;
-  overflow-y: auto;
-}
-
-.stat-box {
-  margin: 10px 0;
-  font-size: 1rem;
-  text-align: left;
-}
-
-/* Responsive Design */
-@media screen and (max-width: 600px) {
+/* Responsive adjustments */
+@media (max-width: 768px) {
   .top-bar {
+    height: 15%;
     flex-direction: column;
-    height: auto;
-    padding: 0.5em;
-    gap: 0.5em;
-  }
-
-  .score {
-    text-align: center;
+    align-items: flex-start;
   }
 
   .upgrades {
     flex-direction: column;
-    gap: 10px;
-    align-items: center;
+    gap: 15px;
   }
 
-  .icons {
-    justify-content: center;
+  .score {
+    font-size: 1.2rem;
   }
 
-  .popup {
-    width: 95%;
+  .stats-button, .setting-button {
+    height: 8vh; /* Smaller buttons for small screens */
+  }
+
+  .click-cash {
+    width: 80px;
   }
 }
