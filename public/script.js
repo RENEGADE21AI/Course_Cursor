@@ -1,23 +1,5 @@
 console.log("script.js loaded!");
 
-// Fetch Supabase credentials dynamically from the backend
-async function fetchSupabaseCredentials() {
-    const response = await fetch('/api/supabase-credentials');
-    const data = await response.json();
-    return data;
-}
-
-// Function to initialize Supabase client
-async function initializeSupabase() {
-    const { supabaseUrl, supabaseAnonKey } = await fetchSupabaseCredentials();
-    const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm');
-    const supabase = createClient(supabaseUrl, supabaseAnonKey);
-    window.supabase = supabase;  // Make it globally accessible once initialized
-
-    // After initializing Supabase, load game data
-    loadGameData();
-}
-
 // Variables to manage game state
 let cash = 0;
 let cashPerClick = 0.50;
@@ -53,9 +35,6 @@ const closeResetConfirmation = document.getElementById('closeResetConfirmation')
 const confirmResetButton = document.getElementById('confirmResetButton');
 const cancelResetButton = document.getElementById('cancelResetButton');
 
-// Current user
-let currentUser = null;
-
 // Function to update displayed stats
 function updateDisplay() {
     scoreDisplay.textContent = `Cash: $${cash.toFixed(2)}`;
@@ -75,7 +54,7 @@ upgradeClickButton.addEventListener('click', () => {
         cashPerClick = Math.ceil(cashPerClick * 1.15 * 100) / 100;
         upgradeClickCost = Math.ceil(upgradeClickCost * 1.25 * 100) / 100;
         updateDisplay();
-        saveProgress();
+        saveLocalGameData();
     }
 });
 
@@ -85,7 +64,7 @@ upgradeAutomaticButton.addEventListener('click', () => {
         cashPerSecond = Math.ceil(cashPerSecond * 1.15 * 100) / 100;
         upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.25 * 100) / 100;
         updateDisplay();
-        saveProgress();
+        saveLocalGameData();
     }
 });
 
@@ -95,7 +74,7 @@ clickCash.addEventListener('click', () => {
     netCash += cashPerClick;
     highestCash = Math.max(highestCash, cash);
     updateDisplay();
-    saveProgress();
+    saveLocalGameData();
     // Animation effect
     clickCash.style.transform = 'scale(1.1)';
     setTimeout(() => {
@@ -110,7 +89,7 @@ setInterval(() => {
     highestCash = Math.max(highestCash, cash);
     totalHoursPlayed += 1 / 3600;
     updateDisplay();
-    saveProgress();
+    saveLocalGameData();
 }, 1000);
 
 // Handle pop-ups
@@ -155,35 +134,18 @@ cancelResetButton.addEventListener('click', () => {
     resetConfirmationOverlay.style.display = 'none';
 });
 
-// Save game progress
-function saveProgress() {
-    if (currentUser) {
-        saveGameData();
-    } else {
-        saveLocalGameData();
-    }
-}
-
-// Save game data to Supabase
-async function saveGameData() {
-    const { error } = await supabase.from('game_data').upsert({
-        user_id: currentUser.id,
-        cash,
-        cash_per_click: cashPerClick,
-        cash_per_second: cashPerSecond,
-        highest_cash: highestCash,
-        net_cash: netCash,
-        total_hours_played: totalHoursPlayed
-    });
-
-    if (error) {
-        console.error('Error saving game data:', error);
-    }
-}
-
 // Save locally
 function saveLocalGameData() {
-    localStorage.setItem('gameData', JSON.stringify({ cash, cashPerClick, cashPerSecond, upgradeClickCost, upgradeAutomaticCost, highestCash, netCash, totalHoursPlayed }));
+    localStorage.setItem('gameData', JSON.stringify({
+        cash,
+        cashPerClick,
+        cashPerSecond,
+        upgradeClickCost,
+        upgradeAutomaticCost,
+        highestCash,
+        netCash,
+        totalHoursPlayed
+    }));
 }
 
 // Reset game progress
@@ -197,31 +159,19 @@ function resetGame() {
     netCash = 0;
     totalHoursPlayed = 0;
 
-    if (currentUser) {
-        saveGameData();
-    } else {
-        saveLocalGameData();
+    saveLocalGameData();
+    updateDisplay();
+}
+
+// Load game data from local storage
+function loadLocalGameData() {
+    const savedData = JSON.parse(localStorage.getItem('gameData'));
+    if (savedData) {
+        Object.assign(this, savedData);
     }
     updateDisplay();
 }
 
-// Load game data
-async function loadGameData() {
-    if (currentUser) {
-        const { data, error } = await supabase.from('game_data').select('*').eq('user_id', currentUser.id).single();
-        if (data) {
-            Object.assign({ cash, cashPerClick, cashPerSecond, highestCash, netCash, totalHoursPlayed }, data);
-        } else {
-            console.error('Error loading game data:', error);
-        }
-    } else {
-        const savedData = JSON.parse(localStorage.getItem('gameData'));
-        if (savedData) Object.assign(this, savedData);
-    }
-    updateDisplay();
-}
-
-// Initialize Supabase on load
-initializeSupabase();
-
+// Initialize game
+loadLocalGameData();
 console.log("script.js ran all the way through to the end!");
