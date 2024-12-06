@@ -9,6 +9,7 @@
 </head>
 <body>
 
+<!-- Top Bar -->
 <div class="top-bar">
   <div class="score" id="scoreDisplay">Cash: $0.00</div>
   <div class="upgrades">
@@ -27,22 +28,23 @@
   </div>
 </div>
 
+<!-- Game Bar -->
 <div class="game-bar">
-  <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/ClickCursorCash.png?raw=true" class="click-cash" id="clickCash" alt="Cash Icon">
+  <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/ClickCursorCash.png?raw=true" class="click-cash" id="clickCash" alt="Click Cash">
 </div>
 
 <!-- Account Pop-up -->
 <div class="overlay" id="accountOverlay">
-  <div class="popup">
+  <div class="popup account-popup">
     <div class="close-button" id="closeAccount">X</div>
     <h2>Account</h2>
-    <button id="accountButton">Login/Register</button>
+    <button class="account-button" id="accountButton">Login/Register</button>
     <div id="accountDetails"></div>
   </div>
 </div>
 
 <!-- Settings Overlay -->
-<div class="overlay" id="settingsOverlay">
+<div class="overlay settings-overlay" id="settingsOverlay">
   <div class="popup">
     <div class="close-button" id="closeSettings">X</div>
     <h2>Settings</h2>
@@ -63,19 +65,20 @@
   </div>
 </div>
 
-<!-- Reset Progress Confirmation Overlay -->
+<!-- Reset Confirmation Overlay -->
 <div class="overlay" id="resetConfirmationOverlay">
   <div class="popup">
     <div class="close-button" id="closeResetConfirmation">X</div>
-    <h2>Do You Really Want to Reset Your Progress?</h2>
+    <h2>Confirm Reset Progress</h2>
     <p>This action is irreversible! Your progress will be lost permanently.</p>
     <div>
-      <button class="settings-button" id="confirmResetButton">Yes</button>
-      <button class="settings-button reset-button" id="cancelResetButton">Back</button>
+      <button class="settings-button reset-button" id="confirmResetButton">Yes</button>
+      <button class="settings-button reset-button" id="cancelResetButton">Cancel</button>
     </div>
   </div>
 </div>
 
+<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/umd/supabase.min.js"></script>
 <script src="supabase.js" type="module" defer></script>
 <script src="script.js" type="module" defer></script>
