@@ -89,8 +89,13 @@ setInterval(() => {
     highestCash = Math.max(highestCash, cash);
     totalHoursPlayed += 1 / 3600;
     updateDisplay();
-    saveLocalGameData();
 }, 1000);
+
+// Save progress every 5 minutes
+setInterval(saveLocalGameData, 5 * 60 * 1000);
+
+// Save game progress when closing the window
+window.addEventListener('beforeunload', saveLocalGameData);
 
 // Handle pop-ups
 statsButton.addEventListener('click', () => {
@@ -167,7 +172,14 @@ function resetGame() {
 function loadLocalGameData() {
     const savedData = JSON.parse(localStorage.getItem('gameData'));
     if (savedData) {
-        Object.assign(this, savedData);
+        cash = savedData.cash || 0;
+        cashPerClick = savedData.cashPerClick || 0.50;
+        cashPerSecond = savedData.cashPerSecond || 0.25;
+        upgradeClickCost = savedData.upgradeClickCost || 10.00;
+        upgradeAutomaticCost = savedData.upgradeAutomaticCost || 10.00;
+        highestCash = savedData.highestCash || 0;
+        netCash = savedData.netCash || 0;
+        totalHoursPlayed = savedData.totalHoursPlayed || 0;
     }
     updateDisplay();
 }
