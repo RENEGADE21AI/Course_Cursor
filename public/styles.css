@@ -1,11 +1,11 @@
-/* Reset some default browser styles */
+/* Reset default browser styles */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Set the font for the page */
+/* Set global font and background */
 body {
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
@@ -16,7 +16,7 @@ body {
   overflow: hidden;
 }
 
-/* Style for the top bar */
+/* Top bar styling */
 .top-bar {
   width: 100%;
   height: 20%;
@@ -64,7 +64,7 @@ body {
   text-align: center;
 }
 
-/* Stats and Settings button sizes updated to 10% height */
+/* Stats and Settings button styling */
 .stats-button, .setting-button {
   width: auto;
   height: 10vh; /* 10% of the screen's height */
@@ -74,7 +74,7 @@ body {
   outline: none;
 }
 
-/* Cash icon style */
+/* Cash icon styling */
 .click-cash {
   width: 120px;
   height: auto;
@@ -96,7 +96,7 @@ body {
   position: relative;
 }
 
-/* Pop-up overlay styles */
+/* Pop-up overlay styling */
 .overlay {
   position: fixed;
   top: 0;
@@ -121,7 +121,7 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   padding: 20px;
   border-radius: 10px;
-  z-index: 20; /* Ensure pop-ups appear in correct order */
+  z-index: 20;
 }
 
 .scrollable-popup {
@@ -137,16 +137,7 @@ body {
   font-size: 1.5em;
 }
 
-/* Account pop-up layered above Settings */
-.account-popup {
-  z-index: 30; /* Higher than other pop-ups */
-}
-
-.settings-overlay {
-  z-index: 20; /* Lower than account pop-up */
-}
-
-/* Stat box style */
+/* Stat box styling */
 .stat-box {
   width: 90%;
   padding: 10px;
@@ -157,7 +148,7 @@ body {
   border-radius: 5px;
 }
 
-/* Button styles */
+/* Button styling */
 .settings-button {
   width: 200px;
   height: 50px;
@@ -174,11 +165,6 @@ body {
   opacity: 0.8;
 }
 
-/* Specific buttons */
-.login-button {
-  background: linear-gradient(to bottom, #218838, #4caf50); /* Green gradient */
-}
-
 .level-design-button {
   background: linear-gradient(to bottom, #00bfff, #40e0d0); /* Turquoise gradient */
 }
@@ -187,8 +173,8 @@ body {
   background: linear-gradient(to bottom, #c82333, #dc3545); /* Red gradient */
 }
 
-/* Account button styling */
-.account-button {
+/* Updated Login/Register button styling */
+.loginRegister-button {
   background: linear-gradient(to bottom, #34d058, #28a745); /* Green gradient */
   padding: 10px 20px;
   font-size: 1em;
@@ -201,33 +187,12 @@ body {
   transition: background-color 0.2s, transform 0.2s;
 }
 
-.account-button:hover {
+.loginRegister-button:hover {
   background: linear-gradient(to bottom, #28a745, #34d058);
 }
 
-.account-button:active {
+.loginRegister-button:active {
   transform: scale(0.95);
-}
-
-/* Account overlay */
-#accountOverlay {
-  display: none; /* Hidden by default */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-#accountOverlay .content {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
 }
 
 /* Responsive adjustments */
