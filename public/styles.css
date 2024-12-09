@@ -1,11 +1,11 @@
-/* Reset default browser styles */
+/* Reset some default browser styles */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Set global font and background */
+/* Set the font for the page */
 body {
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
@@ -16,7 +16,7 @@ body {
   overflow: hidden;
 }
 
-/* Top bar styling */
+/* Style for the top bar */
 .top-bar {
   width: 100%;
   height: 20%;
@@ -64,7 +64,7 @@ body {
   text-align: center;
 }
 
-/* Stats and Settings button styling */
+/* Stats and Settings button sizes updated to 10% height */
 .stats-button, .setting-button {
   width: auto;
   height: 10vh; /* 10% of the screen's height */
@@ -74,7 +74,7 @@ body {
   outline: none;
 }
 
-/* Cash icon styling */
+/* Cash icon style */
 .click-cash {
   width: 120px;
   height: auto;
@@ -96,7 +96,7 @@ body {
   position: relative;
 }
 
-/* Pop-up overlay styling */
+/* Pop-up overlay styles */
 .overlay {
   position: fixed;
   top: 0;
@@ -121,7 +121,7 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   padding: 20px;
   border-radius: 10px;
-  z-index: 20;
+  z-index: 20; /* Ensure pop-ups appear in correct order */
 }
 
 .scrollable-popup {
@@ -137,18 +137,7 @@ body {
   font-size: 1.5em;
 }
 
-/* Stat box styling */
-.stat-box {
-  width: 90%;
-  padding: 10px;
-  background-color: #d3d3d3; /* Light gray */
-  color: black;
-  margin: 10px 0;
-  text-align: center;
-  border-radius: 5px;
-}
-
-/* Button styling */
+/* Button styles */
 .settings-button {
   width: 200px;
   height: 50px;
@@ -165,17 +154,9 @@ body {
   opacity: 0.8;
 }
 
-.level-design-button {
-  background: linear-gradient(to bottom, #00bfff, #40e0d0); /* Turquoise gradient */
-}
-
-.reset-button {
-  background: linear-gradient(to bottom, #c82333, #dc3545); /* Red gradient */
-}
-
-/* Updated Login/Register button styling */
-.loginRegister-button {
-  background: linear-gradient(to bottom, #34d058, #28a745); /* Green gradient */
+/* Specific buttons */
+#loginRegisterButton {
+  background: linear-gradient(to bottom, #28a745, #34d058); /* Green gradient */
   padding: 10px 20px;
   font-size: 1em;
   color: white;
@@ -187,12 +168,24 @@ body {
   transition: background-color 0.2s, transform 0.2s;
 }
 
-.loginRegister-button:hover {
-  background: linear-gradient(to bottom, #28a745, #34d058);
+#loginRegisterButton:hover {
+  background: linear-gradient(to bottom, #34d058, #28a745);
 }
 
-.loginRegister-button:active {
+#loginRegisterButton:active {
   transform: scale(0.95);
+}
+
+#confirmResetButton {
+  background: linear-gradient(to bottom, #c82333, #dc3545); /* Red gradient */
+}
+
+.reset-button {
+  background: linear-gradient(to bottom, #c82333, #dc3545); /* Red gradient */
+}
+
+.level-design-button {
+  background: linear-gradient(to bottom, #00bfff, #40e0d0); /* Turquoise gradient */
 }
 
 /* Responsive adjustments */
