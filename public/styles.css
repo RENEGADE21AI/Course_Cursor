@@ -137,6 +137,15 @@ body {
   font-size: 1.5em;
 }
 
+/* Account pop-up layered above Settings */
+.account-popup {
+  z-index: 30; /* Higher than other pop-ups */
+}
+
+.settings-overlay {
+  z-index: 20; /* Lower than account pop-up */
+}
+
 /* Stat box style */
 .stat-box {
   width: 90%;
@@ -166,17 +175,8 @@ body {
 }
 
 /* Specific buttons */
-.level-design-button {
-  background: linear-gradient(to bottom, #00bfff, #40e0d0); /* Turquoise gradient */
-}
-
-.reset-button {
-  background: linear-gradient(to bottom, #c82333, #dc3545); /* Red gradient */
-}
-
-/* Account button in settings */
-#accountSettingsButton {
-  background: linear-gradient(to bottom, #34d058, #28a745); /* Green gradient */
+.loginRegister-button {
+  background: linear-gradient(to bottom, #218838, #4caf50); /* Green gradient */
   padding: 10px 20px;
   font-size: 1em;
   color: white;
@@ -188,12 +188,43 @@ body {
   transition: background-color 0.2s, transform 0.2s;
 }
 
-#accountSettingsButton:hover {
+.loginRegister-button:hover {
   background: linear-gradient(to bottom, #28a745, #34d058);
 }
 
-#accountSettingsButton:active {
+.loginRegister-button:active {
   transform: scale(0.95);
+}
+
+/* Confirm Reset and Back Button styles */
+#confirmResetButton {
+  background: linear-gradient(to bottom, #c82333, #dc3545); /* Red gradient */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#confirmResetButton:hover {
+  background: linear-gradient(to bottom, #dc3545, #c82333);
+}
+
+#cancelResetButton {
+  background: linear-gradient(to bottom, #218838, #4caf50); /* Green gradient */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#cancelResetButton:hover {
+  background: linear-gradient(to bottom, #28a745, #34d058);
 }
 
 /* Responsive adjustments */
