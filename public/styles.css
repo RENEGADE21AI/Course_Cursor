@@ -137,13 +137,17 @@ body {
   font-size: 1.5em;
 }
 
-/* Account pop-up layered above Settings */
+/* Specific overlay z-index settings */
 #accountOverlay {
-  z-index: 30; /* Higher than other overlays */
+  z-index: 30; /* Higher than settings */
 }
 
 #settingsOverlay {
-  z-index: 20; /* Lower than account overlay */
+  z-index: 20; /* Lower than account and reset confirmation */
+}
+
+#resetConfirmationOverlay {
+  z-index: 40; /* Highest to ensure it is above all */
 }
 
 /* Stat box style */
