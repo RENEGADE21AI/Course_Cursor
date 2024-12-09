@@ -137,6 +137,17 @@ body {
   font-size: 1.5em;
 }
 
+/* Stat box style */
+.stat-box {
+  width: 90%;
+  padding: 10px;
+  background-color: #d3d3d3; /* Light gray */
+  color: black;
+  margin: 10px 0;
+  text-align: center;
+  border-radius: 5px;
+}
+
 /* Button styles */
 .settings-button {
   width: 200px;
@@ -155,8 +166,17 @@ body {
 }
 
 /* Specific buttons */
-#loginRegisterButton {
-  background: linear-gradient(to bottom, #28a745, #34d058); /* Green gradient */
+.level-design-button {
+  background: linear-gradient(to bottom, #00bfff, #40e0d0); /* Turquoise gradient */
+}
+
+.reset-button {
+  background: linear-gradient(to bottom, #c82333, #dc3545); /* Red gradient */
+}
+
+/* Account button in settings */
+#accountSettingsButton {
+  background: linear-gradient(to bottom, #34d058, #28a745); /* Green gradient */
   padding: 10px 20px;
   font-size: 1em;
   color: white;
@@ -168,24 +188,12 @@ body {
   transition: background-color 0.2s, transform 0.2s;
 }
 
-#loginRegisterButton:hover {
-  background: linear-gradient(to bottom, #34d058, #28a745);
+#accountSettingsButton:hover {
+  background: linear-gradient(to bottom, #28a745, #34d058);
 }
 
-#loginRegisterButton:active {
+#accountSettingsButton:active {
   transform: scale(0.95);
-}
-
-#confirmResetButton {
-  background: linear-gradient(to bottom, #c82333, #dc3545); /* Red gradient */
-}
-
-.reset-button {
-  background: linear-gradient(to bottom, #c82333, #dc3545); /* Red gradient */
-}
-
-.level-design-button {
-  background: linear-gradient(to bottom, #00bfff, #40e0d0); /* Turquoise gradient */
 }
 
 /* Responsive adjustments */
