@@ -161,7 +161,6 @@ body {
 .settings-button {
   width: 200px;
   height: 50px;
-  color: white;
   font-size: 1.2em;
   border: none;
   border-radius: 5px;
@@ -174,26 +173,26 @@ body {
   opacity: 0.8;
 }
 
-/* Specific buttons */
-.loginRegister-button {
-  background: linear-gradient(to bottom, #218838, #4caf50); /* Green gradient */
-  padding: 10px 20px;
-  font-size: 1em;
+/* Specific buttons in Settings pop-up */
+#accountSettingsButton {
+  background: linear-gradient(to bottom, #34d058, #28a745); /* Green gradient */
   color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
   font-weight: bold;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.2s, transform 0.2s;
 }
 
-.loginRegister-button:hover {
-  background: linear-gradient(to bottom, #28a745, #34d058);
+#levelDesignButton {
+  background: linear-gradient(to bottom, #00bfff, #40e0d0); /* Turquoise gradient */
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.loginRegister-button:active {
-  transform: scale(0.95);
+#resetProgressButton {
+  background: linear-gradient(to bottom, #c82333, #dc3545); /* Red gradient */
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Confirm Reset and Back Button styles */
