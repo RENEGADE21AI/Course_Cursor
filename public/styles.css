@@ -112,7 +112,10 @@ body {
 
 .popup {
   background: white;
-  width: 400px;
+  width: 50%; /* Set account pop-up width to 50% */
+  height: 50%; /* Set account pop-up height to 50% */
+  max-width: 500px; /* Optional: set a maximum width */
+  max-height: 500px; /* Optional: set a maximum height */
   position: relative;
   display: flex;
   flex-direction: column;
