@@ -135,7 +135,7 @@ body {
 #settingsOverlay .popup,
 #statsOverlay .popup,
 #resetConfirmationOverlay .popup {
-  width: 20%;
+  width: 30%;
   height: auto;
   max-width: 300px; /* Optional max width to keep them proportionate */
   padding: 30px;
