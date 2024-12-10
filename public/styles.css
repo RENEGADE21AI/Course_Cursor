@@ -112,10 +112,6 @@ body {
 
 .popup {
   background: white;
-  width: 50%; /* Set account pop-up width to 50% */
-  height: 50%; /* Set account pop-up height to 50% */
-  max-width: 500px; /* Optional: set a maximum width */
-  max-height: 500px; /* Optional: set a maximum height */
   position: relative;
   display: flex;
   flex-direction: column;
@@ -125,6 +121,22 @@ body {
   padding: 20px;
   border-radius: 10px;
   z-index: 20; /* Ensure pop-ups appear in correct order */
+}
+
+/* Account Pop-up size: 50% of the screen */
+#accountOverlay .popup {
+  width: 50%;
+  height: 50%;
+  max-width: 500px;
+  max-height: 500px;
+}
+
+/* Other pop-ups remain at their default size */
+#settingsOverlay .popup,
+#statsOverlay .popup,
+#resetConfirmationOverlay .popup {
+  width: auto;
+  height: auto;
 }
 
 .scrollable-popup {
