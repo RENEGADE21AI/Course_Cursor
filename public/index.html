@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -21,36 +21,38 @@
       <div class="upgrade-info" id="automaticInfo">Current Cash Per Second: $0.25</div>
     </div>
   </div>
-  <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/VGstats.png?raw=true" class="stats-button" id="statsButton" alt="Stats Icon">
-  <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/JellySettingsButton.png?raw=true" class="setting-button" id="settingsButton" alt="Settings Icon">
-</div>
-
-<img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/ClickCursorCash.png?raw=true" class="click-cash" id="clickCash" alt="Cash Icon">
-
-<!-- Login/Register Pop-Up -->
-<div class="overlay" id="loginRegisterOverlay">
-  <div class="popup">
-    <div class="close-button" id="closeLoginRegister">X</div>
-    <h2>Login/Register</h2>
-    <input type="text" id="usernameInput" placeholder="Username">
-    <input type="password" id="passwordInput" placeholder="Password">
-    <div>
-      <button class="login-popup-button" id="loginButton">Login</button>
-      <button class="register-popup-button" id="registerButton">Register</button>
-    </div>
+  <div class="icons">
+    <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/VGstats.png?raw=true" class="stats-button" id="statsButton" alt="Stats Icon">
+    <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/JellySettingsButton.png?raw=true" class="setting-button" id="settingsButton" alt="Settings Icon">
   </div>
 </div>
 
-<div class="overlay" id="settingsOverlay">
+<div class="game-bar">
+  <img src="https://github.com/RENEGADE21CODING/Platicker-A_Platform_Clicker_Game/blob/main/ClickCursorCash.png?raw=true" class="click-cash" id="clickCash" alt="Cash Icon">
+</div>
+
+<!-- Account Pop-up -->
+<div class="overlay" id="accountOverlay">
   <div class="popup">
-    <div class="close-button" id="closeSettings">X</div>
-    <h2>Settings</h2>
-    <button class="settings-button login-button" id="loginRegisterButton">Login/Register</button>
-    <button class="settings-button level-design-button" id="levelDesignButton">Level Design</button>
+    <div class="close-button" id="closeAccount">X</div>
+    <h2>Account</h2>
+    <button id="loginRegisterButton" class="loginRegister-button">Login/Register</button>
+    <div id="accountDetails"></div>
     <button class="settings-button reset-button" id="resetProgressButton">Reset Progress</button>
   </div>
 </div>
 
+<!-- Settings Overlay -->
+<div class="overlay" id="settingsOverlay">
+  <div class="popup">
+    <div class="close-button" id="closeSettings">X</div>
+    <h2>Settings</h2>
+    <button class="settings-button" id="accountSettingsButton">Account</button>
+    <button class="settings-button level-design-button" id="levelDesignButton">Level Design</button>
+  </div>
+</div>
+
+<!-- Stats Overlay -->
 <div class="overlay" id="statsOverlay">
   <div class="popup scrollable-popup">
     <div class="close-button" id="closeStats">X</div>
@@ -61,19 +63,19 @@
   </div>
 </div>
 
+<!-- Reset Progress Confirmation Overlay -->
 <div class="overlay" id="resetConfirmationOverlay">
   <div class="popup">
     <div class="close-button" id="closeResetConfirmation">X</div>
     <h2>Do You Really Want to Reset Your Progress?</h2>
     <p>This action is irreversible! Your progress will be lost permanently.</p>
     <div>
-      <button class="settings-button login-button" id="confirmResetButton">Yes</button>
-      <button class="settings-button reset-button" id="cancelResetButton">Back</button>
+      <button class="settings-button reset-button" id="confirmResetButton">Yes</button>
+      <button class="settings-button" id="cancelResetButton">Back</button>
     </div>
   </div>
 </div>
 
-<script src="script.js" type="module" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/umd/supabase.min.js"></script>
+<script src="script.js" defer></script>
 </body>
 </html>
