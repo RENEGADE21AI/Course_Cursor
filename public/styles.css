@@ -123,7 +123,7 @@ body {
   z-index: 20; /* Ensure pop-ups appear in correct order */
 }
 
-/* Account Pop-up size: 50% of the screen */
+/* Account Pop-up size: 40% of the screen */
 #accountOverlay .popup {
   width: 40%;
   height: 50%;
@@ -131,12 +131,14 @@ body {
   max-height: 500px;
 }
 
-/* Other pop-ups remain at their default size */
+/* Other pop-ups remain at their default size but enlarged */
 #settingsOverlay .popup,
 #statsOverlay .popup,
 #resetConfirmationOverlay .popup {
-  width: auto;
+  width: 20%;
   height: auto;
+  max-width: 300px; /* Optional max width to keep them proportionate */
+  padding: 30px;
 }
 
 .scrollable-popup {
