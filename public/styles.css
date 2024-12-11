@@ -134,10 +134,11 @@ body {
 /* Other pop-ups remain at their default size but enlarged */
 #settingsOverlay .popup,
 #statsOverlay .popup,
-#resetConfirmationOverlay .popup {
-  width: 30%;
+#resetConfirmationOverlay .popup,
+#soundtracksOverlay .popup {
+  width: 35%;
   height: auto;
-  max-width: 300px; /* Optional max width to keep them proportionate */
+  max-width: 400px; /* Optional max width */
   padding: 30px;
 }
 
@@ -163,8 +164,9 @@ body {
   z-index: 20; /* Lower than account and reset confirmation */
 }
 
-#resetConfirmationOverlay {
-  z-index: 40; /* Highest to ensure it is above all */
+#resetConfirmationOverlay,
+#soundtracksOverlay {
+  z-index: 40; /* Highest to ensure they appear above all */
 }
 
 /* Stat box style */
@@ -229,11 +231,40 @@ body {
   opacity: 0.8;
 }
 
-#resetProgressButton {
-  background: linear-gradient(to bottom, #c82333, #dc3545); /* Red gradient */
+/* Tabs styling for Soundtracks pop-up */
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  padding: 10px 20px;
+  font-size: 1em;
+  border: none;
+  border-radius: 5px;
+  background: linear-gradient(to bottom, #8e44ad, #9b59b6); /* Purple gradient */
   color: white;
-  font-weight: bold;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.tab-button:hover {
+  transform: scale(1.05);
+}
+
+.tab-button.active {
+  background: linear-gradient(to bottom, #9b59b6, #8e44ad); /* Highlight active tab */
+}
+
+.tab-content {
+  display: none;
+  text-align: center;
+  font-size: 1.2em;
+}
+
+.tab-content.active {
+  display: block;
 }
 
 /* Confirm Reset and Back Button styles */
