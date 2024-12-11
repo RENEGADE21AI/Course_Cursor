@@ -183,8 +183,8 @@ body {
   padding: 10px;
   font-size: 1em;
   border: none;
-  background: #f4f4f4;
-  color: black;
+  background: linear-gradient(to bottom, #a29bfe, #6c5ce7); /* Darker gradient for inactive tabs */
+  color: white;
   text-align: center;
   cursor: pointer;
   transition: background-color 0.2s, transform 0.2s;
@@ -193,13 +193,14 @@ body {
 }
 
 .tab-button:hover {
-  background: #e0e0e0;
+  transform: scale(1.05);
 }
 
 .tab-button.active {
-  background: white;
+  background: linear-gradient(to bottom, #dcd6f7, #a29bfe); /* Light gray-purple gradient for active tab */
   border-bottom: 2px solid white;
   font-weight: bold;
+  color: black;
 }
 
 .tab-content {
@@ -272,37 +273,6 @@ body {
 
 #soundtracksButton:hover {
   opacity: 0.8;
-}
-
-/* Confirm Reset and Back Button styles */
-#confirmResetButton {
-  background: linear-gradient(to bottom, #c82333, #dc3545); /* Red gradient */
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-#confirmResetButton:hover {
-  background: linear-gradient(to bottom, #dc3545, #c82333);
-}
-
-#cancelResetButton {
-  background: linear-gradient(to bottom, #218838, #4caf50); /* Green gradient */
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-#cancelResetButton:hover {
-  background: linear-gradient(to bottom, #28a745, #34d058);
 }
 
 /* Responsive adjustments */
