@@ -19,6 +19,7 @@ const statsOverlay = document.getElementById('statsOverlay');
 const settingsOverlay = document.getElementById('settingsOverlay');
 const accountOverlay = document.getElementById('accountOverlay');
 const resetConfirmationOverlay = document.getElementById('resetConfirmationOverlay');
+const soundtracksOverlay = document.getElementById('soundtracksOverlay');
 const highestCashDisplay = document.getElementById('highestCash');
 const netCashDisplay = document.getElementById('netCash');
 const hoursPlayedDisplay = document.getElementById('hoursPlayed');
@@ -26,12 +27,28 @@ const statsButton = document.getElementById('statsButton');
 const settingsButton = document.getElementById('settingsButton');
 const accountButton = document.getElementById('accountSettingsButton');
 const resetProgressButton = document.getElementById('resetProgressButton');
+const soundtracksButton = document.getElementById('soundtracksButton');
 const closeStats = document.getElementById('closeStats');
 const closeSettings = document.getElementById('closeSettings');
 const closeAccount = document.getElementById('closeAccount');
 const closeResetConfirmation = document.getElementById('closeResetConfirmation');
+const closeSoundtracks = document.getElementById('closeSoundtracks');
 const confirmResetButton = document.getElementById('confirmResetButton');
 const cancelResetButton = document.getElementById('cancelResetButton');
+
+// Tab functionality for Soundtracks pop-up
+const tabs = document.querySelectorAll('.tab-button');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tabContents.forEach(tc => tc.classList.remove('active'));
+
+        tab.classList.add('active');
+        tabContents[index].classList.add('active');
+    });
+});
 
 // Function to update displayed stats
 function updateDisplay() {
@@ -90,7 +107,7 @@ function resetGame() {
     updateDisplay();
 }
 
-// Event listeners
+// Event listeners for game mechanics
 upgradeClickButton.addEventListener('click', () => {
     if (cash >= upgradeClickCost) {
         cash -= upgradeClickCost;
@@ -148,6 +165,13 @@ accountButton.addEventListener('click', () => {
 });
 closeAccount.addEventListener('click', () => {
     accountOverlay.style.display = 'none';
+});
+
+soundtracksButton.addEventListener('click', () => {
+    soundtracksOverlay.style.display = 'flex';
+});
+closeSoundtracks.addEventListener('click', () => {
+    soundtracksOverlay.style.display = 'none';
 });
 
 resetProgressButton.addEventListener('click', () => {
