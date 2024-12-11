@@ -169,6 +169,49 @@ body {
   z-index: 40; /* Highest to ensure they appear above all */
 }
 
+/* Tabs styling for Soundtracks pop-up */
+.tabs {
+  display: flex;
+  justify-content: flex-start;
+  border-bottom: 2px solid #ccc;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 10px;
+  font-size: 1em;
+  border: none;
+  background: #f4f4f4;
+  color: black;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.tab-button:hover {
+  background: #e0e0e0;
+}
+
+.tab-button.active {
+  background: white;
+  border-bottom: 2px solid white;
+  font-weight: bold;
+}
+
+.tab-content {
+  display: none;
+  text-align: center;
+  font-size: 1.2em;
+}
+
+.tab-content.active {
+  display: block;
+}
+
 /* Stat box style */
 .stat-box {
   width: 90%;
@@ -229,42 +272,6 @@ body {
 
 #soundtracksButton:hover {
   opacity: 0.8;
-}
-
-/* Tabs styling for Soundtracks pop-up */
-.tabs {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 20px;
-}
-
-.tab-button {
-  padding: 10px 20px;
-  font-size: 1em;
-  border: none;
-  border-radius: 5px;
-  background: linear-gradient(to bottom, #8e44ad, #9b59b6); /* Purple gradient */
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
-}
-
-.tab-button:hover {
-  transform: scale(1.05);
-}
-
-.tab-button.active {
-  background: linear-gradient(to bottom, #9b59b6, #8e44ad); /* Highlight active tab */
-}
-
-.tab-content {
-  display: none;
-  text-align: center;
-  font-size: 1.2em;
-}
-
-.tab-content.active {
-  display: block;
 }
 
 /* Confirm Reset and Back Button styles */
