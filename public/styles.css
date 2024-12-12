@@ -292,8 +292,13 @@ body {
   }
 
   .upgrades {
-    flex-direction: column;
-    gap: 15px;
+    display: flex;
+    flex-direction: row; /* Change to row for horizontal layout */
+    gap: 10px; /* Adjust spacing between the images */
+    align-items: center; /* Align items vertically */
+    justify-content: center; /* Center items horizontally */
+}
+
   }
 
   .score {
