@@ -12,13 +12,15 @@
 <div class="top-bar">
   <div class="score" id="scoreDisplay">Cash: $0.00</div>
   <div class="upgrades">
-    <div>
-      <img src="images/Click Power Upgrade (Buy More Cash Per Click).png" alt="Upgrade Cash Per Click" class="upgrade-image" id="upgradeClickButton">
-      <div class="upgrade-info" id="clickInfo">Current Cash Per Click: $0.50</div>
-    </div>
-    <div>
+    <div class="upgrade-container">
       <img src="images/Cash Clock Upgrade (Buy More Cash Per Second).png" alt="Upgrade Cash Per Second" class="upgrade-image" id="upgradeAutomaticButton">
-      <div class="upgrade-info" id="automaticInfo">Current Cash Per Second: $0.25</div>
+      <div class="upgrade-text top-right">Cost: $<span id="upgradeAutomaticCost">10.00</span></div>
+      <div class="upgrade-text bottom-right">Value: $<span id="cashPerSecondValue">0.25</span></div>
+    </div>
+    <div class="upgrade-container">
+      <img src="images/Click Power Upgrade (Buy More Cash Per Click).png" alt="Upgrade Cash Per Click" class="upgrade-image" id="upgradeClickButton">
+      <div class="upgrade-text top-right">Cost: $<span id="upgradeClickCost">10.00</span></div>
+      <div class="upgrade-text bottom-right">Value: $<span id="cashPerClickValue">0.50</span></div>
     </div>
   </div>
   <div class="icons">
