@@ -107,6 +107,11 @@ function resetGame() {
     updateDisplay();
 }
 
+// Save data before the window is closed
+window.addEventListener('beforeunload', () => {
+    saveLocalGameData();
+});
+
 // Event listeners for game mechanics
 upgradeClickButton.addEventListener('click', () => {
     if (cash >= upgradeClickCost) {
@@ -114,7 +119,6 @@ upgradeClickButton.addEventListener('click', () => {
         cashPerClick = Math.ceil(cashPerClick * 1.15 * 100) / 100;
         upgradeClickCost = Math.ceil(upgradeClickCost * 1.25 * 100) / 100;
         updateDisplay();
-        saveLocalGameData();
     }
 });
 
@@ -124,7 +128,6 @@ upgradeAutomaticButton.addEventListener('click', () => {
         cashPerSecond = Math.ceil(cashPerSecond * 1.15 * 100) / 100;
         upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.25 * 100) / 100;
         updateDisplay();
-        saveLocalGameData();
     }
 });
 
@@ -133,7 +136,6 @@ clickCash.addEventListener('click', () => {
     netCash += cashPerClick;
     highestCash = Math.max(highestCash, cash);
     updateDisplay();
-    saveLocalGameData();
 });
 
 setInterval(() => {
@@ -142,8 +144,12 @@ setInterval(() => {
     highestCash = Math.max(highestCash, cash);
     totalHoursPlayed += 1 / 3600;
     updateDisplay();
-    saveLocalGameData();
 }, 1000);
+
+// Save game data every 5 minutes
+setInterval(() => {
+    saveLocalGameData();
+}, 300000);
 
 // Pop-up handling
 statsButton.addEventListener('click', () => {
