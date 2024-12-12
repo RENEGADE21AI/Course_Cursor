@@ -300,3 +300,18 @@ body {
     width: 80px;
   }
 }
+
+/* Upgrade Images Styling */
+.upgrade-image {
+  width: auto;
+  height: 10vh; /* Matches the Stats and Settings button size */
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: transform 0.1s, opacity 0.2s;
+}
+
+.upgrade-image:hover {
+  transform: scale(1.1);
+  opacity: 0.9;
+}
