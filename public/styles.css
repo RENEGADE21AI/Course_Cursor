@@ -64,6 +64,14 @@ body {
   text-align: center;
 }
 
+/* Assuming you have classes or IDs for the upgrade images */
+.upgrade-image {
+    height: 10vh; /* Set height to 10% of the viewport height */
+    width: auto;  /* Maintain aspect ratio */
+    display: block;
+    margin: 0 auto; /* Center the images horizontally if necessary */
+}
+
 /* Stats and Settings button sizes updated to 10% height */
 .stats-button, .setting-button {
   width: auto;
