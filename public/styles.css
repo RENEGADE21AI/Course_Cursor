@@ -26,8 +26,7 @@ body {
   align-items: center;
   padding: 0 1em;
   color: white;
-  overflow-x: auto; /* Allow horizontal scrolling if needed */
-  white-space: nowrap; /* Prevent wrapping of child elements */
+  overflow-x: auto; /* Allow horizontal scrolling if needed */ /* Prevent wrapping of child elements */
 }
 
 .score {
