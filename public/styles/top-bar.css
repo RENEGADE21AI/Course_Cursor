@@ -25,13 +25,6 @@
   align-items: flex-start; /* Align items at the top */
 }
 
-.upgrade-info {
-  font-size: 1rem; /* Slightly larger if needed */
-  color: black;
-  text-align: center;
-  margin-bottom: 5px; /* Add spacing below the Value text */
-}
-
 .upgrade-image {
   height: 10vh;
   width: auto;
@@ -43,14 +36,17 @@
   transform: scale(1.1);
 }
 
-.upgrade-info,
+.upgrade-info {
+  font-size: 1rem; /* Slightly larger for better visibility */
+  color: black;
+  text-align: center;
+  margin-bottom: 5px; /* Add spacing below the Value text */
+}
+
 .upgrade-cost {
   font-size: 0.9em;
   color: black;
   text-align: center;
-}
-
-.upgrade-cost {
   font-weight: bold;
   margin-top: 3px;
 }
