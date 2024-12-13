@@ -14,13 +14,15 @@
 
 .popup {
   background: white;
+  position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   padding: 20px;
   border-radius: 10px;
-  z-index: 20;
+  z-index: 20; /* Ensure pop-ups appear in correct order */
 }
 
 #accountOverlay .popup {
@@ -143,4 +145,18 @@
 
 #soundtracksButton:hover {
   opacity: 0.8;
+}
+
+/* Specific z-index settings */
+#accountOverlay {
+  z-index: 30; /* Higher than settings */
+}
+
+#settingsOverlay {
+  z-index: 20; /* Lower than account and reset confirmation */
+}
+
+#resetConfirmationOverlay,
+#soundtracksOverlay {
+  z-index: 40; /* Highest to ensure they appear above all */
 }
