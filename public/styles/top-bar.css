@@ -47,3 +47,13 @@
   font-weight: bold;
   margin-top: 3px;
 }
+
+/* Stats and Settings button sizes */
+.stats-button, .setting-button {
+  width: auto;
+  height: 10vh; /* 10% of the screen's height */
+  cursor: pointer;
+  border: none;
+  background: none;
+  outline: none;
+}
