@@ -26,7 +26,8 @@ body {
   align-items: center;
   padding: 0 1em;
   color: white;
-  overflow-x: auto; /* Allow horizontal scrolling if needed */ /* Prevent wrapping of child elements */
+  overflow-x: auto; /* Allow horizontal scrolling if needed */
+  white-space: nowrap; /* Prevent wrapping of child elements */
 }
 
 .score {
@@ -280,27 +281,41 @@ body {
   opacity: 0.8;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
+/* Force landscape orientation on devices */
+@media screen and (max-height: 500px) and (orientation: portrait) {
+  body {
+    transform: rotate(90deg);
+    transform-origin: left top;
+    width: 100vh;
+    height: 100vw;
+    overflow: hidden;
+  }
+
   .top-bar {
+    height: 15%;
+  }
+}
+
+/* Responsive adjustments */ @media (max-width: 768px) { 
+  .top-bar { 
     height: 15%;
     flex-direction: column;
     align-items: flex-start;
   }
-
-  .upgrades {
+  
+  .upgrades { 
     flex-direction: column;
     gap: 15px;
-  }
-
-  .score {
+  } 
+  
+  .score { 
     font-size: 1.2rem;
-  }
-
+  } 
+  
   .stats-button, .setting-button {
     height: 8vh; /* Smaller buttons for small screens */
   }
-
+  
   .click-cash {
     width: 80px;
   }
