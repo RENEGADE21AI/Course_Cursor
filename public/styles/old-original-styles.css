@@ -47,7 +47,7 @@ comment: Style for the top bar
   padding: 10px 20px;
   font-size: 1em;
   color: black;
-  background-color: #d1ffd1; comment Light green
+  background-color: #d1ffd1; comment: Light green
   border: none;
   cursor: pointer;
   transition: transform 0.2s;
