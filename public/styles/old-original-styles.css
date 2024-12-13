@@ -37,8 +37,10 @@ comment: Style for the top bar
 
 .upgrades {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  flex-direction: row;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
 }
 
 .upgrade-button {
@@ -48,19 +50,15 @@ comment: Style for the top bar
   background-color: #d1ffd1; comment Light green
   border: none;
   cursor: pointer;
-  border-radius: 5px;
-  transition: transform 0.1s, background-color 0.2s;
+  transition: transform 0.2s;
 }
 
-.upgrade-button:hover {
-  background-color: #a6dba0;
+.upgrade-image:hover {
+  transform: scale(1.1);
 }
 
-.upgrade-button:active {
-  transform: scale(0.95);
-}
-
-.upgrade-info {
+.upgrade-info,
+.upgrade-cost {
   font-size: 0.9em;
   color: black;
   text-align: center;
@@ -284,20 +282,20 @@ comment: Responsive adjustments
     flex-direction: column;
     align-items: flex-start;
   }
-
-  .upgrades {
+  
+  .upgrades { 
     flex-direction: column;
     gap: 15px;
-  }
-
-  .score {
+  } 
+  
+  .score { 
     font-size: 1.2rem;
-  }
-
+  } 
+  
   .stats-button, .setting-button {
     height: 8vh; comment: Smaller buttons for small screens
   }
-
+  
   .click-cash {
     width: 80px;
   }
