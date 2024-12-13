@@ -52,11 +52,11 @@ tabs.forEach((tab, index) => {
 
 // Function to update displayed stats
 function updateDisplay() {
-    scoreDisplay.textContent = `Cash: $${cash.toFixed(2)}`;
-    clickInfo.textContent = `Current Cash Per Click: $${cashPerClick.toFixed(2)}`;
-    automaticInfo.textContent = `Current Cash Per Second: $${cashPerSecond.toFixed(2)}`;
-    upgradeClickButton.textContent = `Buy More Cash Per Click (Cost: $${upgradeClickCost.toFixed(2)})`;
-    upgradeAutomaticButton.textContent = `Buy More Cash Per Second (Cost: $${upgradeAutomaticCost.toFixed(2)})`;
+    scoreDisplay.textContent = `$${cash.toFixed(2)}`;
+    clickInfo.textContent = `Value: $${cashPerClick.toFixed(2)}`;
+    automaticInfo.textContent = `Value: $${cashPerSecond.toFixed(2)}`;
+    upgradeClickButton.textContent = `Cost: $${upgradeClickCost.toFixed(2)}`;
+    upgradeAutomaticButton.textContent = `Cost: $${upgradeAutomaticCost.toFixed(2)}`;
     highestCashDisplay.textContent = highestCash.toFixed(2);
     netCashDisplay.textContent = netCash.toFixed(2);
     hoursPlayedDisplay.textContent = (totalHoursPlayed / 3600).toFixed(2);
@@ -117,7 +117,7 @@ upgradeClickButton.addEventListener('click', () => {
     if (cash >= upgradeClickCost) {
         cash -= upgradeClickCost;
         cashPerClick = Math.ceil(cashPerClick * 1.15 * 100) / 100;
-        upgradeClickCost = Math.ceil(upgradeClickCost * 1.25 * 100) / 100;
+        upgradeClickCost = Math.ceil(upgradeClickCost * 1.15 * 100) / 100; // Increase cost by 15%
         updateDisplay();
     }
 });
@@ -126,7 +126,7 @@ upgradeAutomaticButton.addEventListener('click', () => {
     if (cash >= upgradeAutomaticCost) {
         cash -= upgradeAutomaticCost;
         cashPerSecond = Math.ceil(cashPerSecond * 1.15 * 100) / 100;
-        upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.25 * 100) / 100;
+        upgradeAutomaticCost = Math.ceil(upgradeAutomaticCost * 1.15 * 100) / 100; // Increase cost by 15%
         updateDisplay();
     }
 });
