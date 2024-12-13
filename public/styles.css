@@ -35,8 +35,10 @@ body {
 
 .upgrades {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  flex-direction: row; /* Change to row for horizontal layout */
+  gap: 20px; /* Add spacing between the buttons */
+  align-items: center; /* Align items vertically */
+  justify-content: center; /* Center items horizontally */
 }
 
 .upgrade-button {
