@@ -1,0 +1,37 @@
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .top-bar {
+      height: 15%;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .upgrades {
+      flex-direction: column;
+      gap: 15px;
+    }
+  
+    .score {
+      font-size: 1.2rem;
+    }
+  
+    .stats-button, .setting-button {
+      height: 8vh;
+    }
+  
+    .click-cash {
+      width: 80px;
+    }
+  }
+  
+  /* Force landscape orientation */
+  @media screen and (max-height: 500px) and (orientation: portrait) {
+    body {
+      transform: rotate(90deg);
+      transform-origin: left top;
+      width: 100vh;
+      height: 100vw;
+      overflow: hidden;
+    }
+  }
+  
