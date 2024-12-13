@@ -26,6 +26,8 @@ body {
   align-items: center;
   padding: 0 1em;
   color: white;
+  overflow-x: auto; /* Allow horizontal scrolling if needed */
+  white-space: nowrap; /* Prevent wrapping of child elements */
 }
 
 .score {
@@ -35,43 +37,37 @@ body {
 
 .upgrades {
   display: flex;
-  flex-direction: row; /* Change to row for horizontal layout */
-  gap: 20px; /* Add spacing between the buttons */
-  align-items: center; /* Align items vertically */
-  justify-content: center; /* Center items horizontally */
+  flex-direction: row;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
 }
 
-.upgrade-button {
-  padding: 10px 20px;
-  font-size: 1em;
-  color: black;
-  background-color: #d1ffd1; /* Light green */
-  border: none;
+.upgrade-image {
+  height: 10vh; /* Set height to 10% of the viewport height */
+  width: auto;  /* Maintain aspect ratio */
   cursor: pointer;
-  border-radius: 5px;
-  transition: transform 0.1s, background-color 0.2s;
+  transition: transform 0.2s;
 }
 
-.upgrade-button:hover {
-  background-color: #a6dba0;
+.upgrade-image:hover {
+  transform: scale(1.1);
 }
 
-.upgrade-button:active {
-  transform: scale(0.95);
-}
-
-.upgrade-info {
+.upgrade-info,
+.upgrade-cost {
   font-size: 0.9em;
   color: black;
   text-align: center;
 }
 
-/* Assuming you have classes or IDs for the upgrade images */
-.upgrade-image {
-    height: 10vh; /* Set height to 10% of the viewport height */
-    width: auto;  /* Maintain aspect ratio */
-    display: block;
-    margin: 0 auto; /* Center the images horizontally if necessary */
+.upgrade-info {
+  margin-top: 5px;
+}
+
+.upgrade-cost {
+  font-weight: bold;
+  margin-top: 3px;
 }
 
 /* Stats and Settings button sizes updated to 10% height */
@@ -294,11 +290,8 @@ body {
   }
 
   .upgrades {
-    display: flex;
-    flex-direction: row; /* Change to row for horizontal layout */
-    gap: 10px; /* Adjust spacing between the images */
-    align-items: center; /* Align items vertically */
-    justify-content: center; /* Center items horizontally */
+    flex-direction: column;
+    gap: 15px;
   }
 
   .score {
