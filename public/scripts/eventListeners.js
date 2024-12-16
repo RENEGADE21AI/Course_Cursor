@@ -36,3 +36,8 @@ setInterval(() => {
 setInterval(() => {
     saveLocalGameData();
 }, 300000);
+
+// Event listener for Club Icon
+clubButton.addEventListener('click', () => {
+    clubOverlay.style.display = 'flex';
+});
