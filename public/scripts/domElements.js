@@ -27,3 +27,6 @@ const closeResetConfirmation = document.getElementById('closeResetConfirmation')
 const closeSoundtracks = document.getElementById('closeSoundtracks');
 const confirmResetButton = document.getElementById('confirmResetButton');
 const cancelResetButton = document.getElementById('cancelResetButton');
+const clubButton = document.getElementById('clubButton');
+const clubOverlay = document.getElementById('clubOverlay');
+const closeClub = document.getElementById('closeClub');
