@@ -1,21 +1,20 @@
 /* Game bar styles */
 .game-bar {
-    width: 100%;
-    height: 80%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-  }
-  
-  .click-cash {
-    width: 120px;
-    height: auto;
-    cursor: pointer;
-    transition: transform 0.1s;
-  }
-  
-  .click-cash:hover {
-    transform: scale(1.2);
-  }
-  
+  width: 100%;
+  height: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.click-cash {
+  width: 120px;
+  height: auto;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.click-cash:hover {
+  transform: scale(1.2);
+}
