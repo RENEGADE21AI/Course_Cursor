@@ -1,0 +1,34 @@
+/* Animations for score changes */
+@keyframes cashIncrease {
+  0% {
+    color: green;
+    transform: translateY(10px) scale(1.2);
+    opacity: 0.5;
+  }
+  100% {
+    color: white;
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes cashDecrease {
+  0% {
+    color: red;
+    transform: translateY(-10px) scale(0.8);
+    opacity: 0.5;
+  }
+  100% {
+    color: white;
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Base score style */
+.score {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-left: 5%;
+  transition: all 0.1s ease-in-out;
+}
