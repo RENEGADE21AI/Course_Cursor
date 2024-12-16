@@ -42,3 +42,8 @@ confirmResetButton.addEventListener('click', () => {
 cancelResetButton.addEventListener('click', () => {
     resetConfirmationOverlay.style.display = 'none';
 });
+
+// Close Club Pop-up
+closeClub.addEventListener('click', () => {
+    clubOverlay.style.display = 'none';
+});
