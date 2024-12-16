@@ -2,12 +2,12 @@
 @keyframes cashIncrease {
   0% {
     color: green;
-    transform: translateY(10px) scale(1.2);
+    transform: translateY(5px) scale(1.1); /* Smaller translate and scale */
     opacity: 0.5;
   }
   100% {
     color: white;
-    transform: translateY(0) scale(1);
+    transform: translateY(0) scale(1); /* Reset scale */
     opacity: 1;
   }
 }
@@ -15,12 +15,12 @@
 @keyframes cashDecrease {
   0% {
     color: red;
-    transform: translateY(-10px) scale(0.8);
+    transform: translateY(-5px) scale(0.9); /* Smaller translate and scale */
     opacity: 0.5;
   }
   100% {
     color: white;
-    transform: translateY(0) scale(1);
+    transform: translateY(0) scale(1); /* Reset scale */
     opacity: 1;
   }
 }
@@ -31,4 +31,5 @@
   font-weight: bold;
   margin-left: 5%;
   transition: all 0.1s ease-in-out;
+  transform-origin: center center; /* Set transform origin to the center */
 }
