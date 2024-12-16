@@ -32,6 +32,8 @@
   <div class="icons">
     <img src="images/VGstats.png" class="stats-button" id="statsButton" alt="Stats Icon">
     <img src="images/JellySettingsButton.png" class="setting-button" id="settingsButton" alt="Settings Icon">
+    <!-- New Club Icon -->
+    <img src="clubIcon.png" class="club-button" id="clubButton" alt="Club Icon">
   </div>
 </div>
 
@@ -46,6 +48,16 @@
     <h2>Account</h2>
     <button id="resetProgressButton" class="settings-button reset-button">Reset Progress</button>
     <div id="accountDetails"></div>
+  </div>
+</div>
+
+<!-- Club Pop-up -->
+<div class="overlay" id="clubOverlay" style="display: none;">
+  <div class="popup">
+    <div class="close-button" id="closeClub">X</div>
+    <h2>Welcome to the Club!</h2>
+    <p>Here's where you can unlock exclusive features and perks.</p>
+    <button class="settings-button" id="clubCloseButton">Close</button>
   </div>
 </div>
 
@@ -109,7 +121,17 @@
 <script src="scripts/eventListeners.js" defer></script>
 <script src="scripts/popups.js" defer></script>
 <script src="scripts/loadSavedData.js" defer></script>
-
-
+<script>
+  // Club Button Functionality
+  document.getElementById('clubButton').addEventListener('click', () => {
+    document.getElementById('clubOverlay').style.display = 'block';
+  });
+  document.getElementById('closeClub').addEventListener('click', () => {
+    document.getElementById('clubOverlay').style.display = 'none';
+  });
+  document.getElementById('clubCloseButton').addEventListener('click', () => {
+    document.getElementById('clubOverlay').style.display = 'none';
+  });
+</script>
 </body>
 </html>
