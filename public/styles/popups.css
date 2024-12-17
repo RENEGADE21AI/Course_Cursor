@@ -160,3 +160,13 @@
 #soundtracksOverlay {
   z-index: 40; /* Highest to ensure they appear above all */
 }
+/* Club Overlay and Pop-up */
+#clubOverlay {
+  z-index: 40; /* Ensure it's above other overlays */
+}
+
+#clubOverlay .popup {
+  width: 35%; /* Same width as other pop-ups */
+  max-width: 400px;
+  padding: 30px;
+}
