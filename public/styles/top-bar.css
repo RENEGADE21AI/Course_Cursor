@@ -53,7 +53,7 @@
 }
 
 /* Stats and Settings button sizes */
-.stats-button, .setting-button {
+.stats-button, .setting-button, .club-button {
   width: auto;
   height: 10vh; /* 10% of the screen's height */
   cursor: pointer;
