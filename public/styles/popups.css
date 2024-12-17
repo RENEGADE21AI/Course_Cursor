@@ -14,7 +14,7 @@
 
 .popup {
   background: white;
-  position: relative;
+  position: relative; /* Correct positioning */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -37,10 +37,10 @@
 #resetConfirmationOverlay .popup,
 #soundtracksOverlay .popup,
 #clubOverlay .popup {
-  width: 35%;
+  width: 35%; /* Match other pop-ups */
   max-width: 400px;
   padding: 30px;
-  position: relative; /* Fix for proper centering */
+  position: relative; /* Ensures alignment relative to parent */
 }
 
 .scrollable-popup {
@@ -162,4 +162,11 @@
 #soundtracksOverlay,
 #clubOverlay {
   z-index: 40; /* Highest to ensure they appear above all */
+}
+
+/* Club-specific fixes */
+#clubOverlay {
+  display: flex; /* Ensures proper alignment */
+  justify-content: center;
+  align-items: center;
 }
