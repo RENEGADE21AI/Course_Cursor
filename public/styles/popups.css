@@ -40,6 +40,7 @@
   width: 35%;
   max-width: 400px;
   padding: 30px;
+  position: relative; /* Fix for proper centering */
 }
 
 .scrollable-popup {
