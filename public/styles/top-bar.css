@@ -52,7 +52,7 @@
   margin-top: 3px;
 }
 
-/* Stats and Settings button sizes */
+/* Stats and Settings and Club button sizes */
 .stats-button, .setting-button, .club-button {
   width: auto;
   height: 10vh; /* 10% of the screen's height */
