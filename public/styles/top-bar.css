@@ -52,10 +52,15 @@
   margin-top: 3px;
 }
 
+.icons {
+  display: flex;
+  gap: 1vw; /* Adjust the spacing to 1% of the screen width */
+}
+
 /* Stats and Settings and Club button sizes */
 .stats-button, .setting-button, .club-button {
   width: auto;
-  height: 10vh; /* 10% of the screen's height */
+  height: 10vh; /* 10% of the screen's height, consistency with these buttons */
   cursor: pointer;
   border: none;
   background: none;
