@@ -158,7 +158,7 @@
 }
 
 #resetConfirmationOverlay,
-#soundtracksOverlay.
+#soundtracksOverlay,
 #clubOverlay {
   z-index: 40; /* Highest to ensure they appear above all */
 }
