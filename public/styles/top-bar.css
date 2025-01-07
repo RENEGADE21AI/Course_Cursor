@@ -24,7 +24,7 @@
 }
 
 /* Top Bar button sizes */
-.stats-button, .setting-button, .clans-button {
+.top-bar-button {
   width: auto;
   height: 10vh; /* 10% of the screen's height */
   cursor: pointer;
