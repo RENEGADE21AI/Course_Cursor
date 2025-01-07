@@ -26,7 +26,7 @@
 /* Top Bar button sizes */
 .top-bar-button {
   width: auto;
-  height: 10vh; /* 10% of the screen's height */
+  height: 15vh; /* 15% of the screen's height */
   cursor: pointer;
   border: none;
   background: none;
