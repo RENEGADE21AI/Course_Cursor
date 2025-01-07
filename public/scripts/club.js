@@ -1,12 +1,12 @@
-// Club Button Functionality
-document.getElementById('clubButton').addEventListener('click', () => {
-    document.getElementById('clubOverlay').style.display = 'block';
+// Clans Button Functionality
+document.getElementById('clansButton').addEventListener('click', () => {
+    document.getElementById('clansOverlay').style.display = 'block';
 });
 
-document.getElementById('closeClub').addEventListener('click', () => {
-    document.getElementById('clubOverlay').style.display = 'none';
+document.getElementById('closeClans').addEventListener('click', () => {
+    document.getElementById('clansOverlay').style.display = 'none';
 });
 
-document.getElementById('clubCloseButton').addEventListener('click', () => {
-    document.getElementById('clubOverlay').style.display = 'none';
+document.getElementById('clansCloseButton').addEventListener('click', () => {
+    document.getElementById('clansOverlay').style.display = 'none';
 });
