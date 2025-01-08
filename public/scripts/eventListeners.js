@@ -37,7 +37,7 @@ setInterval(() => {
     saveLocalGameData();
 }, 300000);
 
-// Event listener for clanss Icon
+// Event listener for clans Icon
 clanssButton.addEventListener('click', () => {
     clanssOverlay.style.display = 'flex';
 });
