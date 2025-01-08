@@ -38,6 +38,6 @@ setInterval(() => {
 }, 300000);
 
 // Event listener for clans Icon
-clanssButton.addEventListener('click', () => {
-    clanssOverlay.style.display = 'flex';
+clansButton.addEventListener('click', () => {
+    clansOverlay.style.display = 'flex';
 });
