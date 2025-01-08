@@ -29,6 +29,7 @@
   display: inline-flex; /* Align images inline and prevent flex container issues */
   justify-content: center; /* Center the content inside the button */
   align-items: center;
+  margin-right: 1em; /* Add a gap between buttons (adjust as needed) */
 }
 
 /* Ensure images inside the buttons maintain correct size and aspect ratio */
@@ -37,4 +38,9 @@
   width: auto; /* Maintain aspect ratio */
   max-height: 15vh; /* Prevent images from exceeding the button's height */
   max-width: 100%; /* Ensure images don't stretch beyond the button */
+}
+
+/* Remove the margin for the last button to avoid extra space on the right */
+.top-bar-button:last-child {
+  margin-right: 0;
 }
