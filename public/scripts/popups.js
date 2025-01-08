@@ -43,7 +43,7 @@ cancelResetButton.addEventListener('click', () => {
     resetConfirmationOverlay.style.display = 'none';
 });
 
-// Close clanss Pop-up
-closeclanss.addEventListener('click', () => {
-    clanssOverlay.style.display = 'none';
+// Close clans Pop-up
+closeclans.addEventListener('click', () => {
+    clansOverlay.style.display = 'none';
 });
