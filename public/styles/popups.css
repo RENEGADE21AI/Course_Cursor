@@ -36,7 +36,7 @@
 #statsOverlay .popup,
 #resetConfirmationOverlay .popup,
 #soundtracksOverlay .popup,
-#clubOverlay .popup {
+#clansOverlay .popup {
   width: 35%; /* Match other pop-ups */
   max-width: 400px;
   padding: 30px;
@@ -160,12 +160,12 @@
 
 #resetConfirmationOverlay,
 #soundtracksOverlay,
-#clubOverlay {
+#clansOverlay {
   z-index: 40; /* Highest to ensure they appear above all */
 }
 
-/* Club-specific fixes */
-#clubOverlay {
+/* clans-specific fixes */
+#clansOverlay {
   display: flex; /* Ensures proper alignment */
   justify-content: center;
   align-items: center;
