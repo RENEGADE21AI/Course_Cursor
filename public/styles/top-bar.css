@@ -26,4 +26,15 @@
   border: none;
   background: none;
   outline: none;
+  display: inline-flex; /* Align images inline and prevent flex container issues */
+  justify-content: center; /* Center the content inside the button */
+  align-items: center;
+}
+
+/* Ensure images inside the buttons maintain correct size and aspect ratio */
+.top-bar-button img {
+  height: 15vh; /* 15% of the screen's height */
+  width: auto; /* Maintain aspect ratio */
+  max-height: 15vh; /* Prevent images from exceeding the button's height */
+  max-width: 100%; /* Ensure images don't stretch beyond the button */
 }
