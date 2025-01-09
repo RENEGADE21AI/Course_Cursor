@@ -9,6 +9,13 @@
   padding: 0 1em; /* Added padding to align content */
 }
 
+.tab {
+  display: none; /* Hide all tabs by default */
+}
+.tab.active {
+  display: block; /* Show only the active tab */
+}
+
 .click-cash {
   width: 120px;
   height: auto;
