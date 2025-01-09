@@ -32,35 +32,41 @@
 </div>
 
 <div class="game-bar">
-  <div class="tab active" id="playTab">
-    <img src="images/ClickCursorCash.png" class="click-cash" id="clickCash" alt="Cash Icon">
-    <div class="upgrades">
-      <div>
-        <div class="upgrade-info" id="clickInfo">Value: $0.50</div>
-        <img src="images/Click Power Upgrade (Buy More Cash Per Click).png" alt="Upgrade Cash Per Click" class="upgrade-image" id="upgradeClickButton">
-        <div class="upgrade-cost" id="clickCost">Cost: $10.00</div>
-      </div>
-      <div>
-        <div class="upgrade-info" id="automaticInfo">Value: $0.25</div>
-        <img src="images/Cash Clock Upgrade (Buy More Cash Per Second).png" alt="Upgrade Cash Per Second" class="upgrade-image" id="upgradeAutomaticButton">
-        <div class="upgrade-cost" id="automaticCost">Cost: $10.00</div>
-      </div>
-    </div>
-  </div>
-  <div class="tab" id="accountTab">
-    <div>Account Details</div>
-    <button id="resetProgressButton" class="settings-button reset-button">Reset Progress</button>
+<div class="tab active" id="playTab">
+  <!-- Content specific to the Play tab -->
+   <h2>Play Tab</h2>
+ </div>
+ <div class="tab" id="accountTab">
+  <!-- Content specific to the Account tab -->
+   <h2>Account Tab</h2>
+   <button id="resetProgressButton" class="settings-button reset-button">Reset Progress</button>
   </div>
   <div class="tab" id="cashWorldTab">
-    <!-- Content for Cash World -->
-    <p>Welcome to Cash World!</p>
+    <!-- Content specific to Cash World -->
+    <h2>Cash World Tab</h2>
   </div>
   <div class="tab" id="clansTab">
-    <!-- Content for Clans -->
-    <p>Join or manage your clan here.</p>
+    <!-- Content specific to Clans -->
+    <h2>Clans Tab</h2>
   </div>
-  <!-- Add additional tabs for other features -->
+  <div class="tab" id="miniGamesTab">
+    <!-- Content specific to Mini Games -->
+    <h2>Mini Games Tab</h2>
+  </div>
+  <div class="tab" id="soundTracksTab">
+    <!-- Content specific to Sound Tracks -->
+    <h2>Sound Tracks Tab</h2>
+  </div>
+  <div class="tab" id="statsTab">
+    <!-- Content specific to Stats -->
+    <h2>Stats Tab</h2>
+  </div>
+  <div class="tab" id="settingsTab">
+    <!-- Content specific to Settings -->
+    <h2>Settings Tab</h2>
+  </div>
 </div>
+
 
 <!-- Modularized JavaScript Files -->
 <script src="scripts/gameState.js" defer></script>
