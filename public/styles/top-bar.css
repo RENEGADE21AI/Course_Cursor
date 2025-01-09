@@ -45,8 +45,8 @@
   margin-right: 5vh;
 }
 
-/* Stat box style */
-.stat-box {
+/* Stat label style */
+.stat {
   width: 90%;
   padding: 10px;
   background-color: #d3d3d3; /* Light gray */
