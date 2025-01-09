@@ -40,7 +40,18 @@
   max-width: 100%; /* Ensure images don't stretch beyond the button */
 }
 
-/* Remove the margin for the last button to avoid extra space on the right */
+/* Small margin for the last button on the right */
 .top-bar-button:last-child {
-  margin-right: 0;
+  margin-right: 5vh;
+}
+
+/* Stat box style */
+.stat-box {
+  width: 90%;
+  padding: 10px;
+  background-color: #d3d3d3; /* Light gray */
+  color: black;
+  margin: 10px 0;
+  text-align: center;
+  border-radius: 5px;
 }
