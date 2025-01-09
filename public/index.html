@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +14,7 @@
   <link rel="stylesheet" href="styles/responsive.css">
   <link rel="stylesheet" href="styles/score-animation.css">
 </head>
+
 <body>
 
 <div class="top-bar">
@@ -30,72 +32,34 @@
 </div>
 
 <div class="game-bar">
-  <img src="images/ClickCursorCash.png" class="click-cash" id="clickCash" alt="Cash Icon">
-  <div class="upgrades">
-    <div>
-      <div class="upgrade-info" id="clickInfo">Value: $0.50</div>
-      <img src="images/Click Power Upgrade (Buy More Cash Per Click).png" alt="Upgrade Cash Per Click" class="upgrade-image" id="upgradeClickButton">
-      <div class="upgrade-cost" id="clickCost">Cost: $10.00</div>
-    </div>
-    <div>
-      <div class="upgrade-info" id="automaticInfo">Value: $0.25</div>
-      <img src="images/Cash Clock Upgrade (Buy More Cash Per Second).png" alt="Upgrade Cash Per Second" class="upgrade-image" id="upgradeAutomaticButton">  
-      <div class="upgrade-cost" id="automaticCost">Cost: $10.00</div>
+  <div class="tab active" id="playTab">
+    <img src="images/ClickCursorCash.png" class="click-cash" id="clickCash" alt="Cash Icon">
+    <div class="upgrades">
+      <div>
+        <div class="upgrade-info" id="clickInfo">Value: $0.50</div>
+        <img src="images/Click Power Upgrade (Buy More Cash Per Click).png" alt="Upgrade Cash Per Click" class="upgrade-image" id="upgradeClickButton">
+        <div class="upgrade-cost" id="clickCost">Cost: $10.00</div>
+      </div>
+      <div>
+        <div class="upgrade-info" id="automaticInfo">Value: $0.25</div>
+        <img src="images/Cash Clock Upgrade (Buy More Cash Per Second).png" alt="Upgrade Cash Per Second" class="upgrade-image" id="upgradeAutomaticButton">
+        <div class="upgrade-cost" id="automaticCost">Cost: $10.00</div>
+      </div>
     </div>
   </div>
-</div>
-
-<!-- Account Pop-up -->
-<div class="overlay" id="accountOverlay">
-  <div class="popup">
-    <div class="close-button" id="closeAccount">X</div>
-    <h2>Account</h2>
+  <div class="tab" id="accountTab">
+    <div>Account Details</div>
     <button id="resetProgressButton" class="settings-button reset-button">Reset Progress</button>
-    <div id="accountDetails"></div>
   </div>
-</div>
-
-<!-- clans Pop-up -->
-<div class="overlay" id="clansOverlay" style="display: none;">
-  <div class="popup">
-    <div class="close-button" id="closeclans">X</div>
-    <h2>Welcome to the clans!</h2>
-    <p>Here's where you can unlock exclusive features and perks.</p>
-    <button class="settings-button" id="clansCloseButton">Close</button>
+  <div class="tab" id="cashWorldTab">
+    <!-- Content for Cash World -->
+    <p>Welcome to Cash World!</p>
   </div>
-</div>
-
-<!-- Settings Overlay -->
-<div class="overlay" id="settingsOverlay">
-  <div class="popup">
-    <div class="close-button" id="closeSettings">X</div>
-    <h2>Settings</h2>
-    <button class="settings-button" id="accountSettingsButton">Account</button>
+  <div class="tab" id="clansTab">
+    <!-- Content for Clans -->
+    <p>Join or manage your clan here.</p>
   </div>
-</div>
-
-<!-- Stats Overlay -->
-<div class="overlay" id="statsOverlay">
-  <div class="popup scrollable-popup">
-    <div class="close-button" id="closeStats">X</div>
-    <h2>Stats</h2>
-    <div class="stat">Your Highest Amount of Cash Saved Up: $<span id="highestCash">0.00</span></div>
-    <div class="stat">Your Net Cash: $<span id="netCash">0.00</span></div>
-    <div class="stat">Your Hours Played: <span id="hoursPlayed">0.00</span> hours</div>
-  </div>
-</div>
-
-<!-- Reset Progress Confirmation Overlay -->
-<div class="overlay" id="resetConfirmationOverlay">
-  <div class="popup">
-    <div class="close-button" id="closeResetConfirmation">X</div>
-    <h2>Do You Really Want to Reset Your Progress?</h2>
-    <p>This action is irreversible! Your progress will be lost permanently.</p>
-    <div>
-      <button class="settings-button reset-button" id="confirmResetButton">Yes</button>
-      <button class="settings-button" id="cancelResetButton">Back</button>
-    </div>
-  </div>
+  <!-- Add additional tabs for other features -->
 </div>
 
 <!-- Modularized JavaScript Files -->
@@ -108,6 +72,7 @@
 <script src="scripts/popups.js" defer></script>
 <script src="scripts/clans.js" defer></script>
 <script src="scripts/soundTrackTabs.js" defer></script>
+<script src="scripts/gamebarTabs.js" defer></script>
 
 </body>
 </html>
