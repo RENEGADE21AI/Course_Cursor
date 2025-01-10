@@ -11,17 +11,19 @@ const tabs = {
 };
 
 // Function to switch tabs
-function switchTab(activeTab) {
+function switchTab(activeButtonId) {
   // Hide all tabs
-  Object.values(tabs).forEach(tab => tab?.classList.remove('active'));
+  Object.values(tabs).forEach(tab => {
+    tab.classList.remove('active');
+  });
 
   // Show the selected tab
-  if (tabs[activeTab]) {
-    tabs[activeTab].classList.add('active');
+  if (tabs[activeButtonId]) {
+    tabs[activeButtonId].classList.add('active');
   }
 }
 
-// Dynamically add event listeners for all buttons
+// Dynamically add event listeners to all buttons
 Object.keys(tabs).forEach(buttonId => {
   const button = document.getElementById(buttonId);
   if (button) {
