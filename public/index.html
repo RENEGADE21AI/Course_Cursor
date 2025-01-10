@@ -22,8 +22,8 @@
   <div class="top-bar-button">
     <img src="images/topBarTabButtons/placeholderPlayButton.png" class="play-button" id="playButton" alt="Play Button">
     <img src="images/topBarTabButtons/placeholderCashWorldButton.png" class="play-cash-world-button" id="cashWorldButton" alt="Cash World Button">
-    <img src="images/topBarTabButtons/clansButton.png" class="clans-button" id="clansButton" alt="clans Button">
-    <img src="images/topBarTabButtons/placeholderMiniGamesButton.png" class="minigames-button" id="minigamesButton" alt="Minigames Button">
+    <img src="images/topBarTabButtons/clansButton.png" class="clans-button" id="clansButton" alt="Clans Button">
+    <img src="images/topBarTabButtons/placeholderMiniGamesButton.png" class="minigames-button" id="minigamesButton" alt="Mini Games Button">
     <img src="images/topBarTabButtons/placeholderSoundTracksButton.png" class="soundtracks-button" id="soundtracksButton" alt="Soundtracks Icon">
     <img src="images/topBarTabButtons/placeholderAccountButton.png" class="account-button" id="accountButton" alt="Account Button">
     <img src="images/VGstats.png" class="stats-button" id="statsButton" alt="Stats Icon">
@@ -32,41 +32,50 @@
 </div>
 
 <div class="game-bar">
-<div class="tab active" id="playTab">
-  <!-- Content specific to the Play tab -->
-   <h2>Play Tab</h2>
- </div>
- <div class="tab" id="accountTab">
-  <!-- Content specific to the Account tab -->
-   <h2>Account Tab</h2>
-   <button id="resetProgressButton" class="settings-button reset-button">Reset Progress</button>
+  <div class="tab active" id="playTab">
+    <img src="images/ClickCursorCash.png" class="click-cash" id="clickCash" alt="Cash Icon">
+    <div class="upgrades">
+      <div>
+        <div class="upgrade-info" id="clickInfo">Value: $0.50</div>
+        <img src="images/Click Power Upgrade (Buy More Cash Per Click).png" alt="Upgrade Cash Per Click" class="upgrade-image" id="upgradeClickButton">
+        <div class="upgrade-cost" id="clickCost">Cost: $10.00</div>
+      </div>
+      <div>
+        <div class="upgrade-info" id="automaticInfo">Value: $0.25</div>
+        <img src="images/Cash Clock Upgrade (Buy More Cash Per Second).png" alt="Upgrade Cash Per Second" class="upgrade-image" id="upgradeAutomaticButton">
+        <div class="upgrade-cost" id="automaticCost">Cost: $10.00</div>
+      </div>
+    </div>
+  </div>
+  <div class="tab" id="accountTab">
+    <div>Account Details</div>
+    <button id="resetProgressButton" class="settings-button reset-button">Reset Progress</button>
   </div>
   <div class="tab" id="cashWorldTab">
-    <!-- Content specific to Cash World -->
-    <h2>Cash World Tab</h2>
+    <!-- Content for Cash World -->
+    <p>Welcome to Cash World!</p>
   </div>
   <div class="tab" id="clansTab">
-    <!-- Content specific to Clans -->
-    <h2>Clans Tab</h2>
+    <!-- Content for Clans -->
+    <p>Join or manage your clan here.</p>
   </div>
   <div class="tab" id="miniGamesTab">
-    <!-- Content specific to Mini Games -->
+    <!-- Content for Mini Games -->
     <h2>Mini Games Tab</h2>
   </div>
   <div class="tab" id="soundTracksTab">
-    <!-- Content specific to Sound Tracks -->
+    <!-- Content for Sound Tracks -->
     <h2>Sound Tracks Tab</h2>
   </div>
   <div class="tab" id="statsTab">
-    <!-- Content specific to Stats -->
+    <!-- Content for Stats -->
     <h2>Stats Tab</h2>
   </div>
   <div class="tab" id="settingsTab">
-    <!-- Content specific to Settings -->
+    <!-- Content for Settings -->
     <h2>Settings Tab</h2>
   </div>
 </div>
-
 
 <!-- Modularized JavaScript Files -->
 <script src="scripts/gameState.js" defer></script>
