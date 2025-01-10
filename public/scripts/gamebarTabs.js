@@ -13,7 +13,7 @@ const tabs = {
 // Function to switch tabs
 function switchTab(activeTab) {
   // Hide all tabs
-  Object.values(tabs).forEach(tab => tab.classList.remove('active'));
+  Object.values(tabs).forEach(tab => tab?.classList.remove('active'));
 
   // Show the selected tab
   if (tabs[activeTab]) {
@@ -21,12 +21,10 @@ function switchTab(activeTab) {
   }
 }
 
-// Add event listeners to buttons
-document.getElementById('playButton').addEventListener('click', () => switchTab('playButton'));
-document.getElementById('accountButton').addEventListener('click', () => switchTab('accountButton'));
-document.getElementById('cashWorldButton').addEventListener('click', () => switchTab('cashWorldButton'));
-document.getElementById('clansButton').addEventListener('click', () => switchTab('clansButton'));
-document.getElementById('minigamesButton').addEventListener('click', () => switchTab('minigamesButton'));
-document.getElementById('soundtracksButton').addEventListener('click', () => switchTab('soundtracksButton'));
-document.getElementById('statsButton').addEventListener('click', () => switchTab('statsButton'));
-document.getElementById('settingsButton').addEventListener('click', () => switchTab('settingsButton'));
+// Dynamically add event listeners for all buttons
+Object.keys(tabs).forEach(buttonId => {
+  const button = document.getElementById(buttonId);
+  if (button) {
+    button.addEventListener('click', () => switchTab(buttonId));
+  }
+});
