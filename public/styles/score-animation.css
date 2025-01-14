@@ -2,12 +2,12 @@
 @keyframes cashIncrease {
   0% {
     color: green;
-    transform: translateY(5px) scale(1.1); /* Smaller translate and scale */
+    transform: translateY(5px) scale(1.1); /* Move up slightly and grow */
     opacity: 0.5;
   }
   100% {
     color: white;
-    transform: translateY(0) scale(1); /* Reset scale */
+    transform: translateY(0) scale(1); /* Reset to normal */
     opacity: 1;
   }
 }
@@ -15,12 +15,12 @@
 @keyframes cashDecrease {
   0% {
     color: red;
-    transform: translateY(-5px) scale(0.9); /* Smaller translate and scale */
+    transform: translateY(-5px) scale(0.9); /* Move down slightly and shrink */
     opacity: 0.5;
   }
   100% {
     color: white;
-    transform: translateY(0) scale(1); /* Reset scale */
+    transform: translateY(0) scale(1); /* Reset to normal */
     opacity: 1;
   }
 }
@@ -30,6 +30,6 @@
   font-size: 2rem;
   font-weight: bold;
   margin-left: 5%;
-  transition: all 0.1s ease-in-out;
+  transition: all 0.3s ease-in-out; /* Adjusted duration for smoother transition */
   transform-origin: center center; /* Set transform origin to the center */
 }
