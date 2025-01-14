@@ -4,9 +4,9 @@ function updateDisplay() {
 
     // Apply animation based on cash changes
     if (cash > previousCash) {
-        cashElement.style.animation = "cashIncrease 0.3s ease-in-out";
+        cashElement.style.animation = "cashIncrease 0.3s ease-in-out"; // Green and grows for increase
     } else if (cash < previousCash) {
-        cashElement.style.animation = "cashDecrease 0.3s ease-in-out";
+        cashElement.style.animation = "cashDecrease 0.3s ease-in-out"; // Red and shrinks for decrease
     }
 
     // Reset animation after it's complete
