@@ -44,14 +44,3 @@
 .nav-bar-button:last-child {
   margin-right: 5vh;
 }
-
-/* Stat label style */
-.stat {
-  width: 90%;
-  padding: 10px;
-  background-color: #d3d3d3; /* Light gray */
-  color: black;
-  margin: 10px 0;
-  text-align: center;
-  border-radius: 5px;
-}
