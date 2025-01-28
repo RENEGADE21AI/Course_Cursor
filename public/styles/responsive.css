@@ -1,6 +1,6 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .top-bar {
+  .nav-bar {
     height: 15%;
     flex-direction: column;
     align-items: flex-start;
@@ -15,7 +15,7 @@
     font-size: 1.2rem;
   }
 
-  .top-bar-buttons {
+  .nav-bar-buttons {
     height: 8vh;
   }
 
