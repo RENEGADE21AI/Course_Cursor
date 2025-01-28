@@ -24,6 +24,7 @@ clickCash.addEventListener('click', () => {
     updateDisplay();
 });
 
+// Increment cash every second
 setInterval(() => {
     cash += cashPerSecond;
     netCash += cashPerSecond;
@@ -36,8 +37,3 @@ setInterval(() => {
 setInterval(() => {
     saveLocalGameData();
 }, 300000);
-
-// Event listener for clans Icon
-clansButton.addEventListener('click', () => {
-    clansOverlay.style.display = 'flex';
-});
