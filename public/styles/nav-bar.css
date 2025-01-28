@@ -1,5 +1,5 @@
-/* Top bar styles */
-.top-bar {
+/* nav bar styles */
+.nav-bar {
   width: 100%;
   height: 20%;
   background-color: #b0c4de; /* Light blue */
@@ -18,8 +18,8 @@
   margin-left: 5%; /* Add 5% of the screen width to the left */
 }
 
-/* Top Bar button sizes */
-.top-bar-button {
+/* nav Bar button sizes */
+.nav-bar-button {
   width: auto;
   height: 15vh; /* 15% of the screen's height */
   cursor: pointer;
@@ -33,7 +33,7 @@
 }
 
 /* Ensure images inside the buttons maintain correct size and aspect ratio */
-.top-bar-button img {
+.nav-bar-button img {
   height: 15vh; /* 15% of the screen's height */
   width: auto; /* Maintain aspect ratio */
   max-height: 15vh; /* Prevent images from exceeding the button's height */
@@ -41,7 +41,7 @@
 }
 
 /* Small margin for the last button on the right */
-.top-bar-button:last-child {
+.nav-bar-button:last-child {
   margin-right: 5vh;
 }
 
