@@ -4,20 +4,20 @@ function updateDisplay() {
 
     // Apply animation based on cash changes
     if (cash > previousCash) {
-        cashElement.style.animation = "cashIncrease 0.3s ease-in-out"; // Green and grows for increase
+        cashElement.style.animation = "cashIncrease 0.3s ease-in-out";
     } else if (cash < previousCash) {
-        cashElement.style.animation = "cashDecrease 0.3s ease-in-out"; // Red and shrinks for decrease
+        cashElement.style.animation = "cashDecrease 0.3s ease-in-out";
     }
 
     // Reset animation after it's complete
     setTimeout(() => {
-        cashElement.style.animation = "";
+        cashElement.style.animation = ""; // Clear the animation style
     }, 300);
 
     // Update the displayed cash value
     cashElement.textContent = `$${cash.toFixed(2)}`;
 
-    // Update other values
+    // Update other displayed stats
     clickInfo.textContent = `Value: $${cashPerClick.toFixed(2)}`;
     automaticInfo.textContent = `Value: $${cashPerSecond.toFixed(2)}`;
     clickCostDisplay.textContent = `Cost: $${upgradeClickCost.toFixed(2)}`;
@@ -26,6 +26,6 @@ function updateDisplay() {
     netCashDisplay.textContent = netCash.toFixed(2);
     hoursPlayedDisplay.textContent = (totalHoursPlayed / 3600).toFixed(2);
 
-    // Update the previous cash value
+    // Update previous cash value after animations
     previousCash = cash;
 }
