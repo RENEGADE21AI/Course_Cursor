@@ -1,10 +1,10 @@
 /* Animations for score changes */
 .increase {
-  animation: cashIncrease 0.3s ease-in-out;
+  animation: cashIncrease 0.3s ease-in-out !important;
 }
 
 .decrease {
-  animation: cashDecrease 0.3s ease-in-out;
+  animation: cashDecrease 0.3s ease-in-out !important;
 }
 
 @keyframes cashIncrease {
