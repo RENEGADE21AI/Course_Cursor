@@ -2,16 +2,16 @@
 function updateDisplay() {
     const cashElement = scoreDisplay;
 
-    // Apply animation based on cash changes
+    // Determine if cash has increased or decreased
     if (cash > previousCash) {
-        cashElement.style.animation = "cashIncrease 0.3s ease-in-out";
+        cashElement.classList.add("increase");
     } else if (cash < previousCash) {
-        cashElement.style.animation = "cashDecrease 0.3s ease-in-out";
+        cashElement.classList.add("decrease");
     }
 
-    // Reset animation after it's complete
+    // Reset the animation by removing and re-adding the class
     setTimeout(() => {
-        cashElement.style.animation = ""; // Clear the animation style
+        cashElement.classList.remove("increase", "decrease");
     }, 300);
 
     // Update the displayed cash value
@@ -26,6 +26,6 @@ function updateDisplay() {
     netCashDisplay.textContent = netCash.toFixed(2);
     hoursPlayedDisplay.textContent = (totalHoursPlayed / 3600).toFixed(2);
 
-    // Update previous cash value after animations
+    // Update previous cash value AFTER the animation logic
     previousCash = cash;
 }
