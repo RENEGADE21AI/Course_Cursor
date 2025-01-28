@@ -1,15 +1,14 @@
-// Function to update displayed stats
 function updateDisplay() {
     const cashElement = scoreDisplay;
 
-    // Determine if cash has increased or decreased
+    // Apply animation based on cash changes
     if (cash > previousCash) {
         cashElement.classList.add("increase");
     } else if (cash < previousCash) {
         cashElement.classList.add("decrease");
     }
 
-    // Reset the animation by removing and re-adding the class
+    // Reset the animation after completion
     setTimeout(() => {
         cashElement.classList.remove("increase", "decrease");
     }, 300);
@@ -26,6 +25,6 @@ function updateDisplay() {
     netCashDisplay.textContent = netCash.toFixed(2);
     hoursPlayedDisplay.textContent = (totalHoursPlayed / 3600).toFixed(2);
 
-    // Update previous cash value AFTER the animation logic
+    // Update previous cash AFTER animations are triggered
     previousCash = cash;
 }
