@@ -1,13 +1,21 @@
 /* Animations for score changes */
+.increase {
+  animation: cashIncrease 0.3s ease-in-out;
+}
+
+.decrease {
+  animation: cashDecrease 0.3s ease-in-out;
+}
+
 @keyframes cashIncrease {
   0% {
     color: green;
-    transform: translateY(5px) scale(1.1); /* Move up slightly and grow */
+    transform: translateY(5px) scale(1.1);
     opacity: 0.5;
   }
   100% {
     color: white;
-    transform: translateY(0) scale(1); /* Reset to normal */
+    transform: translateY(0) scale(1);
     opacity: 1;
   }
 }
@@ -15,21 +23,12 @@
 @keyframes cashDecrease {
   0% {
     color: red;
-    transform: translateY(-5px) scale(0.9); /* Move down slightly and shrink */
+    transform: translateY(-5px) scale(0.9);
     opacity: 0.5;
   }
   100% {
     color: white;
-    transform: translateY(0) scale(1); /* Reset to normal */
+    transform: translateY(0) scale(1);
     opacity: 1;
   }
-}
-
-/* Base score style */
-.score {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-left: 5%;
-  transition: all 0.3s ease-in-out; /* Adjusted duration for smoother transition */
-  transform-origin: center center; /* Set transform origin to the center */
 }
