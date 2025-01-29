@@ -1,12 +1,12 @@
 /* Game Content Layout */
 .game-content {
-  width: 100%;
-  height: 80vh; /* 80% of the viewport height */
+  width: 1920px;
+  height: 864px; /* 80% of 1080px */
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  padding: 1em;
+  padding: 20px;
 }
 
 /* Hide all tabs except the active one */
@@ -25,7 +25,7 @@
 
 /* Clickable Cash Icon */
 .click-cash {
-  width: 10vw; /* Scale with viewport width */
+  width: 192px; /* 10% of 1920px */
   height: auto;
   cursor: pointer;
   transition: transform 0.1s;
@@ -39,7 +39,7 @@
 .upgrades {
   display: flex;
   flex-direction: row;
-  gap: 20px;
+  gap: 40px;
   justify-content: center;
   align-items: center;
 }
