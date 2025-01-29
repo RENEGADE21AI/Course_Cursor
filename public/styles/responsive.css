@@ -1,31 +1,79 @@
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .nav-bar {
-    height: 15%;
-    flex-direction: column;
-    align-items: flex-start;
-  }
+/* Default Scaling (1920x1080 - Full HD Chromebooks & Laptops) */
+html, body {
+  --scale-factor: calc(min(100vw / 1920, 100vh / 1080));
+}
 
-  .upgrades {
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  .score {
-    font-size: 1.2rem;
-  }
-
-  .nav-bar-buttons {
-    height: 8vh;
-  }
-
-  .click-cash {
-    width: 80px;
+/* Small Chromebooks (1366x768 - Most Common in Schools) */
+@media (max-width: 1366px) {
+  html, body {
+    --scale-factor: calc(min(100vw / 1366, 100vh / 768));
   }
 }
 
-/* Force landscape orientation */
-@media screen and (max-height: 500px) and (orientation: portrait) {
+/* Mid-Sized Chromebooks (1440x900 - 16:10 Aspect Ratio) */
+@media (max-width: 1440px) {
+  html, body {
+    --scale-factor: calc(min(100vw / 1440, 100vh / 900));
+  }
+}
+
+/* Larger Chromebooks (1536x864 - Higher-End School Chromebooks) */
+@media (max-width: 1536px) {
+  html, body {
+    --scale-factor: calc(min(100vw / 1536, 100vh / 864));
+  }
+}
+
+/* MacBook-Like Chromebook Sizes (1600x900 - Some Chromebooks & Windows Laptops) */
+@media (max-width: 1600px) {
+  html, body {
+    --scale-factor: calc(min(100vw / 1600, 100vh / 900));
+  }
+}
+
+/* High-Resolution Chromebooks (2160x1350 - 3:2 Aspect Ratio) */
+@media (max-width: 2160px) {
+  html, body {
+    --scale-factor: calc(min(100vw / 2160, 100vh / 1350));
+  }
+}
+
+/* 1440p Monitors (2560x1440 - Large Monitors & Gaming Laptops) */
+@media (min-width: 1921px) and (max-width: 2560px) {
+  html, body {
+    --scale-factor: calc(min(100vw / 2560, 100vh / 1440));
+  }
+}
+
+/* 4K Monitors (3840x2160 - Ultra HD Displays) */
+@media (min-width: 2561px) {
+  html, body {
+    --scale-factor: calc(min(100vw / 3840, 100vh / 2160));
+  }
+}
+
+/* Tablets (1024x768 and smaller) */
+@media (max-width: 1024px) {
+  html, body {
+    --scale-factor: calc(min(100vw / 1024, 100vh / 768));
+  }
+
+  .nav-bar {
+    flex-direction: column;
+    height: calc(150px * var(--scale-factor));
+  }
+
+  .score {
+    font-size: calc(40px * var(--scale-factor));
+  }
+
+  .nav-bar-button img {
+    height: calc(120px * var(--scale-factor));
+  }
+}
+
+/* Phones (Force Landscape Mode) */
+@media screen and (max-width: 768px) {
   body {
     transform: rotate(90deg);
     transform-origin: left top;
