@@ -1,46 +1,34 @@
-/* nav bar styles */
+/* Nav Bar Layout */
 .nav-bar {
   width: 100%;
-  height: 20%;
+  height: 20vh; /* 20% of the viewport height */
   background-color: #b0c4de; /* Light blue */
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 1em;
-  color: white;
-  overflow-x: auto; /* Allow horizontal scrolling if needed */
-  white-space: nowrap; /* Prevent wrapping of child elements */
+  overflow-x: auto;
+  white-space: nowrap;
 }
 
+/* Score styling */
 .score {
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: bold;
-  margin-left: 5%; /* Add 5% of the screen width to the left */
+  margin-left: 2%;
 }
 
-/* nav Bar button sizes */
+/* Nav Bar Button Container */
 .nav-bar-button {
-  width: auto;
-  height: 15vh; /* 15% of the screen's height */
-  cursor: pointer;
-  border: none;
-  background: none;
-  outline: none;
-  display: inline-flex; /* Align images inline and prevent flex container issues */
-  justify-content: center; /* Center the content inside the button */
+  display: flex;
   align-items: center;
-  margin-right: 1em; /* Add a gap between buttons (adjust as needed) */
+  gap: 15px;
 }
 
-/* Ensure images inside the buttons maintain correct size and aspect ratio */
+/* Buttons inside the Nav Bar */
 .nav-bar-button img {
-  height: 15vh; /* 15% of the screen's height */
-  width: auto; /* Maintain aspect ratio */
-  max-height: 15vh; /* Prevent images from exceeding the button's height */
-  max-width: 100%; /* Ensure images don't stretch beyond the button */
-}
-
-/* Small margin for the last button on the right */
-.nav-bar-button:last-child {
-  margin-right: 5vh;
+  height: 12vh; /* Scales with viewport height */
+  width: auto;
+  max-height: 15vh;
+  cursor: pointer;
 }
