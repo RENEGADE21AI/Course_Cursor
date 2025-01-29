@@ -38,6 +38,29 @@ html, body {
   }
 }
 
+/* 4:3 Aspect Ratio (iPads, Older Monitors) */
+@media (max-aspect-ratio: 4/3) {
+  html, body {
+    --scale-factor: calc(min(100vw / 1024, 100vh / 768));
+  }
+}
+
+/* 21:9 Ultrawide Screens (2560x1080, 3440x1440) */
+@media (min-aspect-ratio: 21/9) {
+  .game-content {
+    max-width: 1920px; /* Prevents extreme stretching */
+    margin: auto;
+  }
+}
+
+/* 32:9 Super Ultrawide Screens (5120x1440, 7680x2160) */
+@media (min-aspect-ratio: 32/9) {
+  .game-content {
+    max-width: 1920px; /* Keep a fixed max width */
+    margin: auto;
+  }
+}
+
 /* 1440p Monitors (2560x1440 - Large Monitors & Gaming Laptops) */
 @media (min-width: 1921px) and (max-width: 2560px) {
   html, body {
