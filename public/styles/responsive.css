@@ -1,97 +1,113 @@
-/* Default Scaling (1920x1080 - Full HD Chromebooks & Laptops) */
+/* Default Scaling (1920x1080 - Full HD) */
 html, body {
-  --scale-factor: calc(min(100vw / 1920, 100vh / 1080));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #1e1e1e; /* Dark background */
 }
 
-/* Small Chromebooks (1366x768 - Most Common in Schools) */
-@media (max-width: 1366px) {
-  html, body {
-    --scale-factor: calc(min(100vw / 1366, 100vh / 768));
+/* Game Container (Fixed Base Resolution) */
+#game-container {
+  width: 1920px;
+  height: 1080px;
+  position: relative;
+  transform-origin: top left;
+  background-color: #f4f4f4; /* Light background */
+}
+
+/* Scale Entire Game Proportionally */
+@media screen and (max-width: 1920px), (max-height: 1080px) {
+  #game-container {
+    transform: scale(calc(min(100vw / 1920, 100vh / 1080)));
   }
 }
 
-/* Mid-Sized Chromebooks (1440x900 - 16:10 Aspect Ratio) */
-@media (max-width: 1440px) {
-  html, body {
-    --scale-factor: calc(min(100vw / 1440, 100vh / 900));
+/* 21:9 Ultrawide Monitors (2560x1080, 3440x1440) */
+@media (min-aspect-ratio: 21/9) {
+  #game-container {
+    max-width: 1920px;
+    margin: auto;
   }
 }
 
-/* Larger Chromebooks (1536x864 - Higher-End School Chromebooks) */
-@media (max-width: 1536px) {
-  html, body {
-    --scale-factor: calc(min(100vw / 1536, 100vh / 864));
-  }
-}
-
-/* MacBook-Like Chromebook Sizes (1600x900 - Some Chromebooks & Windows Laptops) */
-@media (max-width: 1600px) {
-  html, body {
-    --scale-factor: calc(min(100vw / 1600, 100vh / 900));
-  }
-}
-
-/* High-Resolution Chromebooks (2160x1350 - 3:2 Aspect Ratio) */
-@media (max-width: 2160px) {
-  html, body {
-    --scale-factor: calc(min(100vw / 2160, 100vh / 1350));
+/* 32:9 Super Ultrawide Monitors (5120x1440, 7680x2160) */
+@media (min-aspect-ratio: 32/9) {
+  #game-container {
+    max-width: 1920px;
+    margin: auto;
   }
 }
 
 /* 4:3 Aspect Ratio (iPads, Older Monitors) */
 @media (max-aspect-ratio: 4/3) {
-  html, body {
-    --scale-factor: calc(min(100vw / 1024, 100vh / 768));
-  }
-}
-
-/* 21:9 Ultrawide Screens (2560x1080, 3440x1440) */
-@media (min-aspect-ratio: 21/9) {
-  .game-content {
-    max-width: 1920px; /* Prevents extreme stretching */
+  #game-container {
+    max-width: 1440px;
     margin: auto;
   }
 }
 
-/* 32:9 Super Ultrawide Screens (5120x1440, 7680x2160) */
-@media (min-aspect-ratio: 32/9) {
-  .game-content {
-    max-width: 1920px; /* Keep a fixed max width */
-    margin: auto;
+/* Small Chromebooks (1366x768) */
+@media (max-width: 1366px) {
+  #game-container {
+    transform: scale(calc(min(100vw / 1366, 100vh / 768)));
   }
 }
 
-/* 1440p Monitors (2560x1440 - Large Monitors & Gaming Laptops) */
+/* Mid-Sized Chromebooks (1440x900 - 16:10 Aspect Ratio) */
+@media (max-width: 1440px) {
+  #game-container {
+    transform: scale(calc(min(100vw / 1440, 100vh / 900)));
+  }
+}
+
+/* Large Chromebooks (1536x864) */
+@media (max-width: 1536px) {
+  #game-container {
+    transform: scale(calc(min(100vw / 1536, 100vh / 864)));
+  }
+}
+
+/* MacBook-Like Chromebooks (1600x900 - 16:10) */
+@media (max-width: 1600px) {
+  #game-container {
+    transform: scale(calc(min(100vw / 1600, 100vh / 900)));
+  }
+}
+
+/* High-Resolution Chromebooks (2160x1350 - 3:2) */
+@media (max-width: 2160px) {
+  #game-container {
+    transform: scale(calc(min(100vw / 2160, 100vh / 1350)));
+  }
+}
+
+/* 1440p Monitors (2560x1440) */
 @media (min-width: 1921px) and (max-width: 2560px) {
-  html, body {
-    --scale-factor: calc(min(100vw / 2560, 100vh / 1440));
+  #game-container {
+    transform: scale(calc(min(100vw / 2560, 100vh / 1440)));
   }
 }
 
-/* 4K Monitors (3840x2160 - Ultra HD Displays) */
+/* 4K Monitors (3840x2160) */
 @media (min-width: 2561px) {
-  html, body {
-    --scale-factor: calc(min(100vw / 3840, 100vh / 2160));
+  #game-container {
+    transform: scale(calc(min(100vw / 3840, 100vh / 2160)));
   }
 }
 
 /* Tablets (1024x768 and smaller) */
 @media (max-width: 1024px) {
-  html, body {
-    --scale-factor: calc(min(100vw / 1024, 100vh / 768));
+  #game-container {
+    transform: scale(calc(min(100vw / 1024, 100vh / 768)));
   }
 
   .nav-bar {
     flex-direction: column;
-    height: calc(150px * var(--scale-factor));
-  }
-
-  .score {
-    font-size: calc(40px * var(--scale-factor));
-  }
-
-  .nav-bar-button img {
-    height: calc(120px * var(--scale-factor));
   }
 }
 
