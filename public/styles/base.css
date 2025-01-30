@@ -1,17 +1,22 @@
-/* Base page styles */
+/* Base Styles */
 html, body {
   width: 100vw;
   height: 100vh;
   margin: 0;
   padding: 0;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
   font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+  background-color: #1e1e1e; /* Dark background like Vex */
+}
 
-  /* Scaling Variables */
-  --scale-factor: calc(min(100vw / 1920, 100vh / 1080)); 
-  --nav-height: calc(216px * var(--scale-factor)); 
-  --game-height: calc(864px * var(--scale-factor)); 
+/* Game Container (Fixed Size, Scales Dynamically) */
+#game-container {
+  width: 1920px;
+  height: 1080px;
+  position: relative;
+  transform-origin: top left;
+  background-color: #f4f4f4; /* Light background */
 }
