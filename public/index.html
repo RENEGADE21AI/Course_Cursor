@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,79 +12,57 @@
   <link rel="stylesheet" href="styles/responsive.css">
   <link rel="stylesheet" href="styles/score-animation.css">
 </head>
-
 <body>
-
-<div class="nav-bar">
-  <div class="score" id="scoreDisplay">$0.00</div>
-  <div class="nav-bar-button">
-    <img src="images/navBarTabButtons/placeholderPlayButton.png" class="play-button" id="playButton" alt="Play Button">
-    <img src="images/navBarTabButtons/placeholderCashWorldButton.png" class="play-cash-world-button" id="cashWorldButton" alt="Cash World Button">
-    <img src="images/navBarTabButtons/clansButton.png" class="clans-button" id="clansButton" alt="Clans Button">
-    <img src="images/navBarTabButtons/placeholderMiniGamesButton.png" class="minigames-button" id="minigamesButton" alt="Mini Games Button">
-    <img src="images/navBarTabButtons/placeholderSoundTracksButton.png" class="soundtracks-button" id="soundtracksButton" alt="Soundtracks Icon">
-    <img src="images/navBarTabButtons/placeholderAccountButton.png" class="account-button" id="accountButton" alt="Account Button">
-    <img src="images/VGstats.png" class="stats-button" id="statsButton" alt="Stats Icon">
-    <img src="images/JellySettingsButton.png" class="setting-button" id="settingsButton" alt="Settings Icon">
-  </div>
-</div>
-
-<div class="game-content">
-  <div class="tab active" id="playTab">
-    <img src="images/ClickCursorCash.png" class="click-cash" id="clickCash" alt="Cash Icon">
-    <div class="upgrades">
-      <div>
-        <div class="upgrade-info" id="clickInfo">Value: $0.50</div>
-        <img src="images/Click Power Upgrade (Buy More Cash Per Click).png" alt="Upgrade Cash Per Click" class="upgrade-image" id="upgradeClickButton">
-        <div class="upgrade-cost" id="clickCost">Cost: $10.00</div>
-      </div>
-      <div>
-        <div class="upgrade-info" id="automaticInfo">Value: $0.25</div>
-        <img src="images/Cash Clock Upgrade (Buy More Cash Per Second).png" alt="Upgrade Cash Per Second" class="upgrade-image" id="upgradeAutomaticButton">
-        <div class="upgrade-cost" id="automaticCost">Cost: $10.00</div>
+  <div id="game-container">
+    <div class="nav-bar">
+      <div class="score" id="scoreDisplay">$0.00</div>
+      <div class="nav-bar-button">
+        <img src="images/navBarTabButtons/placeholderPlayButton.png" class="play-button" id="playButton" alt="Play Button">
+        <img src="images/navBarTabButtons/placeholderCashWorldButton.png" class="play-cash-world-button" id="cashWorldButton" alt="Cash World Button">
+        <img src="images/navBarTabButtons/clansButton.png" class="clans-button" id="clansButton" alt="Clans Button">
+        <img src="images/navBarTabButtons/placeholderMiniGamesButton.png" class="minigames-button" id="minigamesButton" alt="Mini Games Button">
+        <img src="images/navBarTabButtons/placeholderSoundTracksButton.png" class="soundtracks-button" id="soundtracksButton" alt="Soundtracks Icon">
+        <img src="images/navBarTabButtons/placeholderAccountButton.png" class="account-button" id="accountButton" alt="Account Button">
+        <img src="images/VGstats.png" class="stats-button" id="statsButton" alt="Stats Icon">
+        <img src="images/JellySettingsButton.png" class="setting-button" id="settingsButton" alt="Settings Icon">
       </div>
     </div>
-  </div>
-  <div class="tab" id="accountTab">
-    <div>Account Details</div>
-    <button id="resetProgressButton" class="settings-button reset-button">Reset Progress</button>
-  </div>
-  <div class="tab" id="cashWorldTab">
-    <!-- Content for Cash World -->
-    <p>Welcome to Cash World!</p>
-  </div>
-  <div class="tab" id="clansTab">
-    <!-- Content for Clans -->
-    <p>Join or manage your clan here.</p>
-  </div>
-  <div class="tab" id="miniGamesTab">
-    <!-- Content for Mini Games -->
-    <h2>Mini Games Tab</h2>
-  </div>
-  <div class="tab" id="soundTracksTab">
-    <!-- Content for Sound Tracks -->
-    <h2>Sound Tracks Tab</h2>
-  </div>
-  <div class="tab" id="statsTab">
-    <!-- Content for Stats -->
-    <h2>Stats Tab</h2>
-  </div>
-  <div class="tab" id="settingsTab">
-    <!-- Content for Settings -->
-    <h2>Settings Tab</h2>
-  </div>
-</div>
 
-<!-- Modularized JavaScript Files -->
-<script src="scripts/gameState.js" defer></script>
-<script src="scripts/domElements.js" defer></script>
-<script src="scripts/storage.js" defer></script>
-<script src="scripts/loadSavedData.js" defer></script>
-<script src="scripts/display.js" defer></script>
-<script src="scripts/eventListeners.js" defer></script>
-<script src="scripts/clans.js" defer></script>
-<script src="scripts/soundTrackTabs.js" defer></script>
-<script src="scripts/gameContentTabs.js" defer></script>
+    <div class="game-content">
+      <div class="tab active" id="playTab">
+        <img src="images/ClickCursorCash.png" class="click-cash" id="clickCash" alt="Cash Icon">
+        <div class="upgrades">
+          <div>
+            <div class="upgrade-info" id="clickInfo">Value: $0.50</div>
+            <img src="images/Click Power Upgrade (Buy More Cash Per Click).png" alt="Upgrade Cash Per Click" class="upgrade-image" id="upgradeClickButton">
+            <div class="upgrade-cost" id="clickCost">Cost: $10.00</div>
+          </div>
+          <div>
+            <div class="upgrade-info" id="automaticInfo">Value: $0.25</div>
+            <img src="images/Cash Clock Upgrade (Buy More Cash Per Second).png" alt="Upgrade Cash Per Second" class="upgrade-image" id="upgradeAutomaticButton">
+            <div class="upgrade-cost" id="automaticCost">Cost: $10.00</div>
+          </div>
+        </div>
+      </div>
+      <div class="tab" id="accountTab"><h2>Account Details</h2></div>
+      <div class="tab" id="cashWorldTab"><h2>Welcome to Cash World!</h2></div>
+      <div class="tab" id="clansTab"><h2>Join or manage your clan here.</h2></div>
+      <div class="tab" id="miniGamesTab"><h2>Mini Games Tab</h2></div>
+      <div class="tab" id="soundTracksTab"><h2>Sound Tracks Tab</h2></div>
+      <div class="tab" id="statsTab"><h2>Stats Tab</h2></div>
+      <div class="tab" id="settingsTab"><h2>Settings Tab</h2></div>
+    </div>
+  </div>
 
+  <!-- Modularized JavaScript Files -->
+  <script src="scripts/gameState.js" defer></script>
+  <script src="scripts/domElements.js" defer></script>
+  <script src="scripts/storage.js" defer></script>
+  <script src="scripts/loadSavedData.js" defer></script>
+  <script src="scripts/display.js" defer></script>
+  <script src="scripts/eventListeners.js" defer></script>
+  <script src="scripts/clans.js" defer></script>
+  <script src="scripts/soundTrackTabs.js" defer></script>
+  <script src="scripts/gameContentTabs.js" defer></script>
 </body>
 </html>
