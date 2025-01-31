@@ -14,9 +14,8 @@ html, body {
 
 /* Game Container (Fixed Size, Scales Dynamically) */
 #game-container {
-  width: 1920px;
-  height: 1080px;
-  position: relative;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
   transform-origin: top left;
-  background-color: #f4f4f4; /* Light background */
 }
