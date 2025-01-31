@@ -1,14 +1,14 @@
 function scaleGame() {
     const gameContainer = document.getElementById("game-container");
 
-    // Base resolution (same as your design)
-    const baseWidth = 1920;
-    const baseHeight = 1080;
+    // New base resolution (2560x1440)
+    const baseWidth = 2560;
+    const baseHeight = 1440;
 
-    // Calculate the scale factor based on the screen size
+    // Calculate scale factor
     const scale = Math.min(window.innerWidth / baseWidth, window.innerHeight / baseHeight);
 
-    // Apply the scale
+    // Apply scaling
     gameContainer.style.transform = `scale(${scale})`;
 
     // Center the game
