@@ -1,34 +1,26 @@
 /* Nav Bar Layout */
 .nav-bar {
-  width: 100vw;
-  height: var(--nav-height); /* Scaled height */
+  width: 2560px; /* Fixed width */
+  height: 288px; /* Fixed height */
   background-color: #b0c4de; /* Light blue */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 calc(20px * var(--scale-factor)); /* Scale padding */
+  padding: 0 20px;
   overflow-x: auto;
   white-space: nowrap;
 }
 
-/* Score Styling */
-.score {
-  font-size: calc(50px * var(--scale-factor)); /* Scale font size */
-  font-weight: bold;
-  margin-left: calc(40px * var(--scale-factor));
-}
-
-/* Nav Bar Button Container */
+/* Nav Bar Buttons */
 .nav-bar-button {
   display: flex;
   align-items: center;
-  gap: calc(30px * var(--scale-factor));
+  gap: 20px; /* Space between buttons */
 }
 
 /* Buttons inside the Nav Bar */
 .nav-bar-button img {
-  height: calc(162px * var(--scale-factor)); /* Scale button size */
-  width: auto;
-  max-height: calc(180px * var(--scale-factor));
+  width: 216px;
+  height: 216px;
   cursor: pointer;
 }
