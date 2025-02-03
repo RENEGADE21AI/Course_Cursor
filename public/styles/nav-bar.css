@@ -24,3 +24,9 @@
   height: 216px;
   cursor: pointer;
 }
+
+.nav-bar {
+  overflow-x: auto; /* Allow scrolling if too wide */
+  white-space: nowrap; /* Keep buttons in one line */
+}
+
