@@ -1,5 +1,5 @@
 function scaleGame() {
-    const gameContainer = document.getElementById("game-container");
+    const screenContainer = document.getElementById("screen-container");
 
     // Target resolution
     const targetWidth = 1600;
@@ -13,10 +13,10 @@ function scaleGame() {
     let scaleFactor = Math.min(screenWidth / targetWidth, screenHeight / targetHeight);
 
     // Apply scaling while ensuring it stays centered
-    gameContainer.style.transform = `translate(-50%, -50%) scale(${scaleFactor})`;
-    gameContainer.style.position = "absolute";
-    gameContainer.style.left = "50%";
-    gameContainer.style.top = "50%";
+    screenContainer.style.transform = `translate(-50%, -50%) scale(${scaleFactor})`;
+    screenContainer.style.position = "absolute";
+    screenContainer.style.left = "50%";
+    screenContainer.style.top = "50%";
 }
 
 // Run on load and when resizing
