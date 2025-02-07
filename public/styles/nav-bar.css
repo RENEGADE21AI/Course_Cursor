@@ -1,32 +1,27 @@
-/* Nav Bar Layout */
+/* Navigation Bar */
 .nav-bar {
-  width: 2560px; /* Fixed width */
-  height: 288px; /* Fixed height */
-  background-color: #b0c4de; /* Light blue */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px;
-  overflow-x: auto;
-  white-space: nowrap;
+    width: 1600px;
+    height: 180px;
+    background-color: #b0c4de; /* Light blue */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
-/* Nav Bar Buttons */
+/* Container for buttons inside nav bar */
 .nav-bar-button {
-  display: flex;
-  align-items: center;
-  gap: 20px; /* Space between buttons */
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Adjust spacing between buttons */
 }
 
-/* Buttons inside the Nav Bar */
+/* Navigation Bar Buttons */
 .nav-bar-button img {
-  width: 216px;
-  height: 216px;
-  cursor: pointer;
+    width: 135px;
+    height: 135px;
+    cursor: pointer;
 }
-
-.nav-bar {
-  overflow-x: auto; /* Allow scrolling if too wide */
-  white-space: nowrap; /* Keep buttons in one line */
-}
-
