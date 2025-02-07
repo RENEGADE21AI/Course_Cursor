@@ -12,12 +12,13 @@ function scaleGame() {
     // Calculate scale factor while maintaining aspect ratio
     let scaleFactor = Math.min(screenWidth / targetWidth, screenHeight / targetHeight);
 
-    // Apply scaling and centering
-    gameContainer.style.transform = `scale(${scaleFactor})`;
-    gameContainer.style.left = `${(screenWidth - targetWidth * scaleFactor) / 2}px`;
-    gameContainer.style.top = `${(screenHeight - targetHeight * scaleFactor) / 2}px`;
+    // Apply scaling while ensuring it stays centered
+    gameContainer.style.transform = `translate(-50%, -50%) scale(${scaleFactor})`;
+    gameContainer.style.position = "absolute";
+    gameContainer.style.left = "50%";
+    gameContainer.style.top = "50%";
 }
 
-// Adjust when screen resizes
+// Run on load and when resizing
 window.addEventListener("resize", scaleGame);
 window.addEventListener("load", scaleGame);
