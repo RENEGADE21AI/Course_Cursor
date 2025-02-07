@@ -14,5 +14,6 @@ html, body {
     width: 1600px;
     height: 900px;
     background: #222; /* Game background */
-    position: relative;
+    position: absolute;
+    transform-origin: center;
 }
