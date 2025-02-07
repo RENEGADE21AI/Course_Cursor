@@ -13,7 +13,10 @@ html, body {
 #game-container {
     width: 1600px;
     height: 900px;
-    background: #222; /* Game background */
+    background: #222;
     position: absolute;
     transform-origin: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Ensures nav bar stays at top */
 }
