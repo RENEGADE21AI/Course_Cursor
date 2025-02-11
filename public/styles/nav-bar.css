@@ -12,16 +12,16 @@
     transform: translateX(-50%);
 }
 
-/* Container for buttons inside nav bar */
+/* Container for buttons inside the nav bar */
 .nav-bar-button {
     display: flex;
     align-items: center;
-    gap: 15px; /* Adjust spacing between buttons */
+    gap: calc(15px * var(--scale-factor)); /* Adjust spacing dynamically */
 }
 
 /* Navigation Bar Buttons */
 .nav-bar-button img {
-    width: 135px;
-    height: 135px;
+    width: calc(135px * var(--scale-factor)); /* Scales proportionally */
+    height: calc(135px * var(--scale-factor));
     cursor: pointer;
 }
