@@ -1,7 +1,7 @@
 function scaleGame() {
     const screenContainer = document.getElementById("screen-container");
 
-    // Target resolution
+    // Target resolution (entire game, including nav bar)
     const targetWidth = 1600;
     const targetHeight = 900;
 
@@ -17,6 +17,9 @@ function scaleGame() {
     screenContainer.style.position = "absolute";
     screenContainer.style.left = "50%";
     screenContainer.style.top = "50%";
+
+    // Update CSS variable for proportional scaling of elements
+    document.documentElement.style.setProperty('--scale-factor', scaleFactor);
 }
 
 // Run on load and when resizing
