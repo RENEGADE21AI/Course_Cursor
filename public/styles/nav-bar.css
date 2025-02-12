@@ -1,22 +1,13 @@
 /* Navigation Bar */
 .nav-bar {
     width: 2400px;
-    height: 270px;
-    background-color: #b0c4de; /* Light blue */
+    height: 180px; /* This will scale up with --scale-factor */
+    background-color: #b0c4de;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-/* Container for buttons inside the nav bar */
-.nav-bar-button {
-    display: flex;
-    align-items: center;
-    gap: calc(15px * var(--scale-factor)); /* Adjust spacing dynamically */
+    position: relative;
+    transform-origin: top center;
 }
 
 /* Navigation Bar Buttons */
