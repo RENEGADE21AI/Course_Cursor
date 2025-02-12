@@ -1,12 +1,13 @@
 /* Game Content Layout */
 .game-content {
-  width: 2400px;
-  height: var(--game-height); /* Scale height */
+  width: 2400px; /* Matches screen-container */
+  height: calc(1350px - 180px); /* Subtracts nav bar height */
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
   padding: calc(20px * var(--scale-factor));
+  overflow: hidden; /* Prevents any content from spilling */
 }
 
 /* Hide all tabs except the active one */
@@ -44,14 +45,7 @@
   align-items: center;
 }
 
-/* General text scaling */
-body {
-    font-size: calc(16px * var(--scale-factor));
-}
-
-/* Navigation bar text */
-.nav-bar .score {
-    font-size: calc(24px * var(--scale-factor));
-    font-weight: bold;
-    color: #fff;
+/* Text Scaling */
+.game-content h2 {
+  font-size: calc(28px * var(--scale-factor)); /* Ensures readability */
 }
