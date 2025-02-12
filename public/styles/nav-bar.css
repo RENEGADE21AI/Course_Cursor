@@ -1,7 +1,7 @@
 /* Navigation Bar */
 .nav-bar {
-    width: 1600px;
-    height: 180px;
+    width: 2400px;
+    height: 270px;
     background-color: #b0c4de; /* Light blue */
     display: flex;
     justify-content: center;
