@@ -2,8 +2,8 @@ function scaleGame() {
     const screenContainer = document.getElementById("screen-container");
 
     // Target resolution (entire game, including nav bar)
-    const targetWidth = 1600;
-    const targetHeight = 900;
+    const targetWidth = 2400;
+    const targetHeight = 1350;
 
     // Get available screen space
     const screenWidth = window.innerWidth;
