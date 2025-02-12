@@ -6,7 +6,8 @@
     transform-origin: center;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Ensures nav bar stays at the top */
+    justify-content: space-between;
+    align-items: center;
 }
 
 /* General text scaling */
