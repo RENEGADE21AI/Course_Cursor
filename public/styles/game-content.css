@@ -1,6 +1,6 @@
 /* Game Content Layout */
 .game-content {
-  width: 100vw;
+  width: 2400px;
   height: var(--game-height); /* Scale height */
   display: flex;
   justify-content: center;
