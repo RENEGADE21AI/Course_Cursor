@@ -18,7 +18,7 @@ function scaleGame() {
     screenContainer.style.left = "50%";
     screenContainer.style.top = "50%";
 
-    // Update CSS variable for proportional scaling of elements
+    // Update CSS variable for proportional scaling of all elements inside screen-container
     document.documentElement.style.setProperty('--scale-factor', scaleFactor);
 }
 
