@@ -1,7 +1,7 @@
 /* Navigation Bar */
 .nav-bar {
     width: 2400px;
-    height: 180px; /* This will scale up with --scale-factor */
+    height: 270px; /* This will scale up with --scale-factor */
     background-color: #b0c4de;
     display: flex;
     justify-content: center;
@@ -12,7 +12,7 @@
 
 /* Navigation Bar Buttons */
 .nav-bar-button img {
-    width: calc(135px * var(--scale-factor)); /* Scales proportionally */
-    height: calc(135px * var(--scale-factor));
+    width: calc(216px * var(--scale-factor)); /* Scales proportionally */
+    height: calc(216px * var(--scale-factor));
     cursor: pointer;
 }
