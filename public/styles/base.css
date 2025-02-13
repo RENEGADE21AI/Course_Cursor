@@ -1,14 +1,15 @@
 #screen-container {
     width: 2400px;
     height: 1350px;
-    background: #222;
     position: absolute;
     transform-origin: center;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.3); /* Adds soft glow around container */
 }
+
 
 /* General text scaling */
 body {
