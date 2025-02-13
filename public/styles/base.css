@@ -12,12 +12,12 @@
 
 /* General text scaling */
 body {
-    font-size: calc(16px * var(--scale-factor));
+    font-size: calc(100px * var(--scale-factor));
 }
 
 /* Navigation bar text */
 .nav-bar .score {
-    font-size: calc(24px * var(--scale-factor));
+    font-size: calc(100px * var(--scale-factor));
     font-weight: bold;
     color: #fff;
 }
