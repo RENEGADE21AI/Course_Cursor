@@ -5,7 +5,7 @@ html, body {
     width: 100vw;
     background: radial-gradient(ellipse at top, rgba(255, 255, 255, 0.7), rgba(200, 200, 200, 0.4)),
                 linear-gradient(to right, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0) 70%, rgba(255, 255, 255, 0.8) 100%),
-                url("public/images/cloudy background.webp");
+                url("public/images/outsideOfScreenContainerCloudyTexture.png");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
