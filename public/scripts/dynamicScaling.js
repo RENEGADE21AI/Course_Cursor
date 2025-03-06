@@ -1,3 +1,4 @@
+// Updated dynamicScaling.js
 function scaleGame() {
     const screenContainer = document.getElementById("screen-container");
 
