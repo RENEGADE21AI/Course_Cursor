@@ -2,16 +2,18 @@
 .game-content {
     width: 2400px; /* Matches screen-container */
     height: 1170px; /* Adjusted for nav bar height */
+    background-color: white; /* Makes the game content opaque */
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
     padding: calc(20px * var(--scale-factor));
     overflow: hidden; /* Prevents any content from spilling */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Adds slight depth */
 }
 
 /* Text Scaling */
 .game-content h2 {
     font-size: calc(28px * var(--scale-factor));
-    color: white;
+    color: black; /* Ensures readability on white background */
 }
