@@ -1,7 +1,7 @@
 /* Game Content Layout */
 .game-content {
     width: 2400px; /* Matches screen-container */
-    height: 1080px; /* Subtracts nav bar height */
+    height: 1170px; /* Adjusted for nav bar height */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -12,5 +12,6 @@
 
 /* Text Scaling */
 .game-content h2 {
-    font-size: calc(100px * var(--scale-factor)); /* Ensures readability */
+    font-size: calc(28px * var(--scale-factor));
+    color: white;
 }
