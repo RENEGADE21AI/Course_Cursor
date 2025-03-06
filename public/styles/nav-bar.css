@@ -12,7 +12,7 @@
 
 /* Navigation Bar Buttons */
 .nav-bar-button img {
-    width: calc(216px * var(--scale-factor)); /* Scales proportionally */
-    height: calc(216px * var(--scale-factor));
+    width: calc(250px * var(--scale-factor)); /* Scales proportionally */
+    height: calc(250px * var(--scale-factor));
     cursor: pointer;
 }
