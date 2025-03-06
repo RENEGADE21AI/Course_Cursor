@@ -1,3 +1,4 @@
+/* Updated base.css */
 html, body {
     margin: 0;
     padding: 0;
@@ -5,8 +6,8 @@ html, body {
     width: 100vw;
     background: radial-gradient(ellipse at top, rgba(255, 255, 255, 0.7), rgba(200, 200, 200, 0.4)),
                 linear-gradient(to right, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0) 70%, rgba(255, 255, 255, 0.8) 100%),
-                url("public/images/outsideOfScreenContainerCloudyTexture.png");
-    background-size: cover;
+                url("../images/outsideOfScreenContainerCloudyTexture.png");
+    background-size: 100vw 100vh;
     background-position: center;
     background-attachment: fixed;
     display: flex;
@@ -23,18 +24,5 @@ html, body {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 0 50px rgba(255, 255, 255, 0.3); /* Adds soft glow around container */
-}
-
-
-/* General text scaling */
-body {
-    font-size: calc(100px * var(--scale-factor));
-}
-
-/* Navigation bar text */
-.nav-bar .score {
-    font-size: calc(100px * var(--scale-factor));
-    font-weight: bold;
-    color: #fff;
+    box-shadow: 0 0 80px rgba(255, 255, 255, 0.5); /* Soft glow around container */
 }
