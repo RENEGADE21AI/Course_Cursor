@@ -10,8 +10,15 @@
 }
 
 /* Navigation Bar Buttons */
+.nav-bar-button {
+    display: flex;
+    align-items: center;
+    gap: calc(20px * var(--scale-factor)); /* Ensures even spacing */
+}
+
+/* Navigation Bar Button Images */
 .nav-bar-button img {
-    width: calc(135px * var(--scale-factor)); /* Scales proportionally */
-    height: calc(135px * var(--scale-factor));
+    height: calc(180px * 0.85); /* 85% of nav-bar height */
+    width: auto; /* Maintain aspect ratio */
     cursor: pointer;
 }
