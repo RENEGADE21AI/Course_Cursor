@@ -1,18 +1,17 @@
 /* Navigation Bar */
 .nav-bar {
     width: 2400px;
-    height: 270px; /* This will scale up with --scale-factor */
+    height: 180px;
     background-color: #b0c4de;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
-    transform-origin: top center;
 }
 
 /* Navigation Bar Buttons */
 .nav-bar-button img {
-    width: calc(250px * var(--scale-factor)); /* Scales proportionally */
-    height: calc(250px * var(--scale-factor));
+    width: calc(135px * var(--scale-factor)); /* Scales proportionally */
+    height: calc(135px * var(--scale-factor));
     cursor: pointer;
 }
