@@ -18,7 +18,7 @@
 
 /* Navigation Bar Button Images */
 .nav-bar-button img {
-    height: calc(180px * 0.85); /* 85% of nav-bar height */
+    height: calc(180px * 0.80); /* 80% of nav-bar height */
     width: auto; /* Maintain aspect ratio */
     cursor: pointer;
 }
