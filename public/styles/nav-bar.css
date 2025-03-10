@@ -9,6 +9,13 @@
     position: relative;
 }
 
+/* Navigation Bar Score Display */
+.nav-bar .score {
+    font-size: calc(28px * var(--scale-factor)); /* Scales proportionally */
+    font-weight: bold;
+    color: white;
+}
+
 /* Navigation Bar Buttons */
 .nav-bar-button {
     display: flex;
