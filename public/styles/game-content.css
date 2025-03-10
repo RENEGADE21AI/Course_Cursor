@@ -12,8 +12,9 @@
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Adds slight depth */
 }
 
-/* Text Scaling */
+/* Game Content Text */
 .game-content h2 {
-    font-size: calc(28px * var(--scale-factor));
-    color: black; /* Ensures readability on white background */
+    font-size: calc(32px * var(--scale-factor)); /* Slightly larger for readability */
+    font-weight: bold;
+    text-align: center;
 }
