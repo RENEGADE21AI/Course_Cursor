@@ -1,4 +1,4 @@
-import { formatNumber } from "./numberFormatter.js"; // Import the function
+import { formatNumber } from "./scripts/numberFormatter.js"; // Import the function
 
 function updateDisplay() {
     const cashElement = scoreDisplay;
