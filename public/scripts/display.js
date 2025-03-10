@@ -1,3 +1,5 @@
+import { formatNumber } from "./numberFormatter.js"; // Import the function
+
 function updateDisplay() {
     const cashElement = scoreDisplay;
 
@@ -13,17 +15,17 @@ function updateDisplay() {
         cashElement.classList.remove("increase", "decrease");
     }, 300);
 
-    // Update the displayed cash value
-    cashElement.textContent = `$${cash.toFixed(2)}`;
+    // Update the displayed cash value using formatNumber()
+    cashElement.textContent = `$${formatNumber(cash)}`;
 
-    // Update other displayed stats
-    clickInfo.textContent = `Value: $${cashPerClick.toFixed(2)}`;
-    automaticInfo.textContent = `Value: $${cashPerSecond.toFixed(2)}`;
-    clickCostDisplay.textContent = `Cost: $${upgradeClickCost.toFixed(2)}`;
-    automaticCostDisplay.textContent = `Cost: $${upgradeAutomaticCost.toFixed(2)}`;
-    highestCashDisplay.textContent = highestCash.toFixed(2);
-    netCashDisplay.textContent = netCash.toFixed(2);
-    hoursPlayedDisplay.textContent = (totalHoursPlayed / 3600).toFixed(2);
+    // Update other displayed stats (if they need formatting)
+    clickInfo.textContent = `Value: $${formatNumber(cashPerClick)}`;
+    automaticInfo.textContent = `Value: $${formatNumber(cashPerSecond)}`;
+    clickCostDisplay.textContent = `Cost: $${formatNumber(upgradeClickCost)}`;
+    automaticCostDisplay.textContent = `Cost: $${formatNumber(upgradeAutomaticCost)}`;
+    highestCashDisplay.textContent = formatNumber(highestCash);
+    netCashDisplay.textContent = formatNumber(netCash);
+    hoursPlayedDisplay.textContent = (totalHoursPlayed / 3600).toFixed(2); // Keep this as a standard decimal format
 
     // Update previous cash AFTER animations are triggered
     previousCash = cash;
