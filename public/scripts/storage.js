@@ -47,3 +47,6 @@ function resetGame() {
 window.addEventListener('beforeunload', () => {
     saveLocalGameData();
 });
+
+// Load saved data on page load
+loadLocalGameData();
