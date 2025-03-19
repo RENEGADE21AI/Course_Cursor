@@ -1,4 +1,4 @@
-// numberFormatter.js - Converts large numbers into compact format
+// numberFormatter.js - Converts large numbers into a compact format
 
 function formatNumber(num) {
     const suffixes = ["", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No"];
@@ -10,4 +10,5 @@ function formatNumber(num) {
     return scaled.toFixed(2) + suffixes[tier];
 }
 
-export { formatNumber };
+// Attach to window for global access
+window.formatNumber = formatNumber;
