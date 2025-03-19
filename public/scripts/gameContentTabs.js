@@ -1,32 +1,33 @@
-// Tab mapping
-const tabs = {
-  playButton: document.getElementById('playTab'),
-  accountButton: document.getElementById('accountTab'),
-  cashWorldButton: document.getElementById('cashWorldTab'),
-  clansButton: document.getElementById('clansTab'),
-  minigamesButton: document.getElementById('miniGamesTab'),
-  soundtracksButton: document.getElementById('soundTracksTab'),
-  statsButton: document.getElementById('statsTab'),
-  settingsButton: document.getElementById('settingsTab'),
+// Map buttons to corresponding tabs
+const tabButtons = {
+    playButton: "playTab",
+    accountButton: "accountTab",
+    cashWorldButton: "cashWorldTab",
+    clansButton: "clansTab",
+    minigamesButton: "miniGamesTab",
+    soundtracksButton: "soundTracksTab",
+    statsButton: "statsTab",
+    settingsButton: "settingsTab"
 };
 
 // Function to switch tabs
-function switchTab(activeButtonId) {
-  // Hide all tabs
-  Object.values(tabs).forEach(tab => {
-    tab.classList.remove('active');
-  });
+function switchTab(activeTabId) {
+    // Hide all tabs
+    document.querySelectorAll(".tab").forEach(tab => {
+        tab.classList.remove("active");
+    });
 
-  // Show the selected tab
-  if (tabs[activeButtonId]) {
-    tabs[activeButtonId].classList.add('active');
-  }
+    // Show the selected tab
+    const activeTab = document.getElementById(activeTabId);
+    if (activeTab) {
+        activeTab.classList.add("active");
+    }
 }
 
-// Dynamically add event listeners to all buttons
-Object.keys(tabs).forEach(buttonId => {
-  const button = document.getElementById(buttonId);
-  if (button) {
-    button.addEventListener('click', () => switchTab(buttonId));
-  }
+// Attach event listeners to each navigation button
+Object.keys(tabButtons).forEach(buttonId => {
+    const button = document.getElementById(buttonId);
+    if (button) {
+        button.addEventListener("click", () => switchTab(tabButtons[buttonId]));
+    }
 });
