@@ -20,7 +20,7 @@
 .nav-bar-button {
     display: flex;
     align-items: center;
-    gap: calc(20px * var(--scale-factor)); /* Ensures even spacing */
+    gap: calc(50px * var(--scale-factor)); /* Ensures even spacing */
 }
 
 /* Navigation Bar Button Images */
