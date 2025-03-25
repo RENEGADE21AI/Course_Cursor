@@ -1,15 +1,4 @@
-// DOM element references
-const clickCash = document.getElementById('clickCash');
-const scoreDisplay = document.getElementById('scoreDisplay');
-const upgradeClickButton = document.getElementById('upgradeClickButton');
-const upgradeAutomaticButton = document.getElementById('upgradeAutomaticButton');
-const clickInfo = document.getElementById('clickInfo');
-const automaticInfo = document.getElementById('automaticInfo');
-const clickCostDisplay = document.getElementById('clickCost');
-const automaticCostDisplay = document.getElementById('automaticCost');
-const highestCashDisplay = document.getElementById('highestCash');
-const netCashDisplay = document.getElementById('netCash');
-const hoursPlayedDisplay = document.getElementById('hoursPlayed');
-const statsButton = document.getElementById('statsButton');
-const settingsButton = document.getElementById('settingsButton');
-const clansButton = document.getElementById('clansButton');
+// Declare DOM elements as placeholders to be initialized later
+let clickCash, scoreDisplay, upgradeClickButton, upgradeAutomaticButton;
+let clickInfo, automaticInfo, clickCostDisplay, automaticCostDisplay;
+let highestCashDisplay, netCashDisplay, hoursPlayedDisplay;
