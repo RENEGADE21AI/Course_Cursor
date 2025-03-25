@@ -1,5 +1,5 @@
 function initializeGameElements() {
-    // Select DOM elements after tab content is loaded
+    // Select dynamic DOM elements after tab content loads
     clickCash = document.getElementById('clickCash');
     scoreDisplay = document.getElementById('scoreDisplay');
     upgradeClickButton = document.getElementById('upgradeClickButton');
@@ -12,7 +12,7 @@ function initializeGameElements() {
     netCashDisplay = document.getElementById('netCash');
     hoursPlayedDisplay = document.getElementById('hoursPlayed');
 
-    // Attach event listeners
+    // Attach click and upgrade event listeners
     clickCash?.addEventListener('click', () => {
         cash += cashPerClick;
         netCash += cashPerClick;
@@ -38,7 +38,7 @@ function initializeGameElements() {
         }
     });
 
-    // Start passive income loop (if not already started)
+    // Start passive income loop (only once)
     if (!window.passiveIncomeInterval) {
         window.passiveIncomeInterval = setInterval(() => {
             cash += cashPerSecond;
@@ -47,5 +47,46 @@ function initializeGameElements() {
             totalHoursPlayed += 1 / 3600;
             updateDisplay();
         }, 1000);
+    }
+
+    // ✅ Create and initialize the Cash World grid after tab loads
+    createCashWorldGrid();
+}
+
+function createCashWorldGrid() {
+    const gridElement = document.getElementById("cash-world-grid");
+    if (!gridElement) return;
+
+    gridElement.innerHTML = ""; // Clear if reloaded
+    for (let i = 0; i < 50 * 50; i++) {
+        const tile = document.createElement("div");
+        tile.classList.add("tile");
+        gridElement.appendChild(tile);
+    }
+
+    let offsetX = 0, offsetY = 0;
+    let zoomLevel = 1;
+
+    // WASD scrolling
+    window.addEventListener("keydown", (e) => {
+        switch (e.key.toLowerCase()) {
+            case 'w': offsetY += 20; break;
+            case 's': offsetY -= 20; break;
+            case 'a': offsetX += 20; break;
+            case 'd': offsetX -= 20; break;
+        }
+        updateGridTransform();
+    });
+
+    // Zooming with mouse wheel
+    document.getElementById("cash-world-grid-container")?.addEventListener("wheel", (e) => {
+        e.preventDefault();
+        zoomLevel += e.deltaY * -0.001;
+        zoomLevel = Math.min(Math.max(zoomLevel, 0.3), 3);
+        updateGridTransform();
+    });
+
+    function updateGridTransform() {
+        gridElement.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${zoomLevel})`;
     }
 }
