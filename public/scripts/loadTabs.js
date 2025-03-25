@@ -15,9 +15,10 @@ async function loadTabs() {
         const html = await response.text();
         document.getElementById(tabId).innerHTML = html;
     }
-    // After loading tabs, re-initialize click targets and event listeners
+
+    // Re-initialize all game elements and attach listeners
     initializeGameElements();
 }
 
-// Load all tab content after page load
+// Load tabs after window load
 window.addEventListener("load", loadTabs);
