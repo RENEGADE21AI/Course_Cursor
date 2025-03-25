@@ -10,8 +10,8 @@
     top: 0;
     left: 0;
     display: grid;
-    grid-template-columns: repeat(50, 100px);
-    grid-template-rows: repeat(50, 100px);
+    grid-template-columns: repeat(50, 10px);
+    grid-template-rows: repeat(50, 10px);
     transform-origin: center;
     transition: transform 0.1s;
 }
