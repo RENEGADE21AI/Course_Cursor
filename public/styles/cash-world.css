@@ -17,8 +17,8 @@
 }
 
 #cash-world-grid .tile {
-    width: 100px;
-    height: 100px;
+    width: 10px;
+    height: 10px;
     background-color: #7ec850; /* Grass green */
     border: 1px solid #ccc;
 }
