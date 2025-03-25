@@ -1,0 +1,24 @@
+#cash-world-grid-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#cash-world-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: grid;
+    grid-template-columns: repeat(50, 100px);
+    grid-template-rows: repeat(50, 100px);
+    transform-origin: center;
+    transition: transform 0.1s;
+}
+
+#cash-world-grid .tile {
+    width: 100px;
+    height: 100px;
+    background-color: #7ec850; /* Grass green */
+    border: 1px solid #ccc;
+}
