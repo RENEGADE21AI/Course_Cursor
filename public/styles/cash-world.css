@@ -10,15 +10,14 @@
     top: 0;
     left: 0;
     display: grid;
-    grid-template-columns: repeat(50, 10px);
-    grid-template-rows: repeat(50, 10px);
+    grid-template-columns: repeat(240, 10px);
+    grid-template-rows: repeat(117, 10px);
     transform-origin: center;
-    transition: transform 0.1s;
 }
 
-#cash-world-grid .tile {
+.tile {
     width: 10px;
     height: 10px;
-    background-color: #7ec850; /* Grass green */
-    border: 1px solid #ccc;
+    background-color: #7ec850; /* Default: Grassland */
+    border: 0.5px solid #aaa;
 }
