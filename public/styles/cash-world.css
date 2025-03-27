@@ -21,3 +21,11 @@
     background-color: #7ec850; /* Default: Grassland */
     border: 0.5px solid #aaa;
 }
+
+#cash-world-container {
+    display: block !important;
+    width: 100%;
+    height: 100vh;
+    background-color: #4CAF50; /* Temporary color */
+}
+
