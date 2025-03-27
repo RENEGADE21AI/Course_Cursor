@@ -10,14 +10,14 @@
     top: 0;
     left: 0;
     display: grid;
-    grid-template-columns: repeat(240, 10px);
-    grid-template-rows: repeat(117, 10px);
+    grid-template-columns: repeat(240, 24px);
+    grid-template-rows: repeat(117, 24px);
     transform-origin: center;
 }
 
 .tile {
-    width: 10px;
-    height: 10px;
+    width: 24px;
+    height: 24px;
     background-color: #7ec850; /* Default: Grassland */
     border: 0.5px solid #aaa;
 }
